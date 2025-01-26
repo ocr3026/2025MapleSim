@@ -53,7 +53,9 @@ public class DriveConstants {
 	public static final double turnMotorReduction = 150.0 / 7.0;
 	public static final DCMotor turnGearbox = DCMotor.getNEO(1);
 
+	// TODO: make sure these line up with onboard values
 	public static final SensorDirectionValue encoderDirection = SensorDirectionValue.CounterClockwise_Positive;
+	public static final double sensorAbsoluteDiscontinuityPoint = 0.5;
 	public static final double frontLeftMagnetOffset = 0;
     public static final double frontRightMagnetOffset = 0;
     public static final double backLeftMagnetOffset = 0;
