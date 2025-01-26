@@ -13,14 +13,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.measure.Frequency;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.units.measure.MomentOfInertia;
 
-public class DriveConstants {
+public final class DriveConstants {
 	public static final LinearVelocity maxSpeed = MetersPerSecond.of(5.0);
-	public static final Frequency odemetryFrequency = Hertz.of(100);
+	public static final double odometryFrequency = 100; // Hertz
 	public static final Distance trackWidth = Inches.of(28);
 	public static final Distance wheelBase = Inches.of(28);
 	public static final Distance driveBaseRadius = Meters.of(Math.hypot(trackWidth.div(2).in(Meters), wheelBase.div(2).in(Meters)));
@@ -52,9 +51,9 @@ public class DriveConstants {
 	public static final DCMotor driveGearbox = DCMotor.getNEO(1);
 
 	public static final double driveKp = 0, driveKd = 0; // FB
-	public static final double driveKs = 0.14, driveKv = 2.35, driveKa = 0.36; // FF
+	public static final double driveKs = 0.14, driveKv = 2.35; // FF
 	public static final double driveSimP = 0.05, driveSimD = 0; // FB
-	public static final double driveSimKs = 0, driveSimKv = 2.35, driveSimKa = 0.36; // FF
+	public static final double driveSimKs = 0, driveSimKv = 2.35; // FF
 
 	public static final boolean turnInverted = false;
 	public static final int turnMotorCurrentLimit = 20;
@@ -63,16 +62,14 @@ public class DriveConstants {
 
 	// TODO: make sure these line up with onboard values
 	public static final SensorDirectionValue encoderDirection = SensorDirectionValue.CounterClockwise_Positive;
-	public static final double sensorAbsoluteDiscontinuityPoint = 1;
-
+	public static final double sensorAbsoluteDiscontinuityPoint = 0.5;
 	public static final Rotation2d frontLeftMagnetOffset = new Rotation2d();
 	public static final Rotation2d frontRightMagnetOffset = new Rotation2d();
 	public static final Rotation2d rearLeftMagnetOffset = new Rotation2d();
 	public static final Rotation2d rearRightMagnetOffset = new Rotation2d();
-
 	public static final double turnKp = 0.166, turnKd = 0;
 	public static final double turnSimP = 8, turnSimD = 0;
-	public static final Rotation2d turnPIDMinInput = new Rotation2d(), turnPIDMaxInput = Rotation2d.fromRadians(2 * Math.PI);
+	public static final Rotation2d turnPIDMinInput = Rotation2d.fromRadians(-Math.PI), turnPIDMaxInput = Rotation2d.fromRadians(Math.PI);
 
 	// PathPlanner configuration
 	public static final Mass robotMass = Pounds.of(100);
@@ -93,7 +90,7 @@ public class DriveConstants {
 	public static final DriveTrainSimulationConfig mapleSimConfig = DriveTrainSimulationConfig.Default()
 		.withCustomModuleTranslations(moduleTranslations)
 		.withRobotMass(Kilogram.of(robotMass.in(Kilogram)))
-		.withGyro(null)
+		.withGyro(null) // TODO: set to navx
 		.withSwerveModule(new SwerveModuleSimulationConfig(
 			driveGearbox,
 			turnGearbox,
