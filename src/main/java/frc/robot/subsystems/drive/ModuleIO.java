@@ -7,6 +7,7 @@ import org.littletonrobotics.junction.AutoLog;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.LinearVelocity;
 
 public interface ModuleIO {
 	@AutoLog
@@ -34,7 +35,7 @@ public interface ModuleIO {
 
 	public default void setTurnOpenLoop(double output) {}
 
-	public default void setDriveVelocity(double velocityRadPerSec) {}
+	public default void setDriveVelocity(LinearVelocity velocityRadPerSec) {}
 
 	public default void setTurnPosition(Rotation2d rotation) {}
 }

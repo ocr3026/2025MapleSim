@@ -6,6 +6,7 @@ import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
 
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.google.flatbuffers.Constants;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 
@@ -20,8 +21,8 @@ import edu.wpi.first.units.measure.MomentOfInertia;
 public final class DriveConstants {
 	public static final LinearVelocity maxSpeed = MetersPerSecond.of(5.0);
 	public static final double odometryFrequency = 100; // Hertz
-	public static final Distance trackWidth = Inches.of(28);
-	public static final Distance wheelBase = Inches.of(28);
+	public static final Distance trackWidth = Inches.of(24.75);
+	public static final Distance wheelBase = Inches.of(24.75);
 	public static final Distance driveBaseRadius = Meters.of(Math.hypot(trackWidth.div(2).in(Meters), wheelBase.div(2).in(Meters)));
 	public static final Translation2d[] moduleTranslations = new Translation2d[] {
 		new Translation2d(trackWidth.div(2).in(Meters), wheelBase.div(2).in(Meters)),
@@ -50,6 +51,9 @@ public final class DriveConstants {
 	public static final double driveMotorReduction = (50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0);
 	public static final DCMotor driveGearbox = DCMotor.getNEO(1);
 
+	public static final double driveEncoderPositionFactor = 2 * Math.PI * wheelRadius.in(Meters) / (driveMotorReduction);
+	public static final double driveEncoderVelocityFactor = 2 * Math.PI * wheelRadius.in(Meters) / (driveMotorReduction * 60);
+
 	public static final double driveKp = 0, driveKd = 0; // FB
 	public static final double driveKs = 0.14, driveKv = 2.35; // FF
 	public static final double driveSimP = 0.05, driveSimD = 0; // FB
@@ -62,7 +66,7 @@ public final class DriveConstants {
 
 	// TODO: make sure these line up with onboard values
 	public static final SensorDirectionValue encoderDirection = SensorDirectionValue.CounterClockwise_Positive;
-	public static final double sensorAbsoluteDiscontinuityPoint = 0.5;
+	public static final double absoluteSensorDiscontinuityPoint = 0.5;
 	public static final Rotation2d frontLeftMagnetOffset = new Rotation2d();
 	public static final Rotation2d frontRightMagnetOffset = new Rotation2d();
 	public static final Rotation2d rearLeftMagnetOffset = new Rotation2d();

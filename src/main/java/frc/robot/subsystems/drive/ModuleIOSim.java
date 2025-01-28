@@ -1,6 +1,7 @@
 package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.subsystems.drive.DriveConstants.*;
@@ -11,6 +12,7 @@ import org.ironmaple.simulation.motorsims.SimulatedMotorController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.measure.LinearVelocity;
 import frc.robot.util.SparkUtil;
 
 public class ModuleIOSim implements ModuleIO {
@@ -81,10 +83,10 @@ public class ModuleIOSim implements ModuleIO {
     }
 
     @Override
-    public void setDriveVelocity(double velocityRadPerSec) {
+    public void setDriveVelocity(LinearVelocity velocity) {
         driveClosedLoop = true;
-        driveFFVolts = driveFFController.calculate(velocityRadPerSec);
-        driveController.setSetpoint(velocityRadPerSec);
+        driveFFVolts = driveFFController.calculate(velocity.in(MetersPerSecond));
+        driveController.setSetpoint(velocity.in(MetersPerSecond));
     }
 
     @Override
