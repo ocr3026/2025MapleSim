@@ -1,9 +1,6 @@
 package frc.robot.subsystems.drive;
 
-import static edu.wpi.first.units.Units.Amps;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.RadiansPerSecond;
-import static edu.wpi.first.units.Units.Volts;
+import static edu.wpi.first.units.Units.*;
 import static frc.robot.subsystems.drive.DriveConstants.*;
 
 import org.ironmaple.simulation.drivesims.SwerveModuleSimulation;
@@ -12,7 +9,7 @@ import org.ironmaple.simulation.motorsims.SimulatedMotorController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.*;
 import frc.robot.util.SparkUtil;
 
 public class ModuleIOSim implements ModuleIO {
@@ -54,8 +51,8 @@ public class ModuleIOSim implements ModuleIO {
 		turnMotor.requestVoltage(Volts.of(turnAppliedVolts));
 
 		inputs.driveConnected = true;
-		inputs.drivePosition = moduleSimulation.getDriveWheelFinalPosition();
-		inputs.driveVelocity = moduleSimulation.getDriveWheelFinalSpeed();
+		inputs.drivePosition = Meters.of(moduleSimulation.getDriveWheelFinalPosition().in(Radians) * wheelRadius.in(Meters));
+		inputs.driveVelocity = MetersPerSecond.of(moduleSimulation.getDriveWheelFinalSpeed().in(RadiansPerSecond) * wheelRadius.in(Meters));
 		inputs.driveAppliedVolts = driveAppliedVolts;
 		inputs.driveCurrentAmps = Math.abs(moduleSimulation.getDriveMotorStatorCurrent().in(Amps));
 
@@ -66,7 +63,13 @@ public class ModuleIOSim implements ModuleIO {
 		inputs.turnCurrentAmps = Math.abs(moduleSimulation.getSteerMotorStatorCurrent().in(Amps));
 
 		inputs.odometryTimestamps = SparkUtil.getSimulationOdometryTimeStamps();
-		inputs.odometryDrivePositions = moduleSimulation.getCachedDriveWheelFinalPositions();
+
+		Angle[] angles = moduleSimulation.getCachedDriveWheelFinalPositions();
+		Distance[] distances = new Distance[angles.length];
+		for(int i = 0; i < angles.length; i++) {
+			distances[i] = Meters.of(angles[i].in(Radians) * wheelRadius.in(Meters));
+		}
+		inputs.odometryDrivePositions = distances;
 		inputs.odometryTurnPositions = moduleSimulation.getCachedSteerAbsolutePositions();
 	}
 

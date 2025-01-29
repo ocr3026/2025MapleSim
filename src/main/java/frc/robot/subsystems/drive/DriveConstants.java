@@ -6,7 +6,6 @@ import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
 
 import com.ctre.phoenix6.signals.SensorDirectionValue;
-import com.google.flatbuffers.Constants;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 
@@ -52,7 +51,7 @@ public final class DriveConstants {
 	public static final DCMotor driveGearbox = DCMotor.getNEO(1);
 
 	public static final double driveEncoderPositionFactor = 2 * Math.PI * wheelRadius.in(Meters) / (driveMotorReduction);
-	public static final double driveEncoderVelocityFactor = 2 * Math.PI * wheelRadius.in(Meters) / (driveMotorReduction * 60);
+	public static final double driveEncoderVelocityFactor = 2 * Math.PI * wheelRadius.in(Meters) / (driveMotorReduction);
 
 	public static final double driveKp = 0, driveKd = 0; // FB
 	public static final double driveKs = 0.14, driveKv = 2.35; // FF
@@ -64,6 +63,9 @@ public final class DriveConstants {
 	public static final double turnMotorReduction = 150.0 / 7.0;
 	public static final DCMotor turnGearbox = DCMotor.getNEO(1);
 
+	public static final double turnEncoderPositionFactor = 1.0 / (turnMotorReduction);
+	public static final double turnEncoderVelocityFactor = 1.0 / (turnMotorReduction * 60);
+
 	// TODO: make sure these line up with onboard values
 	public static final SensorDirectionValue encoderDirection = SensorDirectionValue.CounterClockwise_Positive;
 	public static final double absoluteSensorDiscontinuityPoint = 0.5;
@@ -73,7 +75,7 @@ public final class DriveConstants {
 	public static final Rotation2d rearRightMagnetOffset = new Rotation2d();
 	public static final double turnKp = 0.166, turnKd = 0;
 	public static final double turnSimP = 8, turnSimD = 0;
-	public static final Rotation2d turnPIDMinInput = Rotation2d.fromRadians(-Math.PI), turnPIDMaxInput = Rotation2d.fromRadians(Math.PI);
+	public static final Rotation2d turnPIDMinInput = Rotation2d.fromDegrees(-180), turnPIDMaxInput = Rotation2d.fromDegrees(180);
 
 	// PathPlanner configuration
 	public static final Mass robotMass = Pounds.of(100);

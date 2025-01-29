@@ -5,16 +5,14 @@ import static edu.wpi.first.units.Units.*;
 import org.littletonrobotics.junction.AutoLog;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.AngularVelocity;
-import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.*;
 
 public interface ModuleIO {
 	@AutoLog
 	public static class ModuleIOInputs {
 		public boolean driveConnected = false;
-		public Angle drivePosition = Radians.of(0);
-		public AngularVelocity driveVelocity = RadiansPerSecond.of(0);
+		public Distance drivePosition = Meters.of(0.0);
+		public LinearVelocity driveVelocity = MetersPerSecond.of(0);
 		public double driveAppliedVolts = 0;
 		public double driveCurrentAmps = 0;
 		
@@ -25,7 +23,7 @@ public interface ModuleIO {
 		public double turnCurrentAmps = 0;
 
 		public double[] odometryTimestamps = new double[] {};
-		public Angle[] odometryDrivePositions = new Angle[] {};
+		public Distance[] odometryDrivePositions = new Distance[] {};
 		public Rotation2d[] odometryTurnPositions = new Rotation2d[] {};
 	}
 
