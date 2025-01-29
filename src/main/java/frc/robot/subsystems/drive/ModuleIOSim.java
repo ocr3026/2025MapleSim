@@ -3,6 +3,8 @@ package frc.robot.subsystems.drive;
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.subsystems.drive.DriveConstants.*;
 
+import java.util.Arrays;
+
 import org.ironmaple.simulation.drivesims.SwerveModuleSimulation;
 import org.ironmaple.simulation.motorsims.SimulatedMotorController;
 
@@ -63,13 +65,9 @@ public class ModuleIOSim implements ModuleIO {
 		inputs.turnCurrentAmps = Math.abs(moduleSimulation.getSteerMotorStatorCurrent().in(Amps));
 
 		inputs.odometryTimestamps = SparkUtil.getSimulationOdometryTimeStamps();
-
-		Angle[] angles = moduleSimulation.getCachedDriveWheelFinalPositions();
-		Distance[] distances = new Distance[angles.length];
-		for(int i = 0; i < angles.length; i++) {
-			distances[i] = Meters.of(angles[i].in(Radians) * wheelRadius.in(Meters));
-		}
-		inputs.odometryDrivePositions = distances;
+		inputs.odometryDrivePositions = Arrays.stream(moduleSimulation.getCachedDriveWheelFinalPositions())
+			.map((Angle value) -> Meters.of(value.in(Radian) * wheelRadius.in(Meter)))
+			.toArray(Distance[]::new);
 		inputs.odometryTurnPositions = moduleSimulation.getCachedSteerAbsolutePositions();
 	}
 

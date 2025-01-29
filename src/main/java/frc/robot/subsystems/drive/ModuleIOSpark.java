@@ -5,7 +5,6 @@ import static frc.robot.subsystems.drive.DriveConstants.*;
 
 import java.util.Queue;
 import java.util.function.DoubleSupplier;
-import java.util.stream.Stream;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -184,11 +183,8 @@ public class ModuleIOSpark implements ModuleIO {
 
 		inputs.odometryTimestamps =
 			timestampQueue.stream().mapToDouble((Double value) -> value).toArray();
-		
 		inputs.odometryDrivePositions = drivePositionQueue.stream().map((Double value) -> Meter.of(value)).toArray(Distance[]::new);
-
 		inputs.odometryTurnPositions = turnPositionQueue.stream().map((Double value) -> Rotation2d.fromRotations(value)).toArray(Rotation2d[]::new);
-
 		timestampQueue.clear();
         drivePositionQueue.clear();
         turnPositionQueue.clear();
