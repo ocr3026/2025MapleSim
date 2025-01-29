@@ -1,8 +1,7 @@
 package frc.robot.subsystems.drive;
 
-import org.ironmaple.simulation.drivesims.GyroSimulation;
-
 import frc.robot.util.SparkUtil;
+import org.ironmaple.simulation.drivesims.GyroSimulation;
 
 public class GyroIOSim implements GyroIO {
 	private final GyroSimulation gyroSimulation;
@@ -10,7 +9,7 @@ public class GyroIOSim implements GyroIO {
 	public GyroIOSim(GyroSimulation gyroSimulation) {
 		this.gyroSimulation = gyroSimulation;
 	}
-	
+
 	@Override
 	public void updateInputs(GyroIOInputs inputs) {
 		inputs.connected = true;

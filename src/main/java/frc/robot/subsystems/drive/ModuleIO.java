@@ -2,10 +2,9 @@ package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.*;
 
-import org.littletonrobotics.junction.AutoLog;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.*;
+import org.littletonrobotics.junction.AutoLog;
 
 public interface ModuleIO {
 	@AutoLog
@@ -15,7 +14,7 @@ public interface ModuleIO {
 		public LinearVelocity driveVelocity = MetersPerSecond.of(0);
 		public double driveAppliedVolts = 0;
 		public double driveCurrentAmps = 0;
-		
+
 		public boolean turnConnected = false;
 		public Rotation2d turnPosition = new Rotation2d();
 		public AngularVelocity turnVelocity = RadiansPerSecond.of(0);

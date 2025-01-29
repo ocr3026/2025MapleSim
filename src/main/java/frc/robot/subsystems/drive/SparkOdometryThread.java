@@ -1,16 +1,14 @@
 package frc.robot.subsystems.drive;
 
+import com.revrobotics.REVLibError;
+import com.revrobotics.spark.SparkMax;
+import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.RobotController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.function.DoubleSupplier;
-
-import com.revrobotics.REVLibError;
-import com.revrobotics.spark.SparkMax;
-
-import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.RobotController;
 
 public class SparkOdometryThread {
 	private final List<SparkMax> sparks = new ArrayList<>();
@@ -24,7 +22,7 @@ public class SparkOdometryThread {
 	private Notifier notifier = new Notifier(this::run);
 
 	public static SparkOdometryThread getInstance() {
-		if(instance == null) {
+		if (instance == null) {
 			instance = new SparkOdometryThread();
 		}
 
@@ -36,7 +34,7 @@ public class SparkOdometryThread {
 	}
 
 	public void start() {
-		if(!timestampQueues.isEmpty()) {
+		if (!timestampQueues.isEmpty()) {
 			notifier.startPeriodic(1.0 / DriveConstants.odometryFrequency);
 		}
 	}
@@ -88,14 +86,14 @@ public class SparkOdometryThread {
 			double[] sparkValues = new double[sparkSignals.size()];
 			boolean isValid = true;
 
-			for(int i = 0; i < sparkSignals.size(); i++) {
+			for (int i = 0; i < sparkSignals.size(); i++) {
 				sparkValues[i] = sparkSignals.get(i).getAsDouble();
-				if(sparks.get(i).getLastError() != REVLibError.kOk) {
+				if (sparks.get(i).getLastError() != REVLibError.kOk) {
 					isValid = false;
 				}
 			}
 
-			if(isValid) {
+			if (isValid) {
 				for (int i = 0; i < sparkSignals.size(); i++) {
 					sparkQueues.get(i).offer(sparkValues[i]);
 				}
