@@ -72,9 +72,9 @@ public class ModuleIOSim implements ModuleIO {
 				Math.abs(moduleSimulation.getSteerMotorStatorCurrent().in(Amps));
 
 		inputs.odometryTimestamps = SparkUtil.getSimulationOdometryTimeStamps();
-		inputs.odometryDrivePositions = Arrays.stream(moduleSimulation.getCachedDriveWheelFinalPositions())
-				.map((Angle value) -> Meters.of(value.in(Radian) * wheelRadius.in(Meter)))
-				.toArray(Distance[]::new);
+		inputs.odometryDrivePositionsMeters = Arrays.stream(moduleSimulation.getCachedDriveWheelFinalPositions())
+				.mapToDouble((Angle value) -> value.in(Radian) * wheelRadius.in(Meter))
+				.toArray();
 		inputs.odometryTurnPositions = moduleSimulation.getCachedSteerAbsolutePositions();
 	}
 

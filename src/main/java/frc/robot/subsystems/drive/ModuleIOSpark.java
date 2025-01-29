@@ -195,9 +195,8 @@ public class ModuleIOSpark implements ModuleIO {
 
 		inputs.odometryTimestamps =
 				timestampQueue.stream().mapToDouble((Double value) -> value).toArray();
-		inputs.odometryDrivePositions = drivePositionQueue.stream()
-				.map((Double value) -> Meter.of(value))
-				.toArray(Distance[]::new);
+		inputs.odometryDrivePositionsMeters =
+				drivePositionQueue.stream().mapToDouble((Double value) -> value).toArray();
 		inputs.odometryTurnPositions = turnPositionQueue.stream()
 				.map((Double value) -> Rotation2d.fromRotations(value))
 				.toArray(Rotation2d[]::new);

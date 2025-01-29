@@ -22,7 +22,7 @@ public interface ModuleIO {
 		public double turnCurrentAmps = 0;
 
 		public double[] odometryTimestamps = new double[] {};
-		public Distance[] odometryDrivePositions = new Distance[] {};
+		public double[] odometryDrivePositionsMeters = new double[] {};
 		public Rotation2d[] odometryTurnPositions = new Rotation2d[] {};
 	}
 
