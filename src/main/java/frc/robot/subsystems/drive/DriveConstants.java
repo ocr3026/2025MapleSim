@@ -12,6 +12,7 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.units.measure.MomentOfInertia;
+import org.ironmaple.simulation.drivesims.COTS;
 import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
 
@@ -102,7 +103,7 @@ public final class DriveConstants {
 	public static final DriveTrainSimulationConfig mapleSimConfig = DriveTrainSimulationConfig.Default()
 			.withCustomModuleTranslations(moduleTranslations)
 			.withRobotMass(Kilogram.of(robotMass.in(Kilogram)))
-			.withGyro(null) // TODO: set to navx
+			.withGyro(COTS.ofNav2X())
 			.withSwerveModule(new SwerveModuleSimulationConfig(
 					driveGearbox,
 					turnGearbox,

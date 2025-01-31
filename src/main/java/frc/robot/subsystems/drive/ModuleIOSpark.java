@@ -136,7 +136,7 @@ public class ModuleIOSpark implements ModuleIO {
 				.velocityConversionFactor(turnEncoderVelocityFactor)
 				.uvwMeasurementPeriod(10)
 				.uvwAverageDepth(2);
-		driveConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pidf(driveKp, 0, driveKd, 0);
+		turnConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pidf(turnKp, 0, turnKd, 0);
 		turnConfig
 				.signals
 				.primaryEncoderPositionAlwaysOn(true)
