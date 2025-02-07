@@ -17,7 +17,6 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -103,12 +102,7 @@ public class ModuleIOSpark implements ModuleIO {
 				.velocityConversionFactor(driveEncoderVelocityFactor)
 				.uvwMeasurementPeriod(10)
 				.uvwAverageDepth(2);
-		driveConfig
-				.closedLoop
-				.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-				.positionWrappingEnabled(true)
-				.positionWrappingInputRange(turnPIDMinInput.getRotations(), turnPIDMaxInput.getRotations())
-				.pidf(driveKp, 0, driveKd, 0);
+		driveConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pidf(driveKp, 0, driveKd, 0);
 		driveConfig
 				.signals
 				.primaryEncoderPositionAlwaysOn(true)
@@ -136,7 +130,12 @@ public class ModuleIOSpark implements ModuleIO {
 				.velocityConversionFactor(turnEncoderVelocityFactor)
 				.uvwMeasurementPeriod(10)
 				.uvwAverageDepth(2);
-		turnConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pidf(turnKp, 0, turnKd, 0);
+		turnConfig
+				.closedLoop
+				.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+				.pidf(turnKp, 0, turnKd, 0)
+				.positionWrappingInputRange(turnPIDMinInput.getRotations(), turnPIDMaxInput.getRotations())
+				.positionWrappingEnabled(true);
 		turnConfig
 				.signals
 				.primaryEncoderPositionAlwaysOn(true)
@@ -159,7 +158,8 @@ public class ModuleIOSpark implements ModuleIO {
 		turnCancoderConfiguration.MagnetSensor.AbsoluteSensorDiscontinuityPoint = absoluteSensorDiscontinuityPoint;
 		turnCancoder.getConfigurator().apply(turnCancoderConfiguration);
 
-		turnRelativeEncoder.setPosition(turnCancoder.getPosition().getValue().in(Rotations));
+		turnRelativeEncoder.setPosition(
+				turnCancoder.getAbsolutePosition().getValue().in(Rotations));
 
 		timestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
 		drivePositionQueue = SparkOdometryThread.getInstance().registerSignal(driveMotor, driveEncoder::getPosition);
@@ -227,8 +227,6 @@ public class ModuleIOSpark implements ModuleIO {
 
 	@Override
 	public void setTurnPosition(Rotation2d rotation) {
-		double setpoint = MathUtil.inputModulus(
-				rotation.getRotations(), turnPIDMinInput.getRotations(), turnPIDMaxInput.getRotations());
-		turnController.setReference(setpoint, ControlType.kPosition);
+		turnController.setReference(rotation.getRotations(), ControlType.kPosition);
 	}
 }

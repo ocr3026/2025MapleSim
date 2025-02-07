@@ -29,6 +29,8 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -59,6 +61,8 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer {
 	private final SwerveDrivePoseEstimator poseEstimator =
 			new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
 	private final Consumer<Pose2d> resetSimulationPoseCallback;
+
+	private final Field2d field = new Field2d();
 
 	public Drive(
 			GyroIO gyroIO,
@@ -142,7 +146,8 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer {
 				rawGyroRotation = rawGyroRotation.plus(new Rotation2d(twist.dtheta));
 			}
 
-			poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
+			field.setRobotPose(poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions));
+			SmartDashboard.putData("field", field);
 		}
 
 		gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);

@@ -114,7 +114,7 @@ public class RobotContainer {
 
 	private void configureBindings() {
 		drive.setDefaultCommand(DriveCommands.joystickDrive(
-				drive, translationJoystick::getY, () -> -translationJoystick.getX(), () -> -rotationJoystick.getX()));
+				drive, translationJoystick::getY, translationJoystick::getX, () -> -rotationJoystick.getX()));
 
 		translationJoystick.button(11).onTrue(Commands.runOnce(drive::stopWithX, drive));
 

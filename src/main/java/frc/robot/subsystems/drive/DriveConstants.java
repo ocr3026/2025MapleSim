@@ -50,7 +50,7 @@ public final class DriveConstants {
 	public static final int rearRightEncoderID = 13;
 
 	public static final int driveMotorCurrentLimit = 60;
-	public static final Distance wheelRadius = Inches.of(4);
+	public static final Distance wheelRadius = Inches.of(2);
 	public static final double driveMotorReduction = (50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0);
 	public static final DCMotor driveGearbox = DCMotor.getNEO(1);
 
@@ -65,7 +65,7 @@ public final class DriveConstants {
 	public static final double driveSimKs = 0, driveSimKv = 2.35; // FF
 
 	public static final boolean turnInverted = false;
-	public static final int turnMotorCurrentLimit = 20;
+	public static final int turnMotorCurrentLimit = 30;
 	public static final double turnMotorReduction = 150.0 / 7.0;
 	public static final DCMotor turnGearbox = DCMotor.getNEO(1);
 
@@ -73,13 +73,13 @@ public final class DriveConstants {
 	public static final double turnEncoderVelocityFactor = 1.0 / (turnMotorReduction * 60);
 
 	// TODO: make sure these line up with onboard values
-	public static final SensorDirectionValue encoderDirection = SensorDirectionValue.CounterClockwise_Positive;
+	public static final SensorDirectionValue encoderDirection = SensorDirectionValue.Clockwise_Positive;
 	public static final double absoluteSensorDiscontinuityPoint = 0.5;
 	public static final Rotation2d frontLeftMagnetOffset = new Rotation2d();
 	public static final Rotation2d frontRightMagnetOffset = new Rotation2d();
 	public static final Rotation2d rearLeftMagnetOffset = new Rotation2d();
 	public static final Rotation2d rearRightMagnetOffset = new Rotation2d();
-	public static final double turnKp = 0.166, turnKd = 0;
+	public static final double turnKp = 24, turnKd = 0.01;
 	public static final double turnSimP = 8, turnSimD = 0;
 	public static final Rotation2d turnPIDMinInput = Rotation2d.fromDegrees(-180),
 			turnPIDMaxInput = Rotation2d.fromDegrees(180);
