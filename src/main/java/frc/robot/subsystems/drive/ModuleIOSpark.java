@@ -21,6 +21,9 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.*;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.SparkUtil;
 import java.util.Queue;
 import java.util.function.DoubleSupplier;
@@ -158,8 +161,8 @@ public class ModuleIOSpark implements ModuleIO {
 		turnCancoderConfiguration.MagnetSensor.AbsoluteSensorDiscontinuityPoint = absoluteSensorDiscontinuityPoint;
 		turnCancoder.getConfigurator().apply(turnCancoderConfiguration);
 
-		turnRelativeEncoder.setPosition(
-				turnCancoder.getAbsolutePosition().getValue().in(Rotations));
+		setRelativePosToAbsolutePos();
+		new Trigger(DriverStation::isDisabled).onTrue(Commands.runOnce(this::setRelativePosToAbsolutePos));
 
 		timestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
 		drivePositionQueue = SparkOdometryThread.getInstance().registerSignal(driveMotor, driveEncoder::getPosition);
@@ -228,5 +231,10 @@ public class ModuleIOSpark implements ModuleIO {
 	@Override
 	public void setTurnPosition(Rotation2d rotation) {
 		turnController.setReference(rotation.getRotations(), ControlType.kPosition);
+	}
+
+	public void setRelativePosToAbsolutePos() {
+		turnRelativeEncoder.setPosition(
+				turnCancoder.getAbsolutePosition().getValue().in(Rotations));
 	}
 }
