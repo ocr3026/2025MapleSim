@@ -187,8 +187,11 @@ public class ModuleIOSpark implements ModuleIO {
 		SparkUtil.ifOk(
 				turnMotor,
 				turnRelativeEncoder::getPosition,
-				(value) -> inputs.turnPosition = Rotation2d.fromRotations(value));
-		SparkUtil.ifOk(turnMotor, turnRelativeEncoder::getVelocity, (value) -> inputs.turnVelocity = RPM.of(value));
+				(value) -> inputs.turnPosition = Rotation2d.fromRotations(value).unaryMinus());
+		SparkUtil.ifOk(
+				turnMotor,
+				turnRelativeEncoder::getVelocity,
+				(value) -> inputs.turnVelocity = RPM.of(value).unaryMinus());
 		SparkUtil.ifOk(
 				turnMotor,
 				new DoubleSupplier[] {turnMotor::getAppliedOutput, turnMotor::getBusVoltage},
@@ -201,7 +204,7 @@ public class ModuleIOSpark implements ModuleIO {
 		inputs.odometryDrivePositionsMeters =
 				drivePositionQueue.stream().mapToDouble((Double value) -> value).toArray();
 		inputs.odometryTurnPositions = turnPositionQueue.stream()
-				.map((Double value) -> Rotation2d.fromRotations(value))
+				.map((Double value) -> Rotation2d.fromRotations(-value))
 				.toArray(Rotation2d[]::new);
 		timestampQueue.clear();
 		drivePositionQueue.clear();
@@ -230,7 +233,7 @@ public class ModuleIOSpark implements ModuleIO {
 
 	@Override
 	public void setTurnPosition(Rotation2d rotation) {
-		turnController.setReference(rotation.getRotations(), ControlType.kPosition);
+		turnController.setReference(-rotation.getRotations(), ControlType.kPosition);
 	}
 
 	public void setRelativePosToAbsolutePos() {

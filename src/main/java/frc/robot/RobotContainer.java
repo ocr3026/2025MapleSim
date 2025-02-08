@@ -114,7 +114,10 @@ public class RobotContainer {
 
 	private void configureBindings() {
 		drive.setDefaultCommand(DriveCommands.joystickDrive(
-				drive, translationJoystick::getY, translationJoystick::getX, () -> -rotationJoystick.getX()));
+				drive,
+				() -> -translationJoystick.getY(),
+				() -> -translationJoystick.getX(),
+				() -> -rotationJoystick.getX()));
 
 		translationJoystick.button(11).onTrue(Commands.runOnce(drive::stopWithX, drive));
 
@@ -122,7 +125,7 @@ public class RobotContainer {
 				? () -> drive.resetOdometry(
 						driveSimulation
 								.getSimulatedDriveTrainPose()) // reset odometry to actual robot pose during simulation
-				: () -> drive.resetOdometry(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
+				: () -> drive.resetOdometry(new Pose2d(drive.getPose().getTranslation(), Rotation2d.fromDegrees(0)));
 
 		translationJoystick.button(12).onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
 	}
