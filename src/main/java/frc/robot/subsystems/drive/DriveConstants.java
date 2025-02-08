@@ -57,7 +57,7 @@ public final class DriveConstants {
 			2 * Math.PI * wheelRadius.in(Meters) / (driveMotorReduction);
 
 	public static final double driveKp = 0, driveKd = 0; // FB
-	public static final double driveKs = 0.14, driveKv = 2.35; // FF
+	public static final double driveKs = 0.17, driveKv = 2.35; // FF
 	public static final double driveSimP = 0.05, driveSimD = 0; // FB
 	public static final double driveSimKs = 0, driveSimKv = 2.35; // FF
 

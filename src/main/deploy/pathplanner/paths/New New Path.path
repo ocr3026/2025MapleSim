@@ -12,20 +12,20 @@
         "y": 7.0
       },
       "isLocked": false,
-      "linkedName": "End"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.0,
+        "x": 3.33,
         "y": 7.0
       },
       "prevControl": {
-        "x": 1.75,
+        "x": 3.08,
         "y": 7.0
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Start"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }
