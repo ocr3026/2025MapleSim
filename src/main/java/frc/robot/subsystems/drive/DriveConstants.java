@@ -34,20 +34,23 @@ public final class DriveConstants {
 				wheelBase.div(2).unaryMinus().in(Meters))
 	};
 
-	public static final int frontLeftDriveID = 2;
-	public static final int frontRightDriveID = 4;
-	public static final int rearLeftDriveID = 6;
-	public static final int rearRightDriveID = 8;
 
-	public static final int frontLeftTurnID = 3;
-	public static final int frontRightTurnID = 5;
-	public static final int rearLeftTurnID = 7;
-	public static final int rearRightTurnID = 9;
+	public static final int frontLeftDriveID = 10;
+	public static final int frontLeftTurnID = 11;
+	public static final int frontLeftEncoderID = 12;
+	
+	public static final int frontRightDriveID = 15;
+	public static final int frontRightTurnID = 16;
+	public static final int frontRightEncoderID = 17;
+	
+	public static final int rearLeftDriveID = 20;
+	public static final int rearLeftTurnID = 21;
+	public static final int rearLeftEncoderID = 22;
 
-	public static final int frontLeftEncoderID = 10;
-	public static final int frontRightEncoderID = 11;
-	public static final int rearLeftEncoderID = 12;
-	public static final int rearRightEncoderID = 13;
+	public static final int rearRightDriveID = 25;
+	public static final int rearRightTurnID = 26;
+	public static final int rearRightEncoderID = 27;
+
 
 	public static final int driveMotorCurrentLimit = 60;
 	public static final Distance wheelRadius = Inches.of(2);
