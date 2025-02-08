@@ -79,7 +79,7 @@ public final class DriveConstants {
 	public static final Rotation2d frontRightMagnetOffset = new Rotation2d();
 	public static final Rotation2d rearLeftMagnetOffset = new Rotation2d();
 	public static final Rotation2d rearRightMagnetOffset = new Rotation2d();
-	public static final double turnKp = 24, turnKd = 0.01;
+	public static final double turnKp = 5, turnKd = 0;
 	public static final double turnSimP = 8, turnSimD = 0;
 	public static final Rotation2d turnPIDMinInput = Rotation2d.fromDegrees(-180),
 			turnPIDMaxInput = Rotation2d.fromDegrees(180);
