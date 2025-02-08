@@ -75,10 +75,10 @@ public final class DriveConstants {
 	// TODO: make sure these line up with onboard values
 	public static final SensorDirectionValue encoderDirection = SensorDirectionValue.Clockwise_Positive;
 	public static final double absoluteSensorDiscontinuityPoint = 0.5;
-	public static final Rotation2d frontLeftMagnetOffset = new Rotation2d();
-	public static final Rotation2d frontRightMagnetOffset = new Rotation2d();
-	public static final Rotation2d rearLeftMagnetOffset = new Rotation2d();
-	public static final Rotation2d rearRightMagnetOffset = new Rotation2d();
+	public static final Rotation2d frontLeftMagnetOffset = Rotation2d.fromRotations(-0.202392578125);
+	public static final Rotation2d frontRightMagnetOffset = Rotation2d.fromRotations(-0.0361328125);
+	public static final Rotation2d rearLeftMagnetOffset = Rotation2d.fromRotations(0.195068359375);
+	public static final Rotation2d rearRightMagnetOffset = Rotation2d.fromRotations(0.356689453125);
 	public static final double turnKp = 5, turnKd = 0;
 	public static final double turnSimP = 8, turnSimD = 0;
 	public static final Rotation2d turnPIDMinInput = Rotation2d.fromDegrees(-180),
