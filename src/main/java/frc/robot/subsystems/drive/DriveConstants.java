@@ -5,13 +5,9 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.measure.LinearVelocity;
-import edu.wpi.first.units.measure.Mass;
-import edu.wpi.first.units.measure.MomentOfInertia;
+import edu.wpi.first.units.measure.*;
 import org.ironmaple.simulation.drivesims.COTS;
 import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
@@ -75,14 +71,13 @@ public final class DriveConstants {
 
 	public static final SensorDirectionValue encoderDirection = SensorDirectionValue.Clockwise_Positive;
 	public static final double absoluteSensorDiscontinuityPoint = 0.5;
-	public static final Rotation2d frontLeftMagnetOffset = Rotation2d.fromRotations(-0.038818359375);
-	public static final Rotation2d frontRightMagnetOffset = Rotation2d.fromRotations(0.3544921875);
-	public static final Rotation2d rearLeftMagnetOffset = Rotation2d.fromRotations(0.294189453125);
-	public static final Rotation2d rearRightMagnetOffset = Rotation2d.fromRotations(0.1953125);
+	public static final Angle frontLeftMagnetOffset = Rotations.of(-0.038818359375);
+	public static final Angle frontRightMagnetOffset = Rotations.of(0.3544921875);
+	public static final Angle rearLeftMagnetOffset = Rotations.of(0.294189453125);
+	public static final Angle rearRightMagnetOffset = Rotations.of(0.1953125);
 	public static final double turnKp = 5, turnKd = 0;
 	public static final double turnSimP = 8, turnSimD = 0;
-	public static final Rotation2d turnPIDMinInput = Rotation2d.fromDegrees(-180),
-			turnPIDMaxInput = Rotation2d.fromDegrees(180);
+	public static final Angle turnPIDMinInput = Degrees.of(-180), turnPIDMaxInput = Degrees.of(180);
 
 	// PathPlanner configuration
 	public static final Mass robotMass = Pounds.of(100);

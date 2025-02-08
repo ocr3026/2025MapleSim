@@ -29,7 +29,7 @@ import java.util.Queue;
 import java.util.function.DoubleSupplier;
 
 public class ModuleIOSpark implements ModuleIO {
-	private Rotation2d magnetOffset;
+	private Angle magnetOffset;
 
 	private final SparkMax driveMotor;
 	private final SparkMax turnMotor;
@@ -58,7 +58,7 @@ public class ModuleIOSpark implements ModuleIO {
 			case 1 -> frontRightMagnetOffset;
 			case 2 -> rearLeftMagnetOffset;
 			case 3 -> rearRightMagnetOffset;
-			default -> new Rotation2d();};
+			default -> Rotations.of(0);};
 
 		driveMotor = new SparkMax(
 				switch (module) {
@@ -137,7 +137,7 @@ public class ModuleIOSpark implements ModuleIO {
 				.closedLoop
 				.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
 				.pidf(turnKp, 0, turnKd, 0)
-				.positionWrappingInputRange(turnPIDMinInput.getRotations(), turnPIDMaxInput.getRotations())
+				.positionWrappingInputRange(turnPIDMinInput.in(Rotations), turnPIDMaxInput.in(Rotations))
 				.positionWrappingEnabled(true);
 		turnConfig
 				.signals
@@ -156,7 +156,7 @@ public class ModuleIOSpark implements ModuleIO {
 		turnController = turnMotor.getClosedLoopController();
 
 		CANcoderConfiguration turnCancoderConfiguration = new CANcoderConfiguration();
-		turnCancoderConfiguration.MagnetSensor.MagnetOffset = magnetOffset.getRotations();
+		turnCancoderConfiguration.MagnetSensor.MagnetOffset = magnetOffset.in(Rotations);
 		turnCancoderConfiguration.MagnetSensor.SensorDirection = encoderDirection;
 		turnCancoderConfiguration.MagnetSensor.AbsoluteSensorDiscontinuityPoint = absoluteSensorDiscontinuityPoint;
 		turnCancoder.getConfigurator().apply(turnCancoderConfiguration);
