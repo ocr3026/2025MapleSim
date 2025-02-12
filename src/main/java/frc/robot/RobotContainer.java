@@ -21,6 +21,10 @@ import frc.robot.subsystems.drive.GyroIOSim;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
+import frc.robot.subsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.elevator.ElevatorIOSim;
+import frc.robot.subsystems.elevator.ElevatorSparkIO;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
@@ -32,6 +36,7 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public class RobotContainer {
+	public static ElevatorSubsystem elevatorSubsystem;
 	private final Drive drive;
 	private final Vision vision;
 	private SwerveDriveSimulation driveSimulation = null;
@@ -53,6 +58,8 @@ public class RobotContainer {
 						new ModuleIOSpark(3),
 						(pose) -> {});
 
+				elevatorSubsystem = new ElevatorSubsystem(new ElevatorSparkIO());
+
 				vision = new Vision(
 						drive,
 						new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0),
@@ -62,6 +69,7 @@ public class RobotContainer {
 			case SIM:
 				this.driveSimulation =
 						new SwerveDriveSimulation(DriveConstants.mapleSimConfig, new Pose2d(3, 3, new Rotation2d()));
+				elevatorSubsystem = new ElevatorSubsystem(new ElevatorIOSim());
 
 				SimulatedArena.getInstance().addDriveTrainSimulation(driveSimulation);
 
@@ -93,6 +101,7 @@ public class RobotContainer {
 						new ModuleIO() {},
 						new ModuleIO() {},
 						(pose) -> {});
+				elevatorSubsystem = new ElevatorSubsystem(new ElevatorIO() {});
 				vision = new Vision(drive, new VisionIO() {}, new VisionIO() {});
 
 				break;
