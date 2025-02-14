@@ -1,34 +1,36 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.subsystems.elevator.ElevatorSubsystem;
-import static frc.robot.RobotContainer.elevatorSubsystem;
+import static edu.wpi.first.units.Units.*;
 import static frc.robot.Constants.*;
 
-public class ElevatorCommands extends Command{
-    ElevatorSubsystem subsystem;
-    public int enumID = 0;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
 
-    public ElevatorCommands() {
-        subsystem = elevatorSubsystem;
-        addRequirements(elevatorSubsystem);
-    }
+public class ElevatorCommands {
+	public static final double highPOS = 0.0;
+	public static final double midPOS = 0.0;
+	public static final double lowPOS = 0.0;
+	public static final double homePOS = 0.0;
+	public static final double intakePOS = 0.0;
 
-    @Override
-    public void execute() {
-        switch(pos) {
-            case HIGH:
-            break;
-            case MID:
-            break;
-            case LOW:
-            break;
-            case HOME:
-            break;
-            case INTAKE:
-            break;
-        }
-    }
+	public int enumID = 0;
 
+	public static Command setPos(ElevatorSubsystem subsystem) {
+		return switch (subsystem.pos) {
+			case HIGH -> Commands.runOnce(() -> subsystem.setPosition(Meter.of(highPOS)));
+			case MID -> Commands.runOnce(() -> subsystem.setPosition(Meter.of(midPOS)));
+			case LOW -> Commands.runOnce(() -> subsystem.setPosition(Meter.of(lowPOS)));
+			case INTAKE -> Commands.runOnce(() -> subsystem.setPosition(Meter.of(intakePOS)));
+			case HOME -> Commands.runOnce(() -> subsystem.setPosition(Meter.of(homePOS)));
+		};
+	}
+
+	public static Command incrementValue(ElevatorSubsystem subsystem) {
+		return Commands.runOnce(() -> subsystem.pos = subsystem.pos.increment());
+	}
+
+	public static Command decerementValue(ElevatorSubsystem subsystem) {
+		return Commands.runOnce(() -> subsystem.pos = subsystem.pos.decrement());
+	}
 }

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.ElevatorCommands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.GyroIO;
@@ -134,6 +135,10 @@ public class RobotContainer {
 				: () -> drive.resetOdometry(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
 
 		translationJoystick.button(12).onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
+
+		xbox.a().whileTrue(ElevatorCommands.setPos(elevatorSubsystem));
+		xbox.leftBumper().onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
+		xbox.rightBumper().onTrue(ElevatorCommands.incrementValue(elevatorSubsystem));
 	}
 
 	public Command getAutonomousCommand() {
