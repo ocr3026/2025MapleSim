@@ -6,7 +6,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.*;
 
 public final class ClimberConstants {
-	public static final int climbMotor = 40;
+	public static final int climbMotorID = 40;
 
 	public static final Distance climberLength = Inches.of(14.5);
 
