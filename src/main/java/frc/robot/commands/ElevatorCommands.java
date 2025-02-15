@@ -7,6 +7,7 @@ import static frc.robot.Constants.*;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 
 public class ElevatorCommands {
@@ -37,5 +38,13 @@ public class ElevatorCommands {
 
 	public static Command decerementValue(ElevatorSubsystem subsystem) {
 		return Commands.runOnce(() -> subsystem.pos = subsystem.pos.decrement());
+	}
+
+	public static Command runMotors(ElevatorSubsystem subsystem) {
+		return Commands.run(() -> subsystem.setSpeed(RobotContainer.xbox.getLeftY()));
+	}
+
+	public static Command stopMotors(ElevatorSubsystem subsystem) {
+		return Commands.run(() -> subsystem.setSpeed(0));
 	}
 }

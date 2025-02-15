@@ -21,6 +21,7 @@ public class ElevatorSparkIO implements ElevatorIO {
 	private final SparkMax followMotor;
 	private final RelativeEncoder leadEncoder;
 	private final SparkClosedLoopController sparkPID;
+	double motorSpeed = 0;
 
 	public ElevatorSparkIO() {
 		leadMotor = new SparkMax(leadMotorID, MotorType.kBrushless);
@@ -29,7 +30,7 @@ public class ElevatorSparkIO implements ElevatorIO {
 		leadEncoder = leadMotor.getEncoder();
 		SparkMaxConfig followConfig = new SparkMaxConfig();
 		SparkMaxConfig leadConfig = new SparkMaxConfig();
-		followConfig.follow(leadMotorID).idleMode(IdleMode.kBrake);
+		followConfig.follow(leadMotorID).idleMode(IdleMode.kCoast);
 		followConfig
 				.signals
 				.primaryEncoderPositionAlwaysOn(true)
@@ -79,5 +80,15 @@ public class ElevatorSparkIO implements ElevatorIO {
 	@Override
 	public Distance getPosition() {
 		return Meters.of(leadEncoder.getPosition());
+	}
+
+	@Override
+	public void setSpeed(double speed) {
+		motorSpeed = speed;
+	}
+
+	@Override
+	public void tick() {
+		leadMotor.set(motorSpeed);
 	}
 }

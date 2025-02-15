@@ -6,8 +6,8 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.*;
 
 public final class ElevatorConstants {
-	public static final int leadMotorID = 0;
-	public static final int followMotorID = 0;
+	public static final int leadMotorID = 30;
+	public static final int followMotorID = 31;
 
 	public static final double elevatorHeight = 38 / 39.3701;
 	public static final double elevatorWidth = 19.5 / 39.3701;

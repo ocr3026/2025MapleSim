@@ -72,6 +72,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 		io.setPosition(position);
 	}
 
+	public void setSpeed(double speed) {
+		io.setSpeed(speed);
+	}
+
 	@Override
 	public void periodic() {
 		// timesRAN++;

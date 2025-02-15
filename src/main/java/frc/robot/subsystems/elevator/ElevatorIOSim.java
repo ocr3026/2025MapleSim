@@ -53,4 +53,7 @@ public class ElevatorIOSim implements ElevatorIO {
 		elevatorSim.setInputVoltage(appliedVolts);
 		// }
 	}
+
+	@Override
+	public void setSpeed(double speed) {}
 }
