@@ -7,12 +7,14 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ElevatorIOSim implements ElevatorIO {
 	PIDController pid = new PIDController(simkP, 0, simkD);
 	private final ElevatorSim elevatorSim = new ElevatorSim(
-			simkV, simkA, gearbox, minPosition.in(Meters), maxPosition.in(Meters), true, minPosition.in(Meters));
+			simkV, simkA, gearbox, minPosition.in(Meter), maxPosition.in(Meter), false, minPosition.in(Meter));
 	double appliedVolts = 0;
+	public Distance setpoint = Meter.of(0);
 
 	@Override
 	public void updateInputs(ElevatorIOInputs inputs) {
@@ -27,7 +29,28 @@ public class ElevatorIOSim implements ElevatorIO {
 
 	@Override
 	public void setPosition(Distance position) {
-		appliedVolts = MathUtil.clamp(pid.calculate(elevatorSim.getPositionMeters(), position.in(Meter)), -12, 12);
+		setpoint = position;
+		// SmartDashboard.putNumber("PIDOUTPUT", pid.calculate(elevatorSim.getPositionMeters(), position.in(Meter)));
+		// appliedVolts = MathUtil.clamp(pid.calculate(elevatorSim.getPositionMeters(), position.in(Meter)), -12, 12);
+		// SmartDashboard.putNumber("elevatorSIM", currentLimit);
+		// elevatorSim.setInputVoltage(appliedVolts);
+		// elevatorSim.setInput(MathUtil.clamp(pid.calculate(elevatorSim.getPositionMeters(), position.in(Meter)), -1,
+		// 1));
+	}
+
+	@Override
+	public Distance getPosition() {
+		return Meters.of((elevatorSim.getPositionMeters()));
+	}
+
+	@Override
+	public void tick() {
+		// if (!(setpoint.in(Meter) - 0.01 <= elevatorSim.getPositionMeters())
+		//		&& !(elevatorSim.getPositionMeters() <= setpoint.in(Meter) + 0.01)) {
+		SmartDashboard.putNumber("PIDOUTPUT", pid.calculate(elevatorSim.getPositionMeters(), setpoint.in(Meter)));
+		SmartDashboard.putNumber("PIDCALCSIMELEVATOR", appliedVolts);
+		appliedVolts = MathUtil.clamp(pid.calculate(elevatorSim.getPositionMeters(), setpoint.in(Meter)), -12, 12);
 		elevatorSim.setInputVoltage(appliedVolts);
+		// }
 	}
 }

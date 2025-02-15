@@ -7,6 +7,7 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -37,7 +38,7 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public class RobotContainer {
-	public static ElevatorSubsystem elevatorSubsystem;
+	private final ElevatorSubsystem elevatorSubsystem;
 	private final Drive drive;
 	private final Vision vision;
 	private SwerveDriveSimulation driveSimulation = null;
@@ -51,6 +52,7 @@ public class RobotContainer {
 	public RobotContainer() {
 		switch (Constants.currentMode) {
 			case REAL:
+				SmartDashboard.putString("currentRobotMode", "REAL");
 				drive = new Drive(
 						new GyroIONavX(),
 						new ModuleIOSpark(0),
@@ -68,6 +70,8 @@ public class RobotContainer {
 
 				break;
 			case SIM:
+				SmartDashboard.putString("currentRobotMode", "SIM");
+
 				this.driveSimulation =
 						new SwerveDriveSimulation(DriveConstants.mapleSimConfig, new Pose2d(3, 3, new Rotation2d()));
 				elevatorSubsystem = new ElevatorSubsystem(new ElevatorIOSim());
@@ -95,6 +99,8 @@ public class RobotContainer {
 
 				break;
 			default:
+				SmartDashboard.putString("currentRobotMode", "DEFAULT");
+
 				drive = new Drive(
 						new GyroIO() {},
 						new ModuleIO() {},

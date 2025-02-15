@@ -18,4 +18,10 @@ public interface ElevatorIO {
 	public default void updateInputs(ElevatorIOInputs inputs) {}
 
 	public default void setPosition(Distance position) {}
+
+	public default Distance getPosition() {
+		return Inches.of(0);
+	}
+
+	public default void tick() {}
 }

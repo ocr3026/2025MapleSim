@@ -22,8 +22,6 @@ public class ElevatorSparkIO implements ElevatorIO {
 	private final RelativeEncoder leadEncoder;
 	private final SparkClosedLoopController sparkPID;
 
-	private double appliedVolts = 0;
-
 	public ElevatorSparkIO() {
 		leadMotor = new SparkMax(leadMotorID, MotorType.kBrushless);
 		followMotor = new SparkMax(followMotorID, MotorType.kBrushless);
@@ -76,5 +74,10 @@ public class ElevatorSparkIO implements ElevatorIO {
 	@Override
 	public void setPosition(Distance position) {
 		sparkPID.setReference(position.in(Meter), ControlType.kPosition);
+	}
+
+	@Override
+	public Distance getPosition() {
+		return Meters.of(leadEncoder.getPosition());
 	}
 }
