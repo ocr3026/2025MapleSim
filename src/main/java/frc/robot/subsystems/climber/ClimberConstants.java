@@ -17,7 +17,7 @@ public final class ClimberConstants {
 	public static final double climberReduction = 1000;
 	public static final Distance spoolDiameter = Inches.of(1.75);
 
-	public static final double encoderPositionFactor = 1/climberReduction;
+	public static final double encoderPositionFactor = 1 / climberReduction;
 
 	public static final double kP = 1, kD = 0, kS = 0, kV = 1.75, kA = 0.15, kG = 1.26;
 	public static final double simkP = kP * 12,

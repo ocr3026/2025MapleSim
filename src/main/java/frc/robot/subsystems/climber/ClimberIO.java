@@ -1,8 +1,6 @@
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.units.measure.*;
-
-import org.dyn4j.geometry.Rotation;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface ClimberIO {
