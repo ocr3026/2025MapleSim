@@ -12,7 +12,7 @@
         "y": 7.0
       },
       "isLocked": false,
-      "linkedName": "Start"
+      "linkedName": "Test Start"
     },
     {
       "anchor": {
@@ -20,12 +20,12 @@
         "y": 7.0
       },
       "prevControl": {
-        "x": 3.0809832392604752,
-        "y": 6.977849314439632
+        "x": 3.0799999999999996,
+        "y": 7.0
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "End"
+      "linkedName": "Test End"
     }
   ],
   "rotationTargets": [],
@@ -33,16 +33,16 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 1.5,
-    "maxAngularVelocity": 360.0,
+    "maxVelocity": 5.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": null,
