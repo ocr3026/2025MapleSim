@@ -1,7 +1,6 @@
 package frc.robot.subsystems.elevator;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.subsystems.drive.DriveConstants.odometryFrequency;
 import static frc.robot.subsystems.elevator.ElevatorConstants.*;
 
 import com.revrobotics.RelativeEncoder;
@@ -11,9 +10,11 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.units.measure.Distance;
+import frc.robot.Constants;
 import frc.robot.util.SparkUtil;
 
 public class ElevatorSparkIO implements ElevatorIO {
@@ -29,33 +30,44 @@ public class ElevatorSparkIO implements ElevatorIO {
 		leadEncoder = leadMotor.getEncoder();
 		SparkMaxConfig followConfig = new SparkMaxConfig();
 		SparkMaxConfig leadConfig = new SparkMaxConfig();
-		followConfig.follow(leadMotorID).idleMode(IdleMode.kBrake);
+		followConfig.follow(leadMotorID).idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit);
+		followConfig
+				.encoder
+				.positionConversionFactor(encoderPositionFactor)
+				.velocityConversionFactor(encoderVelocityFactor);
 		followConfig
 				.signals
 				.primaryEncoderPositionAlwaysOn(true)
-				.primaryEncoderPositionPeriodMs((int) (1000.0 / odometryFrequency))
+				.primaryEncoderPositionPeriodMs((int) (1000.0 / Constants.logFrequency.in(Hertz)))
 				.primaryEncoderVelocityAlwaysOn(true)
 				.primaryEncoderVelocityPeriodMs(20)
 				.appliedOutputPeriodMs(20)
 				.busVoltagePeriodMs(20)
 				.outputCurrentPeriodMs(20);
+		followConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pidf(kP, 0, kD, 0);
 
-		leadConfig.idleMode(IdleMode.kBrake);
+		leadConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit);
+		leadConfig
+				.encoder
+				.positionConversionFactor(encoderPositionFactor)
+				.velocityConversionFactor(encoderVelocityFactor);
 		leadConfig
 				.signals
 				.primaryEncoderPositionAlwaysOn(true)
-				.primaryEncoderPositionPeriodMs((int) (1000.0 / odometryFrequency))
+				.primaryEncoderPositionPeriodMs((int) (1000.0 / Constants.logFrequency.in(Hertz)))
 				.primaryEncoderVelocityAlwaysOn(true)
 				.primaryEncoderVelocityPeriodMs(20)
 				.appliedOutputPeriodMs(20)
 				.busVoltagePeriodMs(20)
 				.outputCurrentPeriodMs(20);
-		leadConfig.closedLoop.pidf(kP, 0, kD, 0);
+		leadConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pidf(kP, 0, kD, 0);
+
 		SparkUtil.tryUntilOk(
 				followMotor,
 				5,
 				() -> followMotor.configure(
 						followConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
+
 		SparkUtil.tryUntilOk(
 				leadMotor,
 				5,
