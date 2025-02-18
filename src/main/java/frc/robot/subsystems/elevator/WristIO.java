@@ -2,9 +2,8 @@ package frc.robot.subsystems.elevator;
 
 import static edu.wpi.first.units.Units.*;
 
-import org.littletonrobotics.junction.AutoLog;
-
 import edu.wpi.first.units.measure.*;
+import org.littletonrobotics.junction.AutoLog;
 
 public interface WristIO {
 	@AutoLog
