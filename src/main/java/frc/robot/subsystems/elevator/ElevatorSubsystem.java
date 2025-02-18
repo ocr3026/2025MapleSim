@@ -60,10 +60,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 	public ElevatorSubsystem(ElevatorIO elevatorIO) {
 		this.io = elevatorIO;
 
-		mech2d = new LoggedMechanism2d(elevatorWidth, elevatorHeight);
+		mech2d = new LoggedMechanism2d(elevatorWidth.in(Meters), elevatorHeight.in(Meters));
 		mechRoot = mech2d.getRoot("root", 3, 0);
 		mechLigament = mechRoot.append(
-				new LoggedMechanismLigament2d("elevator", elevatorHeight, 90, 6, new Color8Bit(Color.kBlue)));
+				new LoggedMechanismLigament2d("elevator", elevatorHeight.in(Meters), 90, 6, new Color8Bit(Color.kBlue)));
 	}
 
 	public void setPosition(Distance position) {
