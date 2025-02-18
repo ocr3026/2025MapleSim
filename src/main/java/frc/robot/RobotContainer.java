@@ -12,7 +12,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.DriveCommands;
+import frc.robot.subsystems.climber.ClimberSparkIO;
+import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.GyroIO;
@@ -32,6 +35,7 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public class RobotContainer {
+	private final ClimberSubsystem climberSubsystem;
 	private final Drive drive;
 	private final Vision vision;
 	private SwerveDriveSimulation driveSimulation = null;
@@ -58,6 +62,7 @@ public class RobotContainer {
 						new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0),
 						new VisionIOPhotonVision(VisionConstants.camera1Name, VisionConstants.robotToCamera1));
 
+				climberSubsystem = new ClimberSubsystem(new ClimberSparkIO());
 				break;
 			case SIM:
 				this.driveSimulation =
@@ -84,6 +89,7 @@ public class RobotContainer {
 								VisionConstants.robotToCamera1,
 								driveSimulation::getSimulatedDriveTrainPose));
 
+				climberSubsystem = null;
 				break;
 			default:
 				drive = new Drive(
@@ -95,6 +101,7 @@ public class RobotContainer {
 						(pose) -> {});
 				vision = new Vision(drive, new VisionIO() {}, new VisionIO() {});
 
+				climberSubsystem = new ClimberSubsystem(new ClimberSparkIO());
 				break;
 		}
 
@@ -125,6 +132,9 @@ public class RobotContainer {
 				: () -> drive.resetOdometry(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
 
 		translationJoystick.button(12).onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
+		xbox.b().whileTrue(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
+		//	xbox.y().whileTrue(ClimberCommands.autoPositionClimber(climberSubsystem, 45)
+		//	.andThen(ClimberCommands.autoPositionClimber(climberSubsystem, 135)));
 	}
 
 	public Command getAutonomousCommand() {

@@ -1,8 +1,8 @@
 package frc.robot.subsystems.climber;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.subsystems.drive.DriveConstants.odometryFrequency;
 import static frc.robot.subsystems.climber.ClimberConstants.*;
+import static frc.robot.subsystems.drive.DriveConstants.odometryFrequency;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -13,9 +13,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
 import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.Distance;
 import frc.robot.util.SparkUtil;
 
 public class ClimberSparkIO implements ClimberIO {
@@ -44,7 +42,8 @@ public class ClimberSparkIO implements ClimberIO {
 		SparkUtil.tryUntilOk(
 				climbMotor,
 				5,
-				() -> climbMotor.configure(climbConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
+				() -> climbMotor.configure(
+						climbConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
 	}
 
 	@Override
@@ -59,5 +58,17 @@ public class ClimberSparkIO implements ClimberIO {
 	@Override
 	public void setAngularPosition(Angle position) {
 		sparkPID.setReference(position.in(Degrees), ControlType.kPosition);
+	}
+
+	@Override
+	public void setAngularSpeed(double speed) {
+		// TODO Auto-generated method stub
+		climbMotor.set(speed);
+	}
+
+	@Override
+	public double getPositionInDegrees() {
+		// TODO Auto-generated method stub
+		return climbEncoder.getPosition() * 360;
 	}
 }
