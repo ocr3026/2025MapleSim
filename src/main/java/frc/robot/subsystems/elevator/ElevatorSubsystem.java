@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.wrist.WristSubsystem;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
 import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
@@ -55,18 +56,18 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 	private LoggedMechanism2d mech2d;
 	public static LoggedMechanismRoot2d mechRoot;
-	LoggedMechanismLigament2d mechLigament;
-	LoggedMechanismLigament2d wristLigament;
+	public static LoggedMechanismLigament2d mechLigament;
 
 	public ElevatorSubsystem(ElevatorIO elevatorIO) {
 		this.io = elevatorIO;
 
 		mech2d = new LoggedMechanism2d(elevatorWidth.in(Meters), elevatorHeight.in(Meters));
-		mechRoot = mech2d.getRoot("root", 3, 0);
+		mechRoot = mech2d.getRoot("root", 0, 0);
 		mechLigament = mechRoot.append(new LoggedMechanismLigament2d(
-				"elevator", elevatorHeight.in(Meters), 90, 6, new Color8Bit(Color.kBlue)));
-		wristLigament = mechLigament.append(
-				new LoggedMechanismLigament2d("Wrist", 0.3, -30, 6, new Color8Bit(Color.kDarkGreen)));
+				"elevator", elevatorHeight.in(Inches), 90, 6, new Color8Bit(Color.kBlue)));
+
+		WristSubsystem.wristLigament = mechLigament.append(
+				new LoggedMechanismLigament2d("Wrist", 0.3, 210, 6, new Color8Bit(Color.kDarkGreen)));
 	}
 
 	public void setPosition(Distance position) {

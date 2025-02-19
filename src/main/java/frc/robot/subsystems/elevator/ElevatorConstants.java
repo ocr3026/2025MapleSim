@@ -12,7 +12,7 @@ public final class ElevatorConstants {
 	public static final Distance elevatorHeight = Inches.of(38);
 	public static final Distance elevatorWidth = Inches.of(19.5);
 
-	public static final Distance minPosition = Inches.of(3.5), maxPosition = Inches.of(33.5);
+	public static final Distance minPosition = Inches.of(3.5), maxPosition = Inches.of(33.5 + 38);
 
 	public static final DCMotor gearbox = DCMotor.getNEO(2);
 	public static final double elevatorReduction = 2;

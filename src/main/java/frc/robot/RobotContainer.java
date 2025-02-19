@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import static frc.robot.subsystems.wrist.WristConstants.intakeVoltage;
+import static frc.robot.subsystems.wrist.WristConstants.outtakeVoltage;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.ElevatorCommands;
+import frc.robot.commands.WristCommands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.GyroIO;
@@ -32,6 +36,10 @@ import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.subsystems.wrist.WristIO;
+import frc.robot.subsystems.wrist.WristIOSim;
+import frc.robot.subsystems.wrist.WristIOSpark;
+import frc.robot.subsystems.wrist.WristSubsystem;
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 import org.littletonrobotics.junction.Logger;
@@ -39,6 +47,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public class RobotContainer {
 	private final ElevatorSubsystem elevatorSubsystem;
+	private final WristSubsystem wristSubsystem;
 	private final Drive drive;
 	private final Vision vision;
 	private SwerveDriveSimulation driveSimulation = null;
@@ -62,6 +71,7 @@ public class RobotContainer {
 						(pose) -> {});
 
 				elevatorSubsystem = new ElevatorSubsystem(new ElevatorSparkIO());
+				wristSubsystem = new WristSubsystem(new WristIOSpark());
 
 				vision = new Vision(
 						drive,
@@ -73,8 +83,10 @@ public class RobotContainer {
 				SmartDashboard.putString("currentRobotMode", "SIM");
 
 				this.driveSimulation =
-						new SwerveDriveSimulation(DriveConstants.mapleSimConfig, new Pose2d(3, 3, new Rotation2d()));
+						new SwerveDriveSimulation(DriveConstants.mapleSimConfig, new Pose2d(0, 0, new Rotation2d()));
+
 				elevatorSubsystem = new ElevatorSubsystem(new ElevatorIOSim());
+				wristSubsystem = new WristSubsystem(new WristIOSim());
 
 				SimulatedArena.getInstance().addDriveTrainSimulation(driveSimulation);
 
@@ -108,7 +120,9 @@ public class RobotContainer {
 						new ModuleIO() {},
 						new ModuleIO() {},
 						(pose) -> {});
+
 				elevatorSubsystem = new ElevatorSubsystem(new ElevatorIO() {});
+				wristSubsystem = new WristSubsystem(new WristIO() {});
 				vision = new Vision(drive, new VisionIO() {}, new VisionIO() {});
 
 				break;
@@ -145,6 +159,12 @@ public class RobotContainer {
 		xbox.a().whileTrue(ElevatorCommands.setPos(elevatorSubsystem));
 		xbox.leftBumper().onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
 		xbox.rightBumper().onTrue(ElevatorCommands.incrementValue(elevatorSubsystem));
+
+		xbox.rightTrigger().whileTrue(WristCommands.runIntake(wristSubsystem, intakeVoltage));
+		xbox.rightTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0));
+
+		xbox.leftTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage));
+		xbox.leftTrigger().onFalse(WristCommands.runOuttake(wristSubsystem, 0));
 	}
 
 	public Command getAutonomousCommand() {

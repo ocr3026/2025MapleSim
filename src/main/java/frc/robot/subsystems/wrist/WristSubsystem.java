@@ -1,0 +1,24 @@
+package frc.robot.subsystems.wrist;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
+
+public class WristSubsystem extends SubsystemBase {
+	private final WristIO io;
+	private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
+
+	public static LoggedMechanismLigament2d wristLigament;
+
+	public WristSubsystem(WristIO wristIO) {
+		this.io = wristIO;
+	}
+
+	public void setVoltage(double voltage) {
+		io.setVoltage(voltage);
+	}
+
+	@Override
+	public void periodic() {
+		io.updateInputs(inputs);
+	}
+}
