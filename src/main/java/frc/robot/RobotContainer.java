@@ -29,7 +29,7 @@ import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOSim;
-import frc.robot.subsystems.elevator.ElevatorSparkIO;
+import frc.robot.subsystems.elevator.ElevatorIOSpark;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
@@ -70,7 +70,7 @@ public class RobotContainer {
 						new ModuleIOSpark(3),
 						(pose) -> {});
 
-				elevatorSubsystem = new ElevatorSubsystem(new ElevatorSparkIO());
+				elevatorSubsystem = new ElevatorSubsystem(new ElevatorIOSpark());
 				wristSubsystem = new WristSubsystem(new WristIOSpark());
 
 				vision = new Vision(

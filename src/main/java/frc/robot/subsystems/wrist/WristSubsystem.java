@@ -1,6 +1,7 @@
 package frc.robot.subsystems.wrist;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
 
 public class WristSubsystem extends SubsystemBase {
@@ -20,5 +21,6 @@ public class WristSubsystem extends SubsystemBase {
 	@Override
 	public void periodic() {
 		io.updateInputs(inputs);
+		Logger.processInputs("Wrist", inputs);
 	}
 }

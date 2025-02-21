@@ -17,13 +17,13 @@ import edu.wpi.first.units.measure.Distance;
 import frc.robot.Constants;
 import frc.robot.util.SparkUtil;
 
-public class ElevatorSparkIO implements ElevatorIO {
+public class ElevatorIOSpark implements ElevatorIO {
 	private final SparkMax leadMotor;
 	private final SparkMax followMotor;
 	private final RelativeEncoder leadEncoder;
 	private final SparkClosedLoopController sparkPID;
 
-	public ElevatorSparkIO() {
+	public ElevatorIOSpark() {
 		leadMotor = new SparkMax(leadMotorID, MotorType.kBrushless);
 		followMotor = new SparkMax(followMotorID, MotorType.kBrushless);
 		sparkPID = leadMotor.getClosedLoopController();
