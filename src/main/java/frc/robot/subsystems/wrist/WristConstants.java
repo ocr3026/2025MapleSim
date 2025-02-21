@@ -9,6 +9,6 @@ public class WristConstants {
 
 	public static final DCMotor gearbox = DCMotor.getNeo550(2);
 
-	public static final double intakeVoltage = 6.0;
-	public static final double outtakeVoltage = 6.0;
+	public static final double intakeVoltage = 4.0;
+	public static final double outtakeVoltage = 4.0;
 }
