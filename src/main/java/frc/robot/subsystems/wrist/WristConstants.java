@@ -3,7 +3,7 @@ package frc.robot.subsystems.wrist;
 import edu.wpi.first.math.system.plant.DCMotor;
 
 public class WristConstants {
-	public static final int currentLimit = 50;
+	public static final int currentLimit = 40;
 	public static final int leadMotorID = 50;
 	public static final int followMotorID = 51;
 
