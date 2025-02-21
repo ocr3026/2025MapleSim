@@ -1,7 +1,5 @@
 package frc.robot.commands;
 
-import static frc.robot.subsystems.wrist.WristConstants.*;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.wrist.WristSubsystem;

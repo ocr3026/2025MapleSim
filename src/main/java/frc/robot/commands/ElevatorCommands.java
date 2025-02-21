@@ -1,8 +1,6 @@
 package frc.robot.commands;
 
 import static edu.wpi.first.units.Units.*;
-import static edu.wpi.first.units.measure.Distance.*;
-import static frc.robot.Constants.*;
 
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;

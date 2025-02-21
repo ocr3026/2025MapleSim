@@ -6,7 +6,6 @@ import static frc.robot.subsystems.wrist.WristConstants.*;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -19,12 +18,10 @@ public class WristIOSpark implements WristIO {
 	private final SparkMax followMotor;
 	private final RelativeEncoder leadEncoder;
 	private final RelativeEncoder followEncoder;
-	private final SparkClosedLoopController sparkPID;
 
 	public WristIOSpark() {
 		leadMotor = new SparkMax(leadMotorID, MotorType.kBrushless);
 		followMotor = new SparkMax(followMotorID, MotorType.kBrushless);
-		sparkPID = leadMotor.getClosedLoopController();
 		leadEncoder = leadMotor.getEncoder();
 		followEncoder = followMotor.getEncoder();
 		SparkMaxConfig followConfig = new SparkMaxConfig();
