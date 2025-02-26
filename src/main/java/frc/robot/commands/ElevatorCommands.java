@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.*;
 import static edu.wpi.first.units.measure.Distance.*;
 import static frc.robot.Constants.*;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -41,7 +42,7 @@ public class ElevatorCommands {
 	}
 
 	public static Command runMotors(ElevatorSubsystem subsystem) {
-		return Commands.run(() -> subsystem.setSpeed(RobotContainer.xbox.getLeftY()));
+		return Commands.run(() -> subsystem.setSpeed(MathUtil.clamp(RobotContainer.xbox.getLeftY(), -1, 1) * 12));
 	}
 
 	public static Command stopMotors(ElevatorSubsystem subsystem) {

@@ -30,7 +30,11 @@ public class ElevatorSparkIO implements ElevatorIO {
 		leadEncoder = leadMotor.getEncoder();
 		SparkMaxConfig followConfig = new SparkMaxConfig();
 		SparkMaxConfig leadConfig = new SparkMaxConfig();
-		followConfig.follow(leadMotorID).idleMode(IdleMode.kCoast);
+		followConfig.follow(leadMotorID).idleMode(IdleMode.kBrake);
+		followConfig.inverted(true);
+		followConfig.smartCurrentLimit(80);
+		leadConfig.smartCurrentLimit(80);
+
 		followConfig
 				.signals
 				.primaryEncoderPositionAlwaysOn(true)
@@ -89,6 +93,6 @@ public class ElevatorSparkIO implements ElevatorIO {
 
 	@Override
 	public void tick() {
-		leadMotor.set(motorSpeed);
+		leadMotor.setVoltage(motorSpeed);
 	}
 }
