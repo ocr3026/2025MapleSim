@@ -2,26 +2,13 @@ package frc.robot.subsystems.climber;
 
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.subsystems.climber.ClimberConstants.*;
-import static frc.robot.subsystems.drive.DriveConstants.odometryFrequency;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.units.measure.Angle;
-import frc.robot.util.SparkUtil;
-
-
 
 public class ClimberIOFalcon implements ClimberIO {
 	private final TalonFX climbMotor;
@@ -36,7 +23,7 @@ public class ClimberIOFalcon implements ClimberIO {
 		TalonPID.kI = 0;
 		TalonPID.kD = 0;
 		positionVoltage = new PositionVoltage(0).withSlot(0);
-		//climbEncoder = climbMotor;
+		// climbEncoder = climbMotor;
 		TalonFXConfiguration config = new TalonFXConfiguration();
 		config.CurrentLimits.SupplyCurrentLimitEnable = true;
 		config.CurrentLimits.SupplyCurrentLimit = 40;
@@ -48,12 +35,7 @@ public class ClimberIOFalcon implements ClimberIO {
 		config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 		climbMotor.getConfigurator().apply(config);
 		climbMotor.getConfigurator().apply(TalonPID);
-
-	}	
-
-		
-		
-
+	}
 
 	@Override
 	public void updateInputs(ClimberIOInputs inputs) {

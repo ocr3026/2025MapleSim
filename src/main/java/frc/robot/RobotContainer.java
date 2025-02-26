@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.autonomous.TestAuto;
 import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.climber.ClimberSparkIO;
@@ -87,7 +88,7 @@ public class RobotContainer {
 								VisionConstants.robotToCamera1,
 								driveSimulation::getSimulatedDriveTrainPose));
 
-				climberSubsystem = null;
+				climberSubsystem = new ClimberSubsystem(new ClimberSparkIO());
 				break;
 			default:
 				drive = new Drive(
@@ -104,6 +105,8 @@ public class RobotContainer {
 		}
 
 		autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+
+		autoChooser.addOption("Test", TestAuto.returnTest());
 
 		autoChooser.addOption("Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
 		autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
@@ -130,7 +133,8 @@ public class RobotContainer {
 				: () -> drive.resetOdometry(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
 
 		translationJoystick.button(12).onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
-		xbox.b().whileTrue(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
+
+		climberSubsystem.setDefaultCommand(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
 		//	xbox.y().whileTrue(ClimberCommands.autoPositionClimber(climberSubsystem, 45)
 		//	.andThen(ClimberCommands.autoPositionClimber(climberSubsystem, 135)));
 	}
