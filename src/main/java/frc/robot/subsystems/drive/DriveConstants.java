@@ -14,7 +14,7 @@ import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
 
 public final class DriveConstants {
 	public static final LinearVelocity maxSpeed = MetersPerSecond.of(5.0);
-	public static final double odometryFrequency = 100; // Hertz
+	public static final Frequency odometryFrequency = Hertz.of(100);
 	public static final Distance trackWidth = Inches.of(24.75);
 	public static final Distance wheelBase = Inches.of(24.75);
 	public static final Distance driveBaseRadius =

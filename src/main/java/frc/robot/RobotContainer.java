@@ -4,9 +4,13 @@
 
 package frc.robot;
 
+import static frc.robot.subsystems.wrist.WristConstants.intakeVoltage;
+import static frc.robot.subsystems.wrist.WristConstants.outtakeVoltage;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -17,6 +21,8 @@ import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.climber.ClimberSparkIO;
 import frc.robot.subsystems.climber.ClimberSubsystem;
+import frc.robot.commands.ElevatorCommands;
+import frc.robot.commands.WristCommands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.GyroIO;
@@ -25,17 +31,27 @@ import frc.robot.subsystems.drive.GyroIOSim;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
+import frc.robot.subsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.elevator.ElevatorIOSim;
+import frc.robot.subsystems.elevator.ElevatorIOSpark;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.subsystems.wrist.WristIO;
+import frc.robot.subsystems.wrist.WristIOSim;
+import frc.robot.subsystems.wrist.WristIOSpark;
+import frc.robot.subsystems.wrist.WristSubsystem;
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public class RobotContainer {
+	private final ElevatorSubsystem elevatorSubsystem;
+	private final WristSubsystem wristSubsystem;
 	private final ClimberSubsystem climberSubsystem;
 	private final Drive drive;
 	private final Vision vision;
@@ -50,6 +66,7 @@ public class RobotContainer {
 	public RobotContainer() {
 		switch (Constants.currentMode) {
 			case REAL:
+				SmartDashboard.putString("currentRobotMode", "REAL");
 				drive = new Drive(
 						new GyroIONavX(),
 						new ModuleIOSpark(0),
@@ -58,14 +75,22 @@ public class RobotContainer {
 						new ModuleIOSpark(3),
 						(pose) -> {});
 
+				elevatorSubsystem = new ElevatorSubsystem(new ElevatorIOSpark());
+				wristSubsystem = new WristSubsystem(new WristIOSpark());
+
 				vision = new Vision(
 						drive, new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
 
 				climberSubsystem = new ClimberSubsystem(new ClimberSparkIO());
 				break;
 			case SIM:
+				SmartDashboard.putString("currentRobotMode", "SIM");
+
 				this.driveSimulation =
-						new SwerveDriveSimulation(DriveConstants.mapleSimConfig, new Pose2d(3, 3, new Rotation2d()));
+						new SwerveDriveSimulation(DriveConstants.mapleSimConfig, new Pose2d(0, 0, new Rotation2d()));
+
+				elevatorSubsystem = new ElevatorSubsystem(new ElevatorIOSim());
+				wristSubsystem = new WristSubsystem(new WristIOSim());
 
 				SimulatedArena.getInstance().addDriveTrainSimulation(driveSimulation);
 
@@ -91,6 +116,8 @@ public class RobotContainer {
 				climberSubsystem = new ClimberSubsystem(new ClimberSparkIO());
 				break;
 			default:
+				SmartDashboard.putString("currentRobotMode", "DEFAULT");
+
 				drive = new Drive(
 						new GyroIO() {},
 						new ModuleIO() {},
@@ -98,6 +125,9 @@ public class RobotContainer {
 						new ModuleIO() {},
 						new ModuleIO() {},
 						(pose) -> {});
+
+				elevatorSubsystem = new ElevatorSubsystem(new ElevatorIO() {});
+				wristSubsystem = new WristSubsystem(new WristIO() {});
 				vision = new Vision(drive, new VisionIO() {}, new VisionIO() {});
 
 				climberSubsystem = new ClimberSubsystem(new ClimberSparkIO());
@@ -137,6 +167,15 @@ public class RobotContainer {
 		climberSubsystem.setDefaultCommand(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
 		//	xbox.y().whileTrue(ClimberCommands.autoPositionClimber(climberSubsystem, 45)
 		//	.andThen(ClimberCommands.autoPositionClimber(climberSubsystem, 135)));
+		xbox.a().whileTrue(ElevatorCommands.setPos(elevatorSubsystem));
+		xbox.leftBumper().onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
+		xbox.rightBumper().onTrue(ElevatorCommands.incrementValue(elevatorSubsystem));
+
+		xbox.rightTrigger().whileTrue(WristCommands.runIntake(wristSubsystem, intakeVoltage));
+		xbox.rightTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0));
+
+		xbox.leftTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage));
+		xbox.leftTrigger().onFalse(WristCommands.runOuttake(wristSubsystem, 0));
 	}
 
 	public Command getAutonomousCommand() {

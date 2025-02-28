@@ -32,7 +32,7 @@ public class ClimberSparkIO implements ClimberIO {
 		climbConfig
 				.signals
 				.primaryEncoderPositionAlwaysOn(true)
-				.primaryEncoderPositionPeriodMs((int) (1000.0 / odometryFrequency))
+				.primaryEncoderPositionPeriodMs((int) (1000.0 / odometryFrequency.in(Hertz)))
 				.primaryEncoderVelocityAlwaysOn(true)
 				.primaryEncoderVelocityPeriodMs(20)
 				.appliedOutputPeriodMs(20)
