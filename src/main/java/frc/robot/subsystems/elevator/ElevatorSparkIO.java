@@ -32,8 +32,8 @@ public class ElevatorSparkIO implements ElevatorIO {
 		SparkMaxConfig leadConfig = new SparkMaxConfig();
 		followConfig.follow(leadMotorID).idleMode(IdleMode.kBrake);
 		followConfig.inverted(true);
-		followConfig.smartCurrentLimit(80);
-		leadConfig.smartCurrentLimit(80);
+		followConfig.smartCurrentLimit(60);
+		leadConfig.smartCurrentLimit(60);
 
 		followConfig
 				.signals
@@ -47,6 +47,14 @@ public class ElevatorSparkIO implements ElevatorIO {
 
 		leadConfig.idleMode(IdleMode.kBrake);
 		leadConfig
+				.encoder
+				.velocityConversionFactor(encoderVelocityFactor)
+				.positionConversionFactor(encoderPositionFactor);
+		followConfig
+				.encoder
+				.positionConversionFactor(encoderPositionFactor)
+				.velocityConversionFactor(encoderVelocityFactor);
+		leadConfig
 				.signals
 				.primaryEncoderPositionAlwaysOn(true)
 				.primaryEncoderPositionPeriodMs((int) (1000.0 / odometryFrequency))
@@ -55,7 +63,7 @@ public class ElevatorSparkIO implements ElevatorIO {
 				.appliedOutputPeriodMs(20)
 				.busVoltagePeriodMs(20)
 				.outputCurrentPeriodMs(20);
-		leadConfig.closedLoop.pidf(kP, 0, kD, 0);
+		leadConfig.closedLoop.pidf(kP, kI, kD, 0).maxOutput(0.4).minOutput(0);
 		SparkUtil.tryUntilOk(
 				followMotor,
 				5,
@@ -78,7 +86,7 @@ public class ElevatorSparkIO implements ElevatorIO {
 
 	@Override
 	public void setPosition(Distance position) {
-		sparkPID.setReference(position.in(Meter), ControlType.kPosition);
+		sparkPID.setReference(Math.min(position.in(Meter), softwareLimit.in(Meters)), ControlType.kPosition);
 	}
 
 	@Override
@@ -88,7 +96,11 @@ public class ElevatorSparkIO implements ElevatorIO {
 
 	@Override
 	public void setSpeed(double speed) {
-		motorSpeed = speed;
+		if (Meters.of(leadEncoder.getPosition()).in(Inches) <= softwareLimit.in(Inches)) {
+			motorSpeed = speed;
+		} else {
+			motorSpeed = 0;
+		}
 	}
 
 	@Override

@@ -129,9 +129,9 @@ public class RobotContainer {
 
 		// translationJoystick.button(12).onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
 
-		// xbox.a().whileTrue(ElevatorCommands.setPos(elevatorSubsystem));
-		// xbox.leftBumper().onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
-		// xbox.rightBumper().onTrue(ElevatorCommands.incrementValue(elevatorSubsystem));
+		xbox.a().whileTrue(ElevatorCommands.setPos(elevatorSubsystem));
+		xbox.leftBumper().onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
+		xbox.rightBumper().onTrue(ElevatorCommands.incrementValue(elevatorSubsystem));
 		xbox.y().whileTrue(ElevatorCommands.runMotors(elevatorSubsystem));
 		xbox.y().whileFalse(ElevatorCommands.stopMotors(elevatorSubsystem));
 	}

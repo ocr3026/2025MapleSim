@@ -14,6 +14,8 @@ public final class ElevatorConstants {
 
 	public static final Distance minPosition = Inches.of(38), maxPosition = Inches.of(100);
 
+	public static final Distance softwareLimit = Meters.of(0.649);
+
 	public static final DCMotor gearbox = DCMotor.getNEO(2);
 	public static final double elevatorReduction = 6;
 	public static final Distance spoolDiameter = Inches.of(1.75);
@@ -21,7 +23,7 @@ public final class ElevatorConstants {
 	public static final double encoderPositionFactor = Math.PI * spoolDiameter.in(Meter) / elevatorReduction;
 	public static final double encoderVelocityFactor = Math.PI * spoolDiameter.in(Meter) / (elevatorReduction * 60);
 
-	public static final double kP = 1, kD = 0, kS = 0, kV = 1.75, kA = 0.15, kG = 1.26;
+	public static final double kP = 6, kI = 0.1, kD = 0, kS = 0, kV = 1.75, kA = 0.15, kG = 1.26;
 	public static final double simkP = 5, simkD = 0, simkS = 0, simkV = 1.75, simkA = 0.15, simkG = 1.26;
 	public static final double currentLimit = 50;
 

@@ -3,6 +3,7 @@ package frc.robot.subsystems.elevator;
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.subsystems.elevator.ElevatorConstants.elevatorHeight;
 import static frc.robot.subsystems.elevator.ElevatorConstants.elevatorWidth;
+import static frc.robot.subsystems.elevator.ElevatorConstants.softwareLimit;
 
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -81,14 +82,19 @@ public class ElevatorSubsystem extends SubsystemBase {
 		// timesRAN++;
 		SmartDashboard.putNumber("TIME RAN", timesRAN);
 		mechLigament.setLength(inputs.masterPosition.in(Meter));
-		SmartDashboard.putNumber("iolength", io.getPosition().in(Meter));
+		SmartDashboard.putNumber("iolength", io.getPosition().in(Meters));
 		SmartDashboard.putNumber("elevatorsimlength", mechLigament.getLength());
+		SmartDashboard.putNumber("Max Height", softwareLimit.in(Meters));
 
 		io.updateInputs(inputs);
 		Logger.processInputs("Elevator", inputs);
 		Logger.recordOutput("Elevator/ElevatorMech2d", mech2d);
 
-		io.tick();
+		if (io.getPosition().in(Meters) <= softwareLimit.in(Meters)) {
+			io.tick();
+		} else {
+			io.setSpeed(0);
+		}
 
 		SmartDashboard.putString(
 				"CurrentSelectedPos",
