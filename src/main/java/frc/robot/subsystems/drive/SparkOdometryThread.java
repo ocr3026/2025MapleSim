@@ -1,6 +1,6 @@
 package frc.robot.subsystems.drive;
 
-import static edu.wpi.first.units.Units.Hertz;
+import static edu.wpi.first.units.Units.*;
 
 import com.revrobotics.REVLibError;
 import com.revrobotics.spark.SparkMax;

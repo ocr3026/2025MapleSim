@@ -12,10 +12,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.autonomous.TestAuto;
 import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.DriveCommands;
@@ -59,13 +59,14 @@ public class RobotContainer {
 
 	private final CommandJoystick translationJoystick = new CommandJoystick(0);
 	private final CommandJoystick rotationJoystick = new CommandJoystick(1);
-	private final CommandXboxController xbox = new CommandXboxController(2);
+	public static final CommandXboxController xbox = new CommandXboxController(2);
 
 	private final LoggedDashboardChooser<Command> autoChooser;
 
 	public RobotContainer() {
 		switch (Constants.currentMode) {
 			case REAL:
+				SmartDashboard.putString("currentRobotMode", "REAL");
 				SmartDashboard.putString("currentRobotMode", "REAL");
 				drive = new Drive(
 						new GyroIONavX(),
@@ -84,6 +85,8 @@ public class RobotContainer {
 				climberSubsystem = new ClimberSubsystem(new ClimberSparkIO());
 				break;
 			case SIM:
+				SmartDashboard.putString("currentRobotMode", "SIM");
+
 				SmartDashboard.putString("currentRobotMode", "SIM");
 
 				this.driveSimulation =
@@ -165,11 +168,11 @@ public class RobotContainer {
 		translationJoystick.button(12).onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
 
 		xbox.b().whileTrue(ClimberCommands.moveClimber(climberSubsystem, -.5));
-		xbox.a().whileTrue(ClimberCommands.moveClimber(climberSubsystem, .5));
+		xbox.x().whileTrue(ClimberCommands.moveClimber(climberSubsystem, .5));
 		//climberSubsystem.setDefaultCommand(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
 		//	xbox.y().whileTrue(ClimberCommands.autoPositionClimber(climberSubsystem, 45)
 		//	.andThen(ClimberCommands.autoPositionClimber(climberSubsystem, 135)));
-		// xbox.x().whileTrue(ElevatorCommands.setPos(elevatorSubsystem));
+		xbox.a().whileTrue(ElevatorCommands.setPos(elevatorSubsystem));
 		xbox.leftBumper().onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
 		xbox.rightBumper().onTrue(ElevatorCommands.incrementValue(elevatorSubsystem));
 
@@ -178,6 +181,8 @@ public class RobotContainer {
 
 		xbox.leftTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage));
 		xbox.leftTrigger().onFalse(WristCommands.runOuttake(wristSubsystem, 0));
+		xbox.y().whileTrue(ElevatorCommands.runMotors(elevatorSubsystem));
+		xbox.y().whileFalse(ElevatorCommands.stopMotors(elevatorSubsystem));
 	}
 
 	public Command getAutonomousCommand() {
