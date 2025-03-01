@@ -15,7 +15,7 @@ public final class ElevatorConstants {
 	public static final Distance minPosition = Inches.of(38), maxPosition = Inches.of(100);
 
 	public static final DCMotor gearbox = DCMotor.getNEO(2);
-	public static final double elevatorReduction = 2;
+	public static final double elevatorReduction = 6;
 	public static final Distance spoolDiameter = Inches.of(1.75);
 
 	public static final double encoderPositionFactor = Math.PI * spoolDiameter.in(Meter) / elevatorReduction;
