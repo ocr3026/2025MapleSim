@@ -76,14 +76,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 		timesRAN++;
 		io.setPosition(position);
 	}
-	
-<<<<<<< Updated upstream
-
-	public void setSpeed(double speed) {
-		io.setSpeed(speed);
-	}
-=======
->>>>>>> Stashed changes
 
 	@Override
 	public void periodic() {

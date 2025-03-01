@@ -170,7 +170,7 @@ public class RobotContainer {
 
 		xbox.b().whileTrue(ClimberCommands.moveClimber(climberSubsystem, -.5));
 		xbox.a().whileTrue(ClimberCommands.moveClimber(climberSubsystem, .5));
-		//climberSubsystem.setDefaultCommand(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
+		// climberSubsystem.setDefaultCommand(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
 		//	xbox.y().whileTrue(ClimberCommands.autoPositionClimber(climberSubsystem, 45)
 		//	.andThen(ClimberCommands.autoPositionClimber(climberSubsystem, 135)));
 		xbox.a().whileTrue(ElevatorCommands.setPos(elevatorSubsystem));
