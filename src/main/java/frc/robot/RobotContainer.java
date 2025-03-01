@@ -64,6 +64,7 @@ public class RobotContainer {
 	private final LoggedDashboardChooser<Command> autoChooser;
 
 	public RobotContainer() {
+		SmartDashboard.putNumber("delayStartTime", 0);
 		switch (Constants.currentMode) {
 			case REAL:
 				SmartDashboard.putString("currentRobotMode", "REAL");
@@ -139,7 +140,7 @@ public class RobotContainer {
 
 		autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
-		autoChooser.addOption("Test", TestAuto.returnTest());
+		autoChooser.addOption("TestAuto", TestAuto.returnTest());
 
 		autoChooser.addOption("Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
 		autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
@@ -168,7 +169,7 @@ public class RobotContainer {
 		translationJoystick.button(12).onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
 
 		xbox.b().whileTrue(ClimberCommands.moveClimber(climberSubsystem, -.5));
-		xbox.x().whileTrue(ClimberCommands.moveClimber(climberSubsystem, .5));
+		xbox.a().whileTrue(ClimberCommands.moveClimber(climberSubsystem, .5));
 		//climberSubsystem.setDefaultCommand(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
 		//	xbox.y().whileTrue(ClimberCommands.autoPositionClimber(climberSubsystem, 45)
 		//	.andThen(ClimberCommands.autoPositionClimber(climberSubsystem, 135)));
