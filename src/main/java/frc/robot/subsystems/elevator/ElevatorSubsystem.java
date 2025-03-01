@@ -62,7 +62,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 		this.io = elevatorIO;
 
 		mech2d = new LoggedMechanism2d(elevatorWidth, elevatorHeight);
-		mechRoot = mech2d.getRoot("root", 3, 0);
+		mechRoot = mech2d.getRoot("root", 0, 0);
 		mechLigament = mechRoot.append(
 				new LoggedMechanismLigament2d("elevator", elevatorHeight, 90, 6, new Color8Bit(Color.kBlue)));
 	}
