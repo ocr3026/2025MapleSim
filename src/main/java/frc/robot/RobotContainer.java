@@ -164,10 +164,12 @@ public class RobotContainer {
 
 		translationJoystick.button(12).onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
 
-		climberSubsystem.setDefaultCommand(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
+		xbox.b().whileTrue(ClimberCommands.moveClimber(climberSubsystem, -.5));
+		xbox.a().whileTrue(ClimberCommands.moveClimber(climberSubsystem, .5));
+		//climberSubsystem.setDefaultCommand(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
 		//	xbox.y().whileTrue(ClimberCommands.autoPositionClimber(climberSubsystem, 45)
 		//	.andThen(ClimberCommands.autoPositionClimber(climberSubsystem, 135)));
-		xbox.a().whileTrue(ElevatorCommands.setPos(elevatorSubsystem));
+		// xbox.x().whileTrue(ElevatorCommands.setPos(elevatorSubsystem));
 		xbox.leftBumper().onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
 		xbox.rightBumper().onTrue(ElevatorCommands.incrementValue(elevatorSubsystem));
 

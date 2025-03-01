@@ -20,6 +20,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
 	public void setSpeed(double speed) {
 		io.setAngularSpeed(speed);
+		SmartDashboard.putNumber("climberSpeed", speed);
 	}
 
 	public double getPositionInDegrees() {
@@ -31,5 +32,6 @@ public class ClimberSubsystem extends SubsystemBase {
 		io.updateInputs(inputs);
 		Logger.processInputs("Climber", inputs);
 		SmartDashboard.putNumber("ClimberPos", getPositionInDegrees());
+		
 	}
 }
