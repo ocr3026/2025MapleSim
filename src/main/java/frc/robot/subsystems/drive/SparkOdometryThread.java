@@ -1,7 +1,5 @@
 package frc.robot.subsystems.drive;
 
-import static edu.wpi.first.units.Units.Hertz;
-
 import com.revrobotics.REVLibError;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.wpilibj.Notifier;
@@ -37,7 +35,7 @@ public class SparkOdometryThread {
 
 	public void start() {
 		if (!timestampQueues.isEmpty()) {
-			notifier.startPeriodic(1.0 / DriveConstants.odometryFrequency.in(Hertz));
+			notifier.startPeriodic(1.0 / DriveConstants.odometryFrequency);
 		}
 	}
 

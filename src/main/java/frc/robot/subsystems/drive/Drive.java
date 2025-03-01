@@ -151,8 +151,6 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer {
 		}
 
 		gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
-
-		// ElevatorSubsystem.mechRoot.setPosition(getPose().getY() - 3, getPose().getX() - 3);
 	}
 
 	public void runVelocity(ChassisSpeeds speeds) {

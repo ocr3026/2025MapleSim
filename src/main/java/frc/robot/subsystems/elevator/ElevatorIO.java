@@ -24,4 +24,6 @@ public interface ElevatorIO {
 	}
 
 	public default void tick() {}
+
+	public default void setSpeed(double speed) {}
 }

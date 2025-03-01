@@ -22,6 +22,7 @@ public class ElevatorIOSpark implements ElevatorIO {
 	private final SparkMax followMotor;
 	private final RelativeEncoder leadEncoder;
 	private final SparkClosedLoopController sparkPID;
+	double motorSpeed = 0;
 
 	public ElevatorIOSpark() {
 		leadMotor = new SparkMax(leadMotorID, MotorType.kBrushless);
@@ -30,11 +31,11 @@ public class ElevatorIOSpark implements ElevatorIO {
 		leadEncoder = leadMotor.getEncoder();
 		SparkMaxConfig followConfig = new SparkMaxConfig();
 		SparkMaxConfig leadConfig = new SparkMaxConfig();
-		followConfig.follow(leadMotorID).idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit);
-		followConfig
-				.encoder
-				.positionConversionFactor(encoderPositionFactor)
-				.velocityConversionFactor(encoderVelocityFactor);
+		followConfig.follow(leadMotorID).idleMode(IdleMode.kBrake);
+		followConfig.inverted(true);
+		followConfig.smartCurrentLimit(60);
+		leadConfig.smartCurrentLimit(60);
+
 		followConfig
 				.signals
 				.primaryEncoderPositionAlwaysOn(true)
@@ -46,8 +47,12 @@ public class ElevatorIOSpark implements ElevatorIO {
 				.outputCurrentPeriodMs(20);
 		followConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pidf(kP, 0, kD, 0);
 
-		leadConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit);
+		leadConfig.idleMode(IdleMode.kBrake);
 		leadConfig
+				.encoder
+				.velocityConversionFactor(encoderVelocityFactor)
+				.positionConversionFactor(encoderPositionFactor);
+		followConfig
 				.encoder
 				.positionConversionFactor(encoderPositionFactor)
 				.velocityConversionFactor(encoderVelocityFactor);
@@ -60,8 +65,7 @@ public class ElevatorIOSpark implements ElevatorIO {
 				.appliedOutputPeriodMs(20)
 				.busVoltagePeriodMs(20)
 				.outputCurrentPeriodMs(20);
-		leadConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pidf(kP, 0, kD, 0);
-
+		leadConfig.closedLoop.pidf(kP, kI, kD, 0).maxOutput(0.4).minOutput(0);
 		SparkUtil.tryUntilOk(
 				followMotor,
 				5,
@@ -85,11 +89,25 @@ public class ElevatorIOSpark implements ElevatorIO {
 
 	@Override
 	public void setPosition(Distance position) {
-		sparkPID.setReference(position.in(Meter), ControlType.kPosition);
+		sparkPID.setReference(Math.min(position.in(Meter), softwareLimit.in(Meters)), ControlType.kPosition);
 	}
 
 	@Override
 	public Distance getPosition() {
 		return Meters.of(leadEncoder.getPosition());
+	}
+
+	@Override
+	public void setSpeed(double speed) {
+		if (Meters.of(leadEncoder.getPosition()).in(Inches) <= softwareLimit.in(Inches)) {
+			motorSpeed = speed;
+		} else {
+			motorSpeed = 0;
+		}
+	}
+
+	@Override
+	public void tick() {
+		leadMotor.setVoltage(motorSpeed);
 	}
 }
