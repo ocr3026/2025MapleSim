@@ -7,12 +7,18 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController.ArbFFUnits;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.units.measure.Distance;
 import frc.robot.Constants;
 import frc.robot.util.SparkUtil;
@@ -22,16 +28,21 @@ public class ElevatorIOSpark implements ElevatorIO {
 	private final SparkMax followMotor;
 	private final RelativeEncoder leadEncoder;
 	private final SparkClosedLoopController sparkPID;
+	// private final PIDController pid;
+	// private final ElevatorFeedforward ff;
 	double motorSpeed = 0;
+	double ffValue = 0;
 
 	public ElevatorIOSpark() {
 		leadMotor = new SparkMax(leadMotorID, MotorType.kBrushless);
 		followMotor = new SparkMax(followMotorID, MotorType.kBrushless);
 		sparkPID = leadMotor.getClosedLoopController();
 		leadEncoder = leadMotor.getEncoder();
+		//ff = new ElevatorFeedforward(kS, kG, kV);
+		//pid = new PIDController(kP, kI, kD);
 		SparkMaxConfig followConfig = new SparkMaxConfig();
 		SparkMaxConfig leadConfig = new SparkMaxConfig();
-		followConfig.follow(leadMotorID).idleMode(IdleMode.kBrake);
+		followConfig.follow(leadMotorID).idleMode(IdleMode.kCoast);
 		followConfig.inverted(true);
 		followConfig.smartCurrentLimit(60);
 		leadConfig.smartCurrentLimit(60);
@@ -65,7 +76,7 @@ public class ElevatorIOSpark implements ElevatorIO {
 				.appliedOutputPeriodMs(20)
 				.busVoltagePeriodMs(20)
 				.outputCurrentPeriodMs(20);
-		leadConfig.closedLoop.pidf(kP, kI, kD, 0).maxOutput(0.4).minOutput(0);
+		leadConfig.closedLoop.pidf(kP, kI, kD, 0).maxOutput(0.4).minOutput(-0.01);
 		SparkUtil.tryUntilOk(
 				followMotor,
 				5,
@@ -89,7 +100,11 @@ public class ElevatorIOSpark implements ElevatorIO {
 
 	@Override
 	public void setPosition(Distance position) {
-		sparkPID.setReference(Math.min(position.in(Meter), softwareLimit.in(Meters)), ControlType.kPosition);
+		sparkPID.setReference(Math.min(position.in(Meter), softwareLimit.in(Meters)), ControlType.kPosition, ClosedLoopSlot.kSlot0, 0.1, ArbFFUnits.kVoltage);
+		
+		//ffValue = ff.calculate(pid.calculate(leadEncoder.getPosition(), Math.min(position.in(Meter), softwareLimit.in(Meter))));
+
+
 	}
 
 	@Override
@@ -108,6 +123,7 @@ public class ElevatorIOSpark implements ElevatorIO {
 
 	@Override
 	public void tick() {
-		leadMotor.setVoltage(motorSpeed);
+		//leadMotor.set(MathUtil.clamp(ffValue, 0, 0.4));
+		leadMotor.set(MathUtil.clamp(motorSpeed, 0, 1));
 	}
 }

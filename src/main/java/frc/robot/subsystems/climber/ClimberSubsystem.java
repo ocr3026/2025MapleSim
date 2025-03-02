@@ -32,6 +32,5 @@ public class ClimberSubsystem extends SubsystemBase {
 		io.updateInputs(inputs);
 		Logger.processInputs("Climber", inputs);
 		SmartDashboard.putNumber("ClimberPos", getPositionInDegrees());
-		
 	}
 }
