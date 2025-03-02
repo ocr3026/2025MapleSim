@@ -64,6 +64,7 @@ public class RobotContainer {
 	private final LoggedDashboardChooser<Command> autoChooser;
 
 	public RobotContainer() {
+		SmartDashboard.putNumber("delayStartTime", 0);
 		switch (Constants.currentMode) {
 			case REAL:
 				SmartDashboard.putString("currentRobotMode", "REAL");
@@ -139,7 +140,7 @@ public class RobotContainer {
 
 		autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
-		autoChooser.addOption("Test", TestAuto.returnTest());
+		autoChooser.addOption("TestAuto", TestAuto.returnTest(elevatorSubsystem, wristSubsystem));
 
 		autoChooser.addOption("Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
 		autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
