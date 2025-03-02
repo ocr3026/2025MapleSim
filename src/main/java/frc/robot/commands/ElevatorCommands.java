@@ -12,9 +12,9 @@ import frc.robot.subsystems.elevator.ElevatorSubsystem;
 public class ElevatorCommands {
 	public static final Distance highPOS = Meters.of(0.590);
 	public static final Distance midPOS = Meters.of(0.269);
-	public static final Distance lowPOS = Inches.of(0);
-	public static final Distance homePOS = Inches.of(0.0);
-	public static final Distance intakePOS = Inches.of(0);
+	public static final Distance lowPOS = Meters.of(0);
+	public static final Distance homePOS = Meters.of(0.0);
+	public static final Distance intakePOS = Meters.of(0);
 
 	public static Command setPos(ElevatorSubsystem subsystem) {
 		// return Commands.runOnce(() -> subsystem.setPosition(Inches.of(lowPOS)));

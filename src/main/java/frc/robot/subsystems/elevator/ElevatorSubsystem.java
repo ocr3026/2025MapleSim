@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.ElevatorCommands;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
@@ -76,7 +77,31 @@ public class ElevatorSubsystem extends SubsystemBase {
 		timesRAN++;
 		io.setPosition(position);
 	}
-	
+
+	public void setSpeed(double speed) {
+		io.setSpeed(speed);
+	}
+
+	public Distance getPosition() {
+		return io.getPosition();
+	}
+
+	public Distance getTargetPosition(ElevatorPos givenPos) {
+		switch (givenPos) {
+			case HIGH:
+				return ((ElevatorCommands.highPOS));
+			case MID:
+				return ((ElevatorCommands.midPOS));
+			case LOW:
+				return ((ElevatorCommands.lowPOS));
+			case INTAKE:
+				return ((ElevatorCommands.intakePOS));
+			case HOME:
+				return ((ElevatorCommands.homePOS));
+			default:
+				return null;
+		}
+	}
 
 	@Override
 	public void periodic() {
