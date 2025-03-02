@@ -7,7 +7,6 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,9 +21,10 @@ import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorPos;
 import frc.robot.subsystems.wrist.WristConstants;
 import frc.robot.subsystems.wrist.WristSubsystem;
 
-public abstract class AutoBase {
+public abstract class AutoBase extends SequentialCommandGroup {
 	public static Timer timer = new Timer();
 	public static SequentialCommandGroup group = new SequentialCommandGroup();
+	public static int TotalCommandsAdded = 0;
 
 	public abstract void init();
 
@@ -123,6 +123,10 @@ public abstract class AutoBase {
 				() -> {
 					return subsystem.pos == pos;
 				});
+	}
+
+	public static final Command followPath(PathPlannerPath path) {
+		return AutoBuilder.followPath(path);
 	}
 
 	public static final ParallelRaceGroup moveElevatorAndOuttake(

@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.autonomous.Test01Auto;
 import frc.autonomous.TestAuto;
 import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.DriveCommands;
@@ -137,10 +138,11 @@ public class RobotContainer {
 				climberSubsystem = new ClimberSubsystem(new ClimberSparkIO());
 				break;
 		}
-
+		Test01Auto test01Auto = new Test01Auto(elevatorSubsystem, wristSubsystem);
 		autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
 		autoChooser.addOption("TestAuto", TestAuto.returnTest(elevatorSubsystem, wristSubsystem));
+		autoChooser.addOption("Test01Auto", test01Auto);
 
 		autoChooser.addOption("Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
 		autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
