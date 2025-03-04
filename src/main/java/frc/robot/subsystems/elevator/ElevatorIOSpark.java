@@ -24,6 +24,7 @@ public class ElevatorIOSpark implements ElevatorIO {
 	private final SparkMax leadMotor;
 	private final SparkMax followMotor;
 	private final RelativeEncoder leadEncoder;
+	private final RelativeEncoder followEncoder;
 	private final SparkClosedLoopController sparkPID;
 	// private final PIDController pid;
 	// private final ElevatorFeedforward ff;
@@ -35,6 +36,8 @@ public class ElevatorIOSpark implements ElevatorIO {
 		followMotor = new SparkMax(followMotorID, MotorType.kBrushless);
 		sparkPID = leadMotor.getClosedLoopController();
 		leadEncoder = leadMotor.getEncoder();
+		followEncoder = followMotor.getEncoder();
+
 		// ff = new ElevatorFeedforward(kS, kG, kV);
 		// pid = new PIDController(kP, kI, kD);
 		SparkMaxConfig followConfig = new SparkMaxConfig();
@@ -90,9 +93,16 @@ public class ElevatorIOSpark implements ElevatorIO {
 	public void updateInputs(ElevatorIOInputs inputs) {
 		inputs.masterAppliedVolts = leadMotor.getAppliedOutput();
 		inputs.masterConnected = true;
-		inputs.masterCurrentAmps = (leadMotor.getOutputCurrent() + followMotor.getOutputCurrent());
+		inputs.masterCurrentAmps = leadMotor.getOutputCurrent();
 		inputs.masterPosition = Meter.of(leadEncoder.getPosition());
 		inputs.masterVelocity = MetersPerSecond.of(leadEncoder.getVelocity());
+
+
+		inputs.followAppliedVolts = followMotor.getAppliedOutput();
+		inputs.followConnected = true;
+		inputs.followCurrentAmps = followMotor.getOutputCurrent();
+		inputs.followPosition = Meter.of(followEncoder.getPosition());
+		inputs.followVelocity = MetersPerSecond.of(followEncoder.getVelocity());
 	}
 
 	@Override

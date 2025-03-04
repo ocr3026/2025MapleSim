@@ -13,6 +13,13 @@ public interface ElevatorIO {
 		public LinearVelocity masterVelocity = InchesPerSecond.of(0);
 		public double masterAppliedVolts = 0;
 		public double masterCurrentAmps = 0;
+		
+
+		public boolean followConnected = false;
+		public Distance followPosition = Inches.of(0);
+		public LinearVelocity followVelocity = InchesPerSecond.of(0);
+		public double followAppliedVolts = 0;
+		public double followCurrentAmps = 0;
 	}
 
 	public default void updateInputs(ElevatorIOInputs inputs) {}
