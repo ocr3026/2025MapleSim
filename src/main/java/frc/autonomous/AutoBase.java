@@ -87,7 +87,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		return new FunctionalCommand(
 				() -> {
 					timer.reset();
-					wrist.setVoltage(0);
+					wrist.setVoltage(0, 0);
 				},
 				() -> {
 					if (MathUtil.isNear(
@@ -95,11 +95,11 @@ public abstract class AutoBase extends SequentialCommandGroup {
 							elevator.getPosition().in(Meters),
 							.05)) {
 						timer.start();
-						wrist.setVoltage(WristConstants.outtakeVoltage);
+						wrist.setVoltage(WristConstants.outtakeVoltage, WristConstants.outtakeVoltage);
 					}
 				},
 				(interupted) -> {
-					wrist.setVoltage(0);
+					wrist.setVoltage(0, 0);
 					timer.stop();
 					timer.reset();
 				},
@@ -112,7 +112,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		return new FunctionalCommand(
 				() -> {
 					timer.reset();
-					wrist.setVoltage(0);
+					wrist.setVoltage(0, 0);
 				},
 				() -> {
 					if (MathUtil.isNear(
@@ -120,11 +120,11 @@ public abstract class AutoBase extends SequentialCommandGroup {
 							elevator.getPosition().in(Meters),
 							.05)) {
 						timer.start();
-						wrist.setVoltage(WristConstants.intakeVoltage);
+						wrist.setVoltage(WristConstants.intakeVoltage, WristConstants.intakeVoltage);
 					}
 				},
 				(interupted) -> {
-					wrist.setVoltage(0);
+					wrist.setVoltage(0, 0);
 					timer.stop();
 					timer.reset();
 				},

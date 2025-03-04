@@ -29,7 +29,7 @@ public class WristIOSim implements WristIO {
 	}
 
 	@Override
-	public void setVoltage(double voltage) {
-		flywheelSim.setInputVoltage(voltage);
+	public void setVoltage(double leadVoltage, double followVoltage) {
+		flywheelSim.setInputVoltage(leadVoltage);
 	}
 }

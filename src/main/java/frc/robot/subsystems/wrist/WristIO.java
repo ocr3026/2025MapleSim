@@ -23,5 +23,5 @@ public interface WristIO {
 
 	public default void updateInputs(WristIOInputs inputs) {}
 
-	public default void setVoltage(double voltage) {}
+	public default void setVoltage(double leadVoltage, double followVoltage) {}
 }

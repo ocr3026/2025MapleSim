@@ -26,7 +26,7 @@ public class WristIOSpark implements WristIO {
 		followEncoder = followMotor.getEncoder();
 		SparkMaxConfig followConfig = new SparkMaxConfig();
 		SparkMaxConfig leadConfig = new SparkMaxConfig();
-		followConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).follow(leadMotorID, true);
+		followConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).inverted(true);
 		followConfig
 				.signals
 				.primaryEncoderPositionAlwaysOn(true)
@@ -74,7 +74,8 @@ public class WristIOSpark implements WristIO {
 	}
 
 	@Override
-	public void setVoltage(double voltage) {
-		leadMotor.setVoltage(voltage);
+	public void setVoltage(double leadVoltage, double followVoltage) {
+		leadMotor.setVoltage(leadVoltage);
+		followMotor.setVoltage(followVoltage);
 	}
 }

@@ -14,8 +14,8 @@ public class WristSubsystem extends SubsystemBase {
 		this.io = wristIO;
 	}
 
-	public void setVoltage(double voltage) {
-		io.setVoltage(voltage);
+	public void setVoltage(double leadVoltage, double followVoltage) {
+		io.setVoltage(leadVoltage, followVoltage);
 	}
 
 	@Override

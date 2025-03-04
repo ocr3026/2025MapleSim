@@ -184,11 +184,13 @@ public class RobotContainer {
 		xbox.leftBumper().onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
 		xbox.rightBumper().onTrue(ElevatorCommands.incrementValue(elevatorSubsystem));
 
-		xbox.rightTrigger().whileTrue(WristCommands.runIntake(wristSubsystem, intakeVoltage));
-		xbox.rightTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0));
+		xbox.rightTrigger().whileTrue(WristCommands.runIntake(wristSubsystem, intakeVoltage, intakeVoltage));
+		xbox.rightTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0, 0));
 
-		xbox.leftTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage));
-		xbox.leftTrigger().onFalse(WristCommands.runOuttake(wristSubsystem, 0));
+		xbox.leftTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
+		xbox.leftTrigger().onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
+
+		// TODO: Make outtake command for t1 placing, both in WristCommands and RobotContainer
 		xbox.y().whileTrue(ElevatorCommands.runMotors(elevatorSubsystem));
 		xbox.y().whileFalse(ElevatorCommands.stopMotors(elevatorSubsystem));
 	}
