@@ -38,6 +38,26 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		}
 	}
 
+	// public static ArrayList<Command> totalCommands;
+	// public static SequentialCommandGroup commandGroup;
+
+	// public static void initCommandGroup() {
+	// 	totalCommands = new ArrayList<>();
+	// 	commandGroup = new SequentialCommandGroup();
+	// }
+
+	// public static void addCommands(Command command) {
+	// 	commandGroup.addCommands(command);
+	// }
+
+	// public static Command getAutoCommand() {
+	// 	try {
+	// 		return commandGroup;
+	// 	} catch (NullPointerException e) {
+	// 		return new Command() {};
+	// 	}
+	// }
+
 	public static final class Paths {
 		public static final PathPlannerPath TEST_PATH = getPathFromFile("Test 1");
 		public static final PathPlannerPath TEST_PATH_2 = getPathFromFile("Test 2");

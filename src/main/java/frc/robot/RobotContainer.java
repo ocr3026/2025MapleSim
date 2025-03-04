@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.autonomous.Test01Auto;
+
 import frc.autonomous.TestAuto;
 import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.DriveCommands;
@@ -138,13 +139,17 @@ public class RobotContainer {
 				climberSubsystem = new ClimberSubsystem(new ClimberSparkIO());
 				break;
 		}
-		Test01Auto test01Auto = new Test01Auto(elevatorSubsystem, wristSubsystem);
+		// Test01Auto test01Auto = new Test01Auto(elevatorSubsystem, wristSubsystem);
+		// Test02Auto test02Auto = new Test02Auto();
+		// Test03Auto test03Auto = new Test03Auto();
 		autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
 		autoChooser.addOption("TestAuto", TestAuto.returnTest(elevatorSubsystem, wristSubsystem));
-		autoChooser.addOption("Test01Auto", test01Auto);
+		autoChooser.addOption("Test01Auto", new Test01Auto(elevatorSubsystem, wristSubsystem));
 
-		autoChooser.addOption("Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
+
+
+		autoChooser.addOption("Drive Wheel Radius Characterization6", DriveCommands.wheelRadiusCharacterization(drive));
 		autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
 		autoChooser.addOption(
 				"Drive SysId (Quasistatic Forward)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
