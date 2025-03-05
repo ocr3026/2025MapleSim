@@ -23,7 +23,6 @@ import frc.robot.subsystems.wrist.WristSubsystem;
 
 public abstract class AutoBase extends SequentialCommandGroup {
 	public static Timer timer = new Timer();
-	public static SequentialCommandGroup group = new SequentialCommandGroup();
 	public static int TotalCommandsAdded = 0;
 
 	public abstract void init();
@@ -38,29 +37,12 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		}
 	}
 
-	// public static ArrayList<Command> totalCommands;
-	// public static SequentialCommandGroup commandGroup;
-
-	// public static void initCommandGroup() {
-	// 	totalCommands = new ArrayList<>();
-	// 	commandGroup = new SequentialCommandGroup();
-	// }
-
-	// public static void addCommands(Command command) {
-	// 	commandGroup.addCommands(command);
-	// }
-
-	// public static Command getAutoCommand() {
-	// 	try {
-	// 		return commandGroup;
-	// 	} catch (NullPointerException e) {
-	// 		return new Command() {};
-	// 	}
-	// }
-
 	public static final class Paths {
 		public static final PathPlannerPath TEST_PATH = getPathFromFile("Test 1");
 		public static final PathPlannerPath TEST_PATH_2 = getPathFromFile("Test 2");
+		public static final PathPlannerPath FEED_TO_CC = getPathFromFile("Feed to Coral Close Path");
+		public static final PathPlannerPath CC_TO_FEED = getPathFromFile("Coral to Feed Path");
+		public static final PathPlannerPath CORAL_FL_PATH = getPathFromFile("Coral Far Left Path");
 	}
 
 	public static final Command wait(double time) {
@@ -151,10 +133,19 @@ public abstract class AutoBase extends SequentialCommandGroup {
 
 	public static final ParallelRaceGroup moveElevatorAndOuttake(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
+		elevator.pos = pos;
+		SmartDashboard.putString("Elevator.pos", elevator.pos.toString());
+
 		return new ParallelRaceGroup(wristOuttake(wrist, elevator), ElevatorCommands.setPos(elevator));
 	}
 
-	public static final ParallelRaceGroup moveElevatorAndIntake(WristSubsystem wrist, ElevatorSubsystem elevator) {
+	public static void setElevatorSetpoint(ElevatorPos setPos, ElevatorSubsystem elevator) {
+		elevator.pos = setPos;
+	}
+
+	public static final ParallelRaceGroup moveElevatorAndIntake(
+			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
+		elevator.pos = pos;
 		return new ParallelRaceGroup(wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator));
 	}
 

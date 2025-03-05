@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorPos;
 
 public class ElevatorIOSim implements ElevatorIO {
 	PIDController pid = new PIDController(simkP, 0, simkD);
@@ -55,9 +56,15 @@ public class ElevatorIOSim implements ElevatorIO {
 		//		&& !(elevatorSim.getPositionMeters() <= setpoint.in(Meter) + 0.01)) {
 		SmartDashboard.putNumber("PIDOUTPUT", pid.calculate(elevatorSim.getPositionMeters(), setpoint.in(Meter)));
 		SmartDashboard.putNumber("PIDCALCSIMELEVATOR", appliedVolts);
-		appliedVolts = MathUtil.clamp(pid.calculate(elevatorSim.getPositionMeters(), setpoint.in(Meter)), -12, 12);
+		appliedVolts = MathUtil.clamp(
+				pid.calculate(elevatorSim.getPositionMeters(), setpoint.in(Meter) + minPosition.in(Meters)), -12, 12);
 		elevatorSim.setInputVoltage(appliedVolts);
 		// }
+	}
+
+	@Override
+	public Distance getTargetPosition(ElevatorPos givenPos) {
+		return (setpoint.plus(minPosition));
 	}
 
 	@Override

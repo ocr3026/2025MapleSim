@@ -13,6 +13,13 @@ import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
 
 public final class DriveConstants {
+
+	/* !! MODULE COLORS !!
+	 * FRONT LEFT : RED
+	 * FRONT RIGHT : BLUE
+	 * REAR LEFT : GREEN
+	 * REAR RIGHT : YELLOW
+	 */
 	public static final LinearVelocity maxSpeed = MetersPerSecond.of(5.0);
 	public static final Frequency odometryFrequency = Hertz.of(100);
 	public static final Distance trackWidth = Inches.of(24.75);

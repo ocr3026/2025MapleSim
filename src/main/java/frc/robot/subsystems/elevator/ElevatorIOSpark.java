@@ -18,6 +18,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.Distance;
 import frc.robot.Constants;
+import frc.robot.commands.ElevatorCommands;
+import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorPos;
 import frc.robot.util.SparkUtil;
 
 public class ElevatorIOSpark implements ElevatorIO {
@@ -97,7 +99,6 @@ public class ElevatorIOSpark implements ElevatorIO {
 		inputs.masterPosition = Meter.of(leadEncoder.getPosition());
 		inputs.masterVelocity = MetersPerSecond.of(leadEncoder.getVelocity());
 
-
 		inputs.followAppliedVolts = followMotor.getAppliedOutput();
 		inputs.followConnected = true;
 		inputs.followCurrentAmps = followMotor.getOutputCurrent();
@@ -122,6 +123,24 @@ public class ElevatorIOSpark implements ElevatorIO {
 	@Override
 	public Distance getPosition() {
 		return Meters.of(leadEncoder.getPosition());
+	}
+
+	@Override
+	public Distance getTargetPosition(ElevatorPos givenPos) {
+		switch (givenPos) {
+			case HIGH:
+				return ((ElevatorCommands.highPOS));
+			case MID:
+				return ((ElevatorCommands.midPOS));
+			case LOW:
+				return ((ElevatorCommands.lowPOS));
+			case INTAKE:
+				return ((ElevatorCommands.intakePOS));
+			case HOME:
+				return ((ElevatorCommands.homePOS));
+			default:
+				return null;
+		}
 	}
 
 	@Override

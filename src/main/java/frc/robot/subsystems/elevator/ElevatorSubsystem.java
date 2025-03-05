@@ -6,11 +6,12 @@ import static frc.robot.subsystems.elevator.ElevatorConstants.elevatorWidth;
 import static frc.robot.subsystems.elevator.ElevatorConstants.softwareLimit;
 
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.commands.ElevatorCommands;
+import frc.robot.Constants;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
@@ -26,10 +27,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 		LOW,
 		HOME,
 		INTAKE;
-
-		// public int wrapHotbar() {
-		// 	if(this)
-		// }
 
 		public ElevatorPos increment() {
 			return switch (this) {
@@ -73,9 +70,13 @@ public class ElevatorSubsystem extends SubsystemBase {
 	}
 
 	public void setPosition(Distance position) {
-		SmartDashboard.putNumber("positionsetpointelevator", (position).in(Meter));
-		timesRAN++;
-		io.setPosition(position);
+		try {
+			SmartDashboard.putNumber("positionsetpointelevator", (position).in(Meter));
+			timesRAN++;
+			io.setPosition(position);
+		} catch (NullPointerException e) {
+			DriverStation.reportError("Position is null", e.getStackTrace());
+		}
 	}
 
 	public void setSpeed(double speed) {
@@ -87,20 +88,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 	}
 
 	public Distance getTargetPosition(ElevatorPos givenPos) {
-		switch (givenPos) {
-			case HIGH:
-				return ((ElevatorCommands.highPOS));
-			case MID:
-				return ((ElevatorCommands.midPOS));
-			case LOW:
-				return ((ElevatorCommands.lowPOS));
-			case INTAKE:
-				return ((ElevatorCommands.intakePOS));
-			case HOME:
-				return ((ElevatorCommands.homePOS));
-			default:
-				return null;
-		}
+		return io.getTargetPosition(givenPos);
 	}
 
 	@Override
@@ -116,10 +104,14 @@ public class ElevatorSubsystem extends SubsystemBase {
 		Logger.processInputs("Elevator", inputs);
 		Logger.recordOutput("Elevator/ElevatorMech2d", mech2d);
 
-		if (io.getPosition().in(Meters) <= softwareLimit.in(Meters)) {
-			io.tick();
+		if (Constants.currentMode != Constants.Mode.SIM) {
+			if (io.getPosition().in(Meters) <= softwareLimit.in(Meters)) {
+				io.tick();
+			} else {
+				io.setSpeed(0);
+			}
 		} else {
-			io.setSpeed(0);
+			io.tick();
 		}
 
 		SmartDashboard.putString(
@@ -132,5 +124,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 					case HOME -> "HOME";
 					default -> throw new Error("john error");
 				});
+
+		SmartDashboard.putString("Elevator.pos", pos.toString());
 	}
 }

@@ -3,6 +3,7 @@ package frc.robot.subsystems.elevator;
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.units.measure.*;
+import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorPos;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface ElevatorIO {
@@ -13,7 +14,6 @@ public interface ElevatorIO {
 		public LinearVelocity masterVelocity = InchesPerSecond.of(0);
 		public double masterAppliedVolts = 0;
 		public double masterCurrentAmps = 0;
-		
 
 		public boolean followConnected = false;
 		public Distance followPosition = Inches.of(0);
@@ -33,4 +33,8 @@ public interface ElevatorIO {
 	public default void tick() {}
 
 	public default void setSpeed(double speed) {}
+
+	public default Distance getTargetPosition(ElevatorPos givenPos) {
+		return Meters.of(0);
+	}
 }

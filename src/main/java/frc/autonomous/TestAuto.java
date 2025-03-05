@@ -22,7 +22,7 @@ public class TestAuto extends AutoBase {
 				.andThen(setStartPose(Paths.TEST_PATH))
 				.andThen(wait(.5).andThen(AutoBuilder.followPath(Paths.TEST_PATH)
 						.andThen(setElevatorPosition(elevatorSubsystem, ElevatorPos.HIGH))
-						.andThen(moveElevatorAndIntake(wristSubsystem, elevatorSubsystem))
+						.andThen(moveElevatorAndIntake(wristSubsystem, elevatorSubsystem, ElevatorPos.HIGH))
 						.andThen(wait(.5))
 						.andThen(AutoBuilder.followPath(Paths.TEST_PATH_2))));
 	}

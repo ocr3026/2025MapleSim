@@ -66,10 +66,10 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer {
 
 	public Drive(
 			GyroIO gyroIO,
-			ModuleIO flModuleIO,
-			ModuleIO frModuleIO,
-			ModuleIO rlModuleIO,
-			ModuleIO rrModuleIO,
+			ModuleIO flModuleIO, // RED
+			ModuleIO frModuleIO, // BLUE
+			ModuleIO rlModuleIO, // GREEN
+			ModuleIO rrModuleIO, // YELLOW
 			Consumer<Pose2d> resetSimulationPoseCallback) {
 		this.gyroIO = gyroIO;
 		this.resetSimulationPoseCallback = resetSimulationPoseCallback;

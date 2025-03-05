@@ -1,6 +1,7 @@
 package frc.robot.subsystems.elevator;
 
 import static edu.wpi.first.units.Units.*;
+import static frc.robot.subsystems.elevator.ElevatorConstants.softwareLimit;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.*;
@@ -12,9 +13,10 @@ public final class ElevatorConstants {
 	public static final Distance elevatorHeight = Inches.of(38);
 	public static final Distance elevatorWidth = Inches.of(19.5);
 
-	public static final Distance minPosition = Inches.of(38), maxPosition = Inches.of(100);
-
 	public static final Distance softwareLimit = Meters.of(0.649);
+
+	public static final Distance minPosition = Inches.of(38),
+			maxPosition = Meters.of(softwareLimit.in(Meter) + minPosition.in(Meter));
 
 	public static final DCMotor gearbox = DCMotor.getNEO(2);
 	public static final double elevatorReduction = 6;

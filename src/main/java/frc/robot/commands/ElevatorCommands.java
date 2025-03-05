@@ -1,20 +1,65 @@
 package frc.robot.commands;
 
 import static edu.wpi.first.units.Units.*;
+import static frc.robot.subsystems.elevator.ElevatorConstants.*;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 
 public class ElevatorCommands {
-	public static final Distance highPOS = Meters.of(0.590);
-	public static final Distance midPOS = Meters.of(0.269);
-	public static final Distance lowPOS = Meters.of(0);
-	public static final Distance homePOS = Meters.of(0.0);
-	public static final Distance intakePOS = Meters.of(0);
+
+	public static Distance highPOS;
+	public static Distance midPOS;
+	public static Distance lowPOS;
+	public static Distance homePOS;
+	public static Distance intakePOS;
+
+	public ElevatorCommands() {
+		switch (Constants.currentMode) {
+			case SIM:
+				SmartDashboard.putString("Current Pos Mode", "SIM positions");
+				highPOS = Meters.of(0.590).plus(minPosition);
+				midPOS = Meters.of(0.269).plus(minPosition);
+				lowPOS = Meters.of(0).plus(minPosition);
+				homePOS = Meters.of(0.0).plus(minPosition);
+				intakePOS = Meters.of(0).plus(minPosition);
+				break;
+
+			case REAL:
+				SmartDashboard.putString("Current Pos Mode", "REAL positions");
+
+				highPOS = Meters.of(0.590);
+				midPOS = Meters.of(0.269);
+				lowPOS = Meters.of(0);
+				homePOS = Meters.of(0.0);
+				intakePOS = Meters.of(0);
+				break;
+
+			case REPLAY:
+				SmartDashboard.putString("Current Pos Mode", "REPLAY positions");
+
+				highPOS = Meters.of(0.590);
+				midPOS = Meters.of(0.269);
+				lowPOS = Meters.of(0);
+				homePOS = Meters.of(0.0);
+				intakePOS = Meters.of(0);
+				break;
+
+			default:
+				highPOS = Meters.of(0.0);
+				midPOS = Meters.of(0.0);
+				lowPOS = Meters.of(0);
+				homePOS = Meters.of(0.0);
+				intakePOS = Meters.of(0);
+				break;
+		}
+	}
 
 	public static Command setPos(ElevatorSubsystem subsystem) {
 		// return Commands.runOnce(() -> subsystem.setPosition(Inches.of(lowPOS)));
