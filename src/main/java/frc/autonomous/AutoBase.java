@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -133,18 +134,6 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				});
 	}
 
-	public static final Command setElevatorPosition(ElevatorSubsystem subsystem, ElevatorPos pos) {
-		return new FunctionalCommand(
-				() -> {},
-				() -> {
-					subsystem.pos = pos;
-				},
-				(interupted) -> {},
-				() -> {
-					return subsystem.pos == pos;
-				});
-	}
-
 	public static final Command followPath(PathPlannerPath path) {
 		return AutoBuilder.followPath(path);
 	}
@@ -153,28 +142,29 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		return Commands.runOnce(() -> elevator.pos = setPos);
 	}
 
-	public static final ParallelRaceGroup moveElevatorAndOuttake(
+	public static final ParallelCommandGroup moveElevatorAndOuttake(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
 		elevator.pos = pos;
-		setElevatorSetpoint(pos, elevator);
 		SmartDashboard.putString("Elevator.pos", elevator.pos.toString());
 
-		return new ParallelRaceGroup(wristOuttake(wrist, elevator), ElevatorCommands.setPos(elevator));
+		return new ParallelCommandGroup(
+				setElevatorSetpoint(pos, elevator),
+				new ParallelRaceGroup(wristOuttake(wrist, elevator), ElevatorCommands.setPos(elevator)));
 	}
 
-	public static final ParallelRaceGroup moveElevatorAndOuttakeHome(
+	public static final ParallelCommandGroup moveElevatorAndOuttakeHome(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
 		elevator.pos = pos;
-		setElevatorSetpoint(pos, elevator);
 		SmartDashboard.putString("Elevator.pos", elevator.pos.toString());
 
-		return new ParallelRaceGroup(wristOuttakeHome(wrist, elevator), ElevatorCommands.setPos(elevator));
+		return new ParallelCommandGroup(
+				setElevatorSetpoint(pos, elevator),
+				new ParallelRaceGroup(wristOuttakeHome(wrist, elevator), ElevatorCommands.setPos(elevator)));
 	}
 
 	public static final ParallelRaceGroup moveElevatorAndIntake(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
 		elevator.pos = pos;
-		setElevatorSetpoint(pos, elevator);
 		return new ParallelRaceGroup(wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator));
 	}
 

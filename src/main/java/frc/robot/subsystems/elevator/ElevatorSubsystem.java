@@ -99,6 +99,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("iolength", io.getPosition().in(Meters));
 		SmartDashboard.putNumber("elevatorsimlength", mechLigament.getLength());
 		SmartDashboard.putNumber("Max Height", softwareLimit.in(Meters));
+		SmartDashboard.putNumber("SetpointNum", io.getTargetPosition(pos).in(Meters));
 
 		io.updateInputs(inputs);
 		Logger.processInputs("Elevator", inputs);

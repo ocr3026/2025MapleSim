@@ -20,46 +20,6 @@ public class ElevatorCommands {
 	public static Distance homePOS;
 	public static Distance intakePOS;
 
-	public ElevatorCommands() {
-		switch (Constants.currentMode) {
-			case SIM:
-				SmartDashboard.putString("Current Pos Mode", "SIM positions");
-				highPOS = Meters.of(0.590).plus(minPosition);
-				midPOS = Meters.of(0.269).plus(minPosition);
-				lowPOS = Meters.of(0).plus(minPosition);
-				homePOS = Meters.of(0.0).plus(minPosition);
-				intakePOS = Meters.of(0).plus(minPosition);
-				break;
-
-			case REAL:
-				SmartDashboard.putString("Current Pos Mode", "REAL positions");
-
-				highPOS = Meters.of(0.590);
-				midPOS = Meters.of(0.269);
-				lowPOS = Meters.of(0);
-				homePOS = Meters.of(0.0);
-				intakePOS = Meters.of(0);
-				break;
-
-			case REPLAY:
-				SmartDashboard.putString("Current Pos Mode", "REPLAY positions");
-
-				highPOS = Meters.of(0.590);
-				midPOS = Meters.of(0.269);
-				lowPOS = Meters.of(0);
-				homePOS = Meters.of(0.0);
-				intakePOS = Meters.of(0);
-				break;
-
-			default:
-				highPOS = Meters.of(0.0);
-				midPOS = Meters.of(0.0);
-				lowPOS = Meters.of(0);
-				homePOS = Meters.of(0.0);
-				intakePOS = Meters.of(0);
-				break;
-		}
-	}
 
 	public static Command setPos(ElevatorSubsystem subsystem) {
 		// return Commands.runOnce(() -> subsystem.setPosition(Inches.of(lowPOS)));

@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.*;
+import static frc.robot.subsystems.elevator.ElevatorConstants.*;
 import static frc.robot.subsystems.wrist.WristConstants.intakeVoltage;
 import static frc.robot.subsystems.wrist.WristConstants.outtakeVoltage;
 
@@ -64,6 +66,44 @@ public class RobotContainer {
 	private final LoggedDashboardChooser<Command> autoChooser;
 
 	public RobotContainer() {
+		switch (Constants.currentMode) {
+			case SIM:
+				SmartDashboard.putString("Current Pos Mode", "SIM positions");
+				ElevatorCommands.highPOS = Meters.of(0.590).plus(minPosition);
+				ElevatorCommands.midPOS = Meters.of(0.269).plus(minPosition);
+				ElevatorCommands.lowPOS = Meters.of(0.2).plus(minPosition);
+				ElevatorCommands.homePOS = Meters.of(0.0).plus(minPosition);
+				ElevatorCommands.intakePOS = Meters.of(0.5).plus(minPosition);
+				break;
+
+			case REAL:
+				SmartDashboard.putString("Current Pos Mode", "REAL positions");
+
+				ElevatorCommands.highPOS = Meters.of(0.590);
+				ElevatorCommands.midPOS = Meters.of(0.269);
+				ElevatorCommands.lowPOS = Meters.of(0);
+				ElevatorCommands.homePOS = Meters.of(0.0);
+				ElevatorCommands.intakePOS = Meters.of(0);
+				break;
+
+			case REPLAY:
+				SmartDashboard.putString("Current Pos Mode", "REPLAY positions");
+
+				ElevatorCommands.highPOS = Meters.of(0.590);
+				ElevatorCommands.midPOS = Meters.of(0.269);
+				ElevatorCommands.lowPOS = Meters.of(0);
+				ElevatorCommands.homePOS = Meters.of(0.0);
+				ElevatorCommands.intakePOS = Meters.of(0);
+				break;
+
+			default:
+				ElevatorCommands.highPOS = Meters.of(0.0);
+				ElevatorCommands.midPOS = Meters.of(0.0);
+				ElevatorCommands.lowPOS = Meters.of(0);
+				ElevatorCommands.homePOS = Meters.of(0.0);
+				ElevatorCommands.intakePOS = Meters.of(0);
+				break;
+		}
 		SmartDashboard.putNumber("delayStartTime", 0);
 		switch (Constants.currentMode) {
 			case REAL:
