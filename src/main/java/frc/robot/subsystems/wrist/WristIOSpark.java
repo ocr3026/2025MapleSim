@@ -9,10 +9,8 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
-import edu.wpi.first.wpilibj.DigitalInput;
-
 import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
 import frc.robot.util.SparkUtil;
 
@@ -28,7 +26,6 @@ public class WristIOSpark implements WristIO {
 		input0 = new DigitalInput(0);
 		input1 = new DigitalInput(1);
 
-		
 		leadMotor = new SparkMax(leadMotorID, MotorType.kBrushless);
 		followMotor = new SparkMax(followMotorID, MotorType.kBrushless);
 		leadEncoder = leadMotor.getEncoder();
@@ -84,7 +81,7 @@ public class WristIOSpark implements WristIO {
 
 	@Override
 	public void setVoltage(double leadVoltage, double followVoltage) {
-		
+
 		leadMotor.setVoltage(leadVoltage);
 		followMotor.setVoltage(followVoltage);
 	}

@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0079657575799312,
-        "y": 6.374564980124986
+        "x": 0.8870901639358637,
+        "y": 6.416547131150018
       },
       "isLocked": false,
       "linkedName": "Feed Left"
     },
     {
       "anchor": {
-        "x": 3.812090163934426,
-        "y": 5.1698258196721305
+        "x": 5.826024590163935,
+        "y": 4.04298155737705
       },
       "prevControl": {
-        "x": 3.7018910580428237,
-        "y": 5.737756504907352
+        "x": 7.887909836065574,
+        "y": 5.313678278688524
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Left Coral Close"
+      "linkedName": "C1"
     }
   ],
   "rotationTargets": [],
@@ -42,10 +42,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -57.03116716338792
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "C1 Paths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -52.97945204932957

@@ -16,8 +16,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.autonomous.Test01Auto;
-import frc.autonomous.TestAuto;
+import frc.autonomous.FL_C3_2C;
 import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.ElevatorCommands;
@@ -143,8 +142,7 @@ public class RobotContainer {
 		// Test03Auto test03Auto = new Test03Auto();
 		autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
-		autoChooser.addOption("TestAuto", TestAuto.returnTest(elevatorSubsystem, wristSubsystem));
-		autoChooser.addOption("Test01Auto", new Test01Auto(elevatorSubsystem, wristSubsystem));
+		autoChooser.addOption("Far Left to C3 2 Coral", new FL_C3_2C(elevatorSubsystem, wristSubsystem));
 
 		autoChooser.addOption("Drive Wheel Radius Characterization6", DriveCommands.wheelRadiusCharacterization(drive));
 		autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
