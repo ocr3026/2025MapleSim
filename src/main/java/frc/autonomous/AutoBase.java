@@ -22,9 +22,6 @@ import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorPos;
 import frc.robot.subsystems.wrist.WristConstants;
 import frc.robot.subsystems.wrist.WristSubsystem;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
 
 public abstract class AutoBase extends SequentialCommandGroup {
 	public static Timer timer = new Timer();
@@ -32,15 +29,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 
 	// public abstract void init();
 
-	public static final List<Class<? extends AutoBase>> autoClasses = new ArrayList<>();
-
-	public static void register (Class<? extends AutoBase> autoClass) {
-		autoClasses.add(autoClass);
-	}
-
-	public static List<Class<? extends AutoBase>> getClasses() {
-		return autoClasses;
-	}
+	public AutoBase(ElevatorSubsystem elevator, WristSubsystem wrist) {}
 
 	public static PathPlannerPath getPathFromFile(String name) {
 		try {

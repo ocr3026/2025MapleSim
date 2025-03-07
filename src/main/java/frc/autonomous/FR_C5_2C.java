@@ -7,6 +7,7 @@ import frc.robot.subsystems.wrist.WristSubsystem;
 public class FR_C5_2C extends AutoBase {
 
 	public FR_C5_2C(ElevatorSubsystem elevator, WristSubsystem wrist) {
+		super(elevator, wrist);
 		addCommands(delayStartTime());
 		addCommands(setStartPose(Paths.FR_C5));
 		addCommands(followPath(Paths.FR_C5));

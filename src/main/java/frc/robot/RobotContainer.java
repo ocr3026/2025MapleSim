@@ -12,9 +12,11 @@ import static frc.robot.subsystems.wrist.WristConstants.outtakeVoltage;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -46,10 +48,14 @@ import frc.robot.subsystems.wrist.WristIO;
 import frc.robot.subsystems.wrist.WristIOSim;
 import frc.robot.subsystems.wrist.WristIOSpark;
 import frc.robot.subsystems.wrist.WristSubsystem;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import org.reflections.Reflections;
 
 public class RobotContainer {
 	private final ElevatorSubsystem elevatorSubsystem;
@@ -182,6 +188,27 @@ public class RobotContainer {
 		// Test03Auto test03Auto = new Test03Auto();
 		autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 		// autoChooser.addOption("Far Left to C3 2 Coral", new FL_C3_2C(elevatorSubsystem, wristSubsystem));
+
+		Reflections reflection = new Reflections("frc.autonomous");
+		Set<Class<? extends AutoBase>> autoClasses = reflection.getSubTypesOf(AutoBase.class);
+
+		for (Class<? extends AutoBase> autoClass : autoClasses) {
+			try {
+				Constructor<? extends AutoBase> constructor =
+						autoClass.getConstructor(ElevatorSubsystem.class, WristSubsystem.class);
+				SequentialCommandGroup command;
+				command = constructor.newInstance(elevatorSubsystem, wristSubsystem);
+				autoChooser.addOption(autoClass.getSimpleName() + "Auto", command);
+			} catch (NoSuchMethodException
+					| SecurityException
+					| InstantiationException
+					| IllegalAccessException
+					| IllegalArgumentException
+					| InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				DriverStation.reportError(e.getMessage(), e.getStackTrace());
+			}
+		}
 
 		autoChooser.addOption("Drive Wheel Radius Characterization6", DriveCommands.wheelRadiusCharacterization(drive));
 		autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
