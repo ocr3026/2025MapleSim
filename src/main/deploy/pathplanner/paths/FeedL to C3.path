@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0079657575799317,
-        "y": 6.374564980124986
+        "x": 2.294672131147541,
+        "y": 7.0878586065573765
       },
       "isLocked": false,
       "linkedName": "Feed Left"
     },
     {
       "anchor": {
-        "x": 3.812090163934426,
-        "y": 5.1698258196721305
+        "x": 5.322540983606557,
+        "y": 5.085911885245901
       },
       "prevControl": {
-        "x": 3.7018910580428237,
-        "y": 5.737756504907352
+        "x": 4.926946721311475,
+        "y": 5.589395491803279
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "C3"
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -57.03116716338792
+    "rotation": -121.66075109663663
   },
   "reversed": false,
   "folder": "C3 Paths",

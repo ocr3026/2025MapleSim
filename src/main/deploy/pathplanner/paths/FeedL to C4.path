@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.837605570477948,
-        "y": 7.182794892084052
+        "x": 1.8438704351123505,
+        "y": 6.300416710263328
       },
       "isLocked": false,
       "linkedName": "Feed Left"
     },
     {
       "anchor": {
-        "x": 3.164754098360655,
-        "y": 4.019006147540983
+        "x": 5.03483606557377,
+        "y": 5.229764344262294
       },
       "prevControl": {
-        "x": 2.8540371806922598,
-        "y": 4.216692876334559
+        "x": 5.226639344262295,
+        "y": 5.925051229508195
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -121.66075109663663
   },
   "reversed": false,
   "folder": "C4 Paths",

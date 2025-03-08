@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.879184426229509,
-        "y": 7.038309426229507
+        "x": 7.313440098767119,
+        "y": 5.875191448467902
       },
       "isLocked": false,
       "linkedName": "Far Left Start"
     },
     {
       "anchor": {
-        "x": 3.812090163934426,
-        "y": 5.1698258196721305
+        "x": 5.322540983606557,
+        "y": 5.085911885245901
       },
       "prevControl": {
-        "x": 4.006118663963492,
-        "y": 5.327473975945748
+        "x": 6.041445230985647,
+        "y": 6.212626214365486
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "C3"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -57.03116716338792
+    "rotation": -121.66075109663663
   },
   "reversed": false,
   "folder": "C3 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.07787287190535587
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

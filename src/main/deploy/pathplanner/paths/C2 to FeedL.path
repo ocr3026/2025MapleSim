@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.154713114754099,
-        "y": 5.1698258196721305
+        "x": 5.814036885245901,
+        "y": 4.186834016393442
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.931789869105977,
-        "y": 4.7939980610671675
+        "x": 6.641188524590164,
+        "y": 5.55343237704918
       },
       "isLocked": false,
       "linkedName": "C2"
@@ -20,8 +20,8 @@
         "y": 7.0878586065573765
       },
       "prevControl": {
-        "x": 1.0329966225084648,
-        "y": 7.185171325962584
+        "x": 3.5723360655737704,
+        "y": 6.28468237704918
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": "C2 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -121.66075109663663
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

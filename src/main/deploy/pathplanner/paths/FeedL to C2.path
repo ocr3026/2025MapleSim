@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.294672131147541,
-        "y": 7.0878586065573765
+        "x": 5.5383196721311485,
+        "y": 5.2897028688524586
       },
       "isLocked": false,
       "linkedName": "Feed Left"
     },
     {
       "anchor": {
-        "x": 5.154713114754099,
-        "y": 5.1698258196721305
+        "x": 5.814036885245901,
+        "y": 4.186834016393442
       },
       "prevControl": {
-        "x": 4.154713114754099,
-        "y": 5.1698258196721305
+        "x": 6.569262295081967,
+        "y": 5.38560450819672
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -121.66075109663663
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "C2 Paths",

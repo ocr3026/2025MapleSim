@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.9269467213114755,
-        "y": 6.28468237704918
+        "x": 7.210187500223258,
+        "y": 6.431178224789912
       },
       "isLocked": false,
-      "linkedName": "Mid Left Start"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.812090163934426,
-        "y": 5.1698258196721305
+        "x": 5.322540983606557,
+        "y": 5.085911885245901
       },
       "prevControl": {
-        "x": 4.651229508196721,
-        "y": 6.224743852459016
+        "x": 6.028548560684395,
+        "y": 4.549726384196828
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "C3"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -57.03116716338792
+    "rotation": -121.66075109663663
   },
   "reversed": false,
   "folder": "C3 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -121.66075109663663
   },
   "useDefaultConstraints": true
 }

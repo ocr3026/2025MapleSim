@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.132684426229508,
+        "y": 7.135809426229507
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.879184426229509,
+        "y": 7.038309426229507
+      },
+      "isLocked": false,
+      "linkedName": "Far Left Start"
+    },
+    {
+      "anchor": {
+        "x": 3.6802254098360656,
+        "y": 5.085911885245901
+      },
+      "prevControl": {
+        "x": 3.8742539098651316,
+        "y": 5.243560041519518
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 1.5,
+    "maxAngularVelocity": 360.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -57.03116716338792
+  },
+  "reversed": false,
+  "folder": "C6 Paths",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}

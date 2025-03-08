@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.210187500223258,
-        "y": 6.431178224789912
+        "x": 7.380847075089413,
+        "y": 6.219034658291103
       },
       "isLocked": false,
       "linkedName": "Mid Left Start"
     },
     {
       "anchor": {
-        "x": 5.154713114754099,
-        "y": 5.1698258196721305
+        "x": 5.814036885245901,
+        "y": 4.186834016393442
       },
       "prevControl": {
-        "x": 5.860720691831936,
-        "y": 4.6336403186230575
+        "x": 5.629669481761185,
+        "y": 4.017988937897491
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -121.66075109663663
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "C2 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
