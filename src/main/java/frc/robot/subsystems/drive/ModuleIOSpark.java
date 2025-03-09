@@ -29,7 +29,7 @@ import java.util.Queue;
 import java.util.function.DoubleSupplier;
 
 public class ModuleIOSpark implements ModuleIO {
-	private Angle magnetOffset;
+	private double magnetOffset;
 
 	private final SparkMax driveMotor;
 	private final SparkMax turnMotor;
@@ -58,7 +58,7 @@ public class ModuleIOSpark implements ModuleIO {
 			case 1 -> frontRightMagnetOffset;
 			case 2 -> rearLeftMagnetOffset;
 			case 3 -> rearRightMagnetOffset;
-			default -> Rotations.of(0);};
+			default -> 0;};
 
 		driveMotor = new SparkMax(
 				switch (module) {
@@ -156,7 +156,7 @@ public class ModuleIOSpark implements ModuleIO {
 		turnController = turnMotor.getClosedLoopController();
 
 		CANcoderConfiguration turnCancoderConfiguration = new CANcoderConfiguration();
-		turnCancoderConfiguration.MagnetSensor.MagnetOffset = magnetOffset.in(Rotations);
+		turnCancoderConfiguration.MagnetSensor.MagnetOffset = magnetOffset;
 		turnCancoderConfiguration.MagnetSensor.SensorDirection = encoderDirection;
 		turnCancoderConfiguration.MagnetSensor.AbsoluteSensorDiscontinuityPoint = absoluteSensorDiscontinuityPoint;
 		turnCancoder.getConfigurator().apply(turnCancoderConfiguration);

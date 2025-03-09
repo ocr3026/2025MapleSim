@@ -42,7 +42,7 @@ public class ElevatorCommands {
 	}
 
 	public static Command runMotors(ElevatorSubsystem subsystem) {
-		return Commands.run(() -> subsystem.setSpeed(MathUtil.clamp(RobotContainer.xbox.getLeftY(), -0, 1) * 12));
+		return Commands.run(() -> subsystem.setSpeed(MathUtil.clamp(RobotContainer.xbox.getLeftY(), -0, 1) * 2));
 	}
 
 	public static Command stopMotors(ElevatorSubsystem subsystem) {

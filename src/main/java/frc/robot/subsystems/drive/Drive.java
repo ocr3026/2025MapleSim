@@ -263,6 +263,6 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer {
 	}
 
 	public AngularVelocity getMaxAngularSpeed() {
-		return RadiansPerSecond.of(maxSpeed.in(MetersPerSecond) / driveBaseRadius.in(Meters));
+		return RadiansPerSecond.of(maxSpeed.in(MetersPerSecond) / driveBaseRadius.in(Meters) / 4);
 	}
 }

@@ -78,10 +78,10 @@ public final class DriveConstants {
 
 	public static final SensorDirectionValue encoderDirection = SensorDirectionValue.Clockwise_Positive;
 	public static final double absoluteSensorDiscontinuityPoint = 0.5;
-	public static final Angle frontLeftMagnetOffset = Rotations.of(-0.038818359375 + 0.5);
-	public static final Angle frontRightMagnetOffset = Rotations.of(0.3544921875 - 0.5);
-	public static final Angle rearLeftMagnetOffset = Rotations.of(0.294189453125 - 0.5);
-	public static final Angle rearRightMagnetOffset = Rotations.of(0.1953125 - 0.5);
+	public static final double frontLeftMagnetOffset = -0.03369140625;
+	public static final double frontRightMagnetOffset = 0.35498046875;
+	public static final double rearLeftMagnetOffset = 0.289306640625;
+	public static final double rearRightMagnetOffset = 0.194580078125;
 	public static final double turnKp = 5, turnKd = 0;
 	public static final double turnSimP = 8, turnSimD = 0;
 	public static final Angle turnPIDMinInput = Degrees.of(-180), turnPIDMaxInput = Degrees.of(180);
