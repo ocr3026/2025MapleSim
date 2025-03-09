@@ -183,11 +183,6 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	}
 
 	public static final class Paths {
-		public static final PathPlannerPath TEST_PATH = getPathFromFile("Test 1");
-		public static final PathPlannerPath TEST_PATH_2 = getPathFromFile("Test 2");
-		public static final PathPlannerPath FEED_TO_CC = getPathFromFile("Feed to Coral Close Path");
-		public static final PathPlannerPath CC_TO_FEED = getPathFromFile("Coral to Feed Path");
-		public static final PathPlannerPath CORAL_FL_PATH = getPathFromFile("Coral Far Left Path");
 
 		// C1 Paths
 		public static final PathPlannerPath FR_C1 = getPathFromFile("FR to C1");
@@ -207,6 +202,11 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		public static final PathPlannerPath L_C2 = getPathFromFile("L to C2");
 		public static final PathPlannerPath C2_FeedL = getPathFromFile("C2 to FeedL");
 		public static final PathPlannerPath FeedL_C2 = getPathFromFile("FeedL to C2");
+		public static final PathPlannerPath FR_C2 = getPathFromFile("FR to C2");
+		public static final PathPlannerPath RM_C2 = getPathFromFile("RM to C2");
+		public static final PathPlannerPath R_C2 = getPathFromFile("R to C2");
+		public static final PathPlannerPath C2_FeedR = getPathFromFile("C2 to FeedR");
+		public static final PathPlannerPath FeedR_C2 = getPathFromFile("FeedR to C2");
 
 		// C3 Paths
 		public static final PathPlannerPath FL_C3 = getPathFromFile("FL to C3");
@@ -216,29 +216,76 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		public static final PathPlannerPath FeedL_C3 = getPathFromFile("FeedL to C3");
 
 		// C4 Paths
-		public static final PathPlannerPath FR_C4 = getPathFromFile("FR to C4");
-		public static final PathPlannerPath RM_C4 = getPathFromFile("RM to C4");
-		public static final PathPlannerPath R_C4 = getPathFromFile("R to C4");
 		public static final PathPlannerPath FL_C4 = getPathFromFile("FL to C4");
 		public static final PathPlannerPath LM_C4 = getPathFromFile("LM to C4");
 		public static final PathPlannerPath L_C4 = getPathFromFile("L to C4");
 		public static final PathPlannerPath C4_FeedL = getPathFromFile("C4 to FeedL");
 		public static final PathPlannerPath FeedL_C4 = getPathFromFile("FeedL to C4");
-		public static final PathPlannerPath C4_FeedR = getPathFromFile("C4 to FeedR");
-		public static final PathPlannerPath FeedR_C4 = getPathFromFile("FeedR to C4");
 
 		// C5 Paths
-		public static final PathPlannerPath FR_C5 = getPathFromFile("FR to C5");
-		public static final PathPlannerPath RM_C5 = getPathFromFile("RM to C5");
-		public static final PathPlannerPath R_C5 = getPathFromFile("R to C5");
-		public static final PathPlannerPath C5_FeedR = getPathFromFile("C5 to FeedR");
-		public static final PathPlannerPath FeedR_C5 = getPathFromFile("FeedR to C5");
+		public static final PathPlannerPath FL_C5 = getPathFromFile("FL to C5");
+		public static final PathPlannerPath LM_C5 = getPathFromFile("LM to C5");
+		public static final PathPlannerPath L_C5 = getPathFromFile("L to C5");
+		public static final PathPlannerPath C5_FeedL = getPathFromFile("C5 to FeedL");
+		public static final PathPlannerPath FeedL_C5 = getPathFromFile("FeedL to C5");
 
 		// C6 Paths
-		public static final PathPlannerPath FR_C6 = getPathFromFile("FR to C6");
-		public static final PathPlannerPath RM_C6 = getPathFromFile("RM to C6");
-		public static final PathPlannerPath R_C6 = getPathFromFile("R to C6");
-		public static final PathPlannerPath C6_FeedR = getPathFromFile("C6 to FeedR");
-		public static final PathPlannerPath FeedR_C6 = getPathFromFile("FeedR to C6");
+		public static final PathPlannerPath FL_C6 = getPathFromFile("FL to C6");
+		public static final PathPlannerPath LM_C6 = getPathFromFile("LM to C6");
+		public static final PathPlannerPath L_C6 = getPathFromFile("L to C6");
+		public static final PathPlannerPath C6_FeedL = getPathFromFile("C6 to FeedL");
+		public static final PathPlannerPath FeedL_C6 = getPathFromFile("FeedL to C6");
+
+		// C7 Paths
+		public static final PathPlannerPath FR_C7 = getPathFromFile("FR to C7");
+		public static final PathPlannerPath RM_C7 = getPathFromFile("RM to C7");
+		public static final PathPlannerPath R_C7 = getPathFromFile("R to C7");
+		public static final PathPlannerPath FL_C7 = getPathFromFile("FL to C7");
+		public static final PathPlannerPath LM_C7 = getPathFromFile("LM to C7");
+		public static final PathPlannerPath L_C7 = getPathFromFile("L to C7");
+		public static final PathPlannerPath C7_FeedL = getPathFromFile("C7 to FeedL");
+		public static final PathPlannerPath FeedL_C7 = getPathFromFile("FeedL to C7");
+		public static final PathPlannerPath C7_FeedR = getPathFromFile("C7 to FeedR");
+		public static final PathPlannerPath FeedR_C7 = getPathFromFile("FeedR to C7");
+
+		// C8 Paths
+		public static final PathPlannerPath FR_C8 = getPathFromFile("FR to C8");
+		public static final PathPlannerPath RM_C8 = getPathFromFile("RM to C8");
+		public static final PathPlannerPath R_C8 = getPathFromFile("R to C8");
+		public static final PathPlannerPath FL_C8 = getPathFromFile("FL to C8");
+		public static final PathPlannerPath LM_C8 = getPathFromFile("LM to C8");
+		public static final PathPlannerPath L_C8 = getPathFromFile("L to C8");
+		public static final PathPlannerPath C8_FeedL = getPathFromFile("C8 to FeedL");
+		public static final PathPlannerPath FeedL_C8 = getPathFromFile("FeedL to C8");
+		public static final PathPlannerPath C8_FeedR = getPathFromFile("C8 to FeedR");
+		public static final PathPlannerPath FeedR_C8 = getPathFromFile("FeedR to C8");
+
+		// C9 Paths
+		public static final PathPlannerPath FR_C9 = getPathFromFile("FR to C9");
+		public static final PathPlannerPath RM_C9 = getPathFromFile("RM to C9");
+		public static final PathPlannerPath R_C9 = getPathFromFile("R to C9");
+		public static final PathPlannerPath C9_FeedR = getPathFromFile("C9 to FeedR");
+		public static final PathPlannerPath FeedR_C9 = getPathFromFile("FeedR to C9");
+
+		// C10 Paths
+		public static final PathPlannerPath FR_C10 = getPathFromFile("FR to C10");
+		public static final PathPlannerPath RM_C10 = getPathFromFile("RM to C10");
+		public static final PathPlannerPath R_C10 = getPathFromFile("R to C10");
+		public static final PathPlannerPath C10_FeedR = getPathFromFile("C10 to FeedR");
+		public static final PathPlannerPath FeedR_C10 = getPathFromFile("FeedR to C10");
+
+		// C11 Paths
+		public static final PathPlannerPath FR_C11 = getPathFromFile("FR to C11");
+		public static final PathPlannerPath RM_C11 = getPathFromFile("RM to C11");
+		public static final PathPlannerPath R_C11 = getPathFromFile("R to C11");
+		public static final PathPlannerPath C11_FeedR = getPathFromFile("C11 to FeedR");
+		public static final PathPlannerPath FeedR_C11 = getPathFromFile("FeedR to C11");
+
+		// C12 Paths
+		public static final PathPlannerPath FR_C12 = getPathFromFile("FR to C12");
+		public static final PathPlannerPath RM_C12 = getPathFromFile("RM to C12");
+		public static final PathPlannerPath R_C12 = getPathFromFile("R to C12");
+		public static final PathPlannerPath C12_FeedR = getPathFromFile("C12 to FeedR");
+		public static final PathPlannerPath FeedR_C12 = getPathFromFile("FeedR to C12");
 	}
 }
