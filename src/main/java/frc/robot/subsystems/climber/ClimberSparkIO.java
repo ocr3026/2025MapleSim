@@ -19,13 +19,16 @@ import frc.robot.util.SparkUtil;
 public class ClimberSparkIO implements ClimberIO {
 	private final SparkMax climbMotor;
 	private final RelativeEncoder climbEncoder;
-	private final SparkClosedLoopController sparkPID;
+	private final SparkClosedLoopController climbSparkPID;
+
+	private final SparkMax trapdoorMotor;
+	private final RelativeEncoder trapdoorEncoder;
 
 	// private double appliedVolts = 0;
 
 	public ClimberSparkIO() {
 		climbMotor = new SparkMax(climbMotorID, MotorType.kBrushless);
-		sparkPID = climbMotor.getClosedLoopController();
+		climbSparkPID = climbMotor.getClosedLoopController();
 		climbEncoder = climbMotor.getEncoder();
 		SparkMaxConfig climbConfig = new SparkMaxConfig();
 		climbConfig.idleMode(IdleMode.kBrake);
@@ -39,36 +42,74 @@ public class ClimberSparkIO implements ClimberIO {
 				.busVoltagePeriodMs(20)
 				.outputCurrentPeriodMs(20);
 		climbConfig.closedLoop.pidf(kP, 0, kD, 0);
+		climbConfig
+				.encoder
+				.positionConversionFactor(encoderPositionFactor)
+				.velocityConversionFactor(encoderVelocityFactor);
 		SparkUtil.tryUntilOk(
 				climbMotor,
 				5,
 				() -> climbMotor.configure(
 						climbConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
+
+		trapdoorMotor = new SparkMax(trapdoorMotorID, MotorType.kBrushless);
+		trapdoorEncoder = trapdoorMotor.getEncoder();
+
+		SparkMaxConfig trapdoorConfig = new SparkMaxConfig();
+		trapdoorConfig.idleMode(IdleMode.kBrake);
+		trapdoorConfig
+				.signals
+				.primaryEncoderPositionAlwaysOn(true)
+				.primaryEncoderPositionPeriodMs((int) (1000.0 / odometryFrequency.in(Hertz)))
+				.primaryEncoderVelocityAlwaysOn(true)
+				.primaryEncoderVelocityPeriodMs(20)
+				.appliedOutputPeriodMs(20)
+				.busVoltagePeriodMs(20)
+				.outputCurrentPeriodMs(20);
+		SparkUtil.tryUntilOk(
+				trapdoorMotor,
+				5,
+				() -> climbMotor.configure(
+						trapdoorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
 	}
 
 	@Override
 	public void updateInputs(ClimberIOInputs inputs) {
-		inputs.appliedVolts = climbMotor.getAppliedOutput();
-		inputs.connected = true;
-		inputs.currentAmps = (climbMotor.getOutputCurrent());
-		inputs.rotationPosition = Degrees.of(climbEncoder.getPosition());
-		inputs.rotationVelocity = DegreesPerSecond.of(climbEncoder.getVelocity());
+		inputs.winchAppliedVolts = climbMotor.getAppliedOutput();
+		inputs.winchConnected = true;
+		inputs.winchCurrentAmps = (climbMotor.getOutputCurrent());
+		inputs.winchPosition = Degrees.of(climbEncoder.getPosition());
+		inputs.winchVelocity = DegreesPerSecond.of(climbEncoder.getVelocity());
+
+		inputs.trapdoorAppliedVolts = trapdoorMotor.getAppliedOutput();
+		inputs.trapdoorConnected = true;
+		inputs.trapdoorCurrentAmps = trapdoorMotor.getOutputCurrent();
+		inputs.trapdoorPosition = Rotations.of(trapdoorEncoder.getPosition());
+		inputs.trapdoorVelocity = RPM.of(trapdoorEncoder.getVelocity());
 	}
 
 	@Override
 	public void setAngularPosition(Angle position) {
-		sparkPID.setReference(position.in(Degrees), ControlType.kPosition);
+		climbSparkPID.setReference(position.in(Degrees), ControlType.kPosition);
 	}
 
 	@Override
 	public void setAngularSpeed(double speed) {
-		// TODO Auto-generated method stub
 		climbMotor.set(speed);
 	}
 
 	@Override
 	public double getPositionInDegrees() {
-		// TODO Auto-generated method stub
 		return climbEncoder.getPosition() * 360;
+	}
+
+	@Override
+	public void runTrapdoor() {
+		trapdoorMotor.setVoltage(openTrapdoorVoltage);
+	}
+
+	@Override
+	public void stopTrapdoor() {
+		trapdoorMotor.setVoltage(0);
 	}
 }

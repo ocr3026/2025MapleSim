@@ -39,11 +39,11 @@ public class ClimberIOFalcon implements ClimberIO {
 
 	@Override
 	public void updateInputs(ClimberIOInputs inputs) {
-		inputs.appliedVolts = climbMotor.getMotorVoltage().getValue().in(Volts);
-		inputs.connected = true;
-		inputs.currentAmps = (climbMotor.getSupplyCurrent().getValue().in(Amps));
-		inputs.rotationPosition = climbMotor.getPosition().getValue();
-		inputs.rotationVelocity = climbMotor.getVelocity().getValue();
+		inputs.winchAppliedVolts = climbMotor.getMotorVoltage().getValue().in(Volts);
+		inputs.winchConnected = true;
+		inputs.winchCurrentAmps = (climbMotor.getSupplyCurrent().getValue().in(Amps));
+		inputs.winchPosition = climbMotor.getPosition().getValue();
+		inputs.winchVelocity = climbMotor.getVelocity().getValue();
 	}
 
 	@Override

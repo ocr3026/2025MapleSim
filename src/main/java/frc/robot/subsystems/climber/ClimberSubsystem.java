@@ -27,6 +27,14 @@ public class ClimberSubsystem extends SubsystemBase {
 		return io.getPositionInDegrees();
 	}
 
+	public void runTrapdoor() {
+		io.runTrapdoor();
+	}
+
+	public void stopTrapdoor() {
+		io.stopTrapdoor();
+	}
+
 	@Override
 	public void periodic() {
 		io.updateInputs(inputs);
