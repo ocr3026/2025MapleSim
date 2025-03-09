@@ -1,9 +1,9 @@
 package frc.robot.subsystems.elevator;
 
-import static edu.wpi.first.units.Units.*;
-
 // what are we doing squadron
 // import static frc.robot.subsystems.elevator.ElevatorConstants.*;
+
+import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.*;
