@@ -1,8 +1,5 @@
 package frc.robot.commands;
 
-import static edu.wpi.first.units.Units.*;
-import static frc.robot.subsystems.elevator.ElevatorConstants.*;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,7 +16,6 @@ public class ElevatorCommands {
 	public static Distance intakePOS;
 
 	public static Command setPos(ElevatorSubsystem subsystem) {
-		// return Commands.runOnce(() -> subsystem.setPosition(Inches.of(lowPOS)));
 
 		return Commands.run(() -> {
 			switch (subsystem.pos) {

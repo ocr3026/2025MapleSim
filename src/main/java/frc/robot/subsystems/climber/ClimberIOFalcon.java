@@ -15,7 +15,7 @@ public class ClimberIOFalcon implements ClimberIO {
 	private final Slot0Configs TalonPID = new Slot0Configs();
 	private final PositionVoltage positionVoltage;
 
-	private double appliedVolts = 0;
+	// private double appliedVolts = 0;
 
 	public ClimberIOFalcon() {
 		climbMotor = new TalonFX(climbMotorID);

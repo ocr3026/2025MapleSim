@@ -62,7 +62,10 @@ public class RobotContainer {
 	private final WristSubsystem wristSubsystem;
 	private final ClimberSubsystem climberSubsystem;
 	private final Drive drive;
+
+	@SuppressWarnings("unused")
 	private final Vision vision;
+
 	private SwerveDriveSimulation driveSimulation = null;
 
 	private final CommandJoystick translationJoystick = new CommandJoystick(0);
@@ -197,6 +200,9 @@ public class RobotContainer {
 				Constructor<? extends AutoBase> constructor =
 						autoClass.getConstructor(ElevatorSubsystem.class, WristSubsystem.class);
 				SequentialCommandGroup command;
+				for (Constructor c : autoClass.getConstructors()) {
+					SmartDashboard.putString("Construcotr", c.getName());
+				}
 				command = constructor.newInstance(elevatorSubsystem, wristSubsystem);
 				autoChooser.addOption(autoClass.getSimpleName() + "Auto", command);
 			} catch (NoSuchMethodException

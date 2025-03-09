@@ -21,7 +21,7 @@ public class ClimberSparkIO implements ClimberIO {
 	private final RelativeEncoder climbEncoder;
 	private final SparkClosedLoopController sparkPID;
 
-	private double appliedVolts = 0;
+	// private double appliedVolts = 0;
 
 	public ClimberSparkIO() {
 		climbMotor = new SparkMax(climbMotorID, MotorType.kBrushless);
