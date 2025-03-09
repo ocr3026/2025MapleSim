@@ -1,8 +1,7 @@
 package frc.robot.subsystems.elevator;
 
-import static frc.robot.subsystems.elevator.ElevatorConstants.*;
-
 import static edu.wpi.first.units.Units.*;
+import static frc.robot.subsystems.elevator.ElevatorConstants.*;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.*;

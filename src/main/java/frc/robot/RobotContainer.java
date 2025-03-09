@@ -202,7 +202,6 @@ public class RobotContainer {
 		Reflections reflection = new Reflections("frc.autonomous");
 		Set<Class<? extends AutoBase>> autoClasses = reflection.getSubTypesOf(AutoBase.class);
 
-
 		for (Class<? extends AutoBase> autoClass : autoClasses) {
 			try {
 
