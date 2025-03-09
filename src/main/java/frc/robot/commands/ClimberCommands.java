@@ -39,4 +39,15 @@ public class ClimberCommands {
 				},
 				climberSubsystem);
 	}
+
+	public static Command runTrapdoor(ClimberSubsystem climberSubsystem) {
+		return Commands.runEnd(
+				() -> {
+					climberSubsystem.runTrapdoor();
+				},
+				() -> {
+					climberSubsystem.stopTrapdoor();
+				},
+				climberSubsystem);
+	}
 }
