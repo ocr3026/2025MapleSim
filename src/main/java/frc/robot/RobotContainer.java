@@ -25,6 +25,9 @@ import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.ElevatorCommands;
 import frc.robot.commands.WristCommands;
+import frc.robot.subsystems.algae.AlgaeIO;
+import frc.robot.subsystems.algae.AlgaeIOSpark;
+import frc.robot.subsystems.algae.AlgaeSubsystem;
 import frc.robot.subsystems.climber.ClimberSparkIO;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drive.Drive;
@@ -61,6 +64,7 @@ public class RobotContainer {
 	private final ElevatorSubsystem elevatorSubsystem;
 	private final WristSubsystem wristSubsystem;
 	private final ClimberSubsystem climberSubsystem;
+	private final AlgaeSubsystem algaeSubsystem;
 	private final Drive drive;
 	private final Vision vision;
 	private SwerveDriveSimulation driveSimulation = null;
@@ -125,6 +129,7 @@ public class RobotContainer {
 
 				elevatorSubsystem = new ElevatorSubsystem(new ElevatorIOSpark());
 				wristSubsystem = new WristSubsystem(new WristIOSpark());
+				algaeSubsystem = new AlgaeSubsystem(new AlgaeIOSpark());
 
 				vision = new Vision(
 						drive, new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
@@ -141,6 +146,7 @@ public class RobotContainer {
 
 				elevatorSubsystem = new ElevatorSubsystem(new ElevatorIOSim());
 				wristSubsystem = new WristSubsystem(new WristIOSim());
+				algaeSubsystem = new AlgaeSubsystem(new AlgaeIO() {});
 
 				SimulatedArena.getInstance().addDriveTrainSimulation(driveSimulation);
 
@@ -178,6 +184,7 @@ public class RobotContainer {
 
 				elevatorSubsystem = new ElevatorSubsystem(new ElevatorIO() {});
 				wristSubsystem = new WristSubsystem(new WristIO() {});
+				algaeSubsystem = new AlgaeSubsystem(new AlgaeIO() {});
 				vision = new Vision(drive, new VisionIO() {}, new VisionIO() {});
 
 				climberSubsystem = new ClimberSubsystem(new ClimberSparkIO());
