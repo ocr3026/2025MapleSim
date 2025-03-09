@@ -202,16 +202,16 @@ public class RobotContainer {
 		Reflections reflection = new Reflections("frc.autonomous");
 		Set<Class<? extends AutoBase>> autoClasses = reflection.getSubTypesOf(AutoBase.class);
 
+
 		for (Class<? extends AutoBase> autoClass : autoClasses) {
 			try {
+
 				Constructor<? extends AutoBase> constructor =
 						autoClass.getConstructor(ElevatorSubsystem.class, WristSubsystem.class);
 				SequentialCommandGroup command;
-				for (Constructor c : autoClass.getConstructors()) {
-					SmartDashboard.putString("Construcotr", c.getName());
-				}
 				command = constructor.newInstance(elevatorSubsystem, wristSubsystem);
-				autoChooser.addOption(autoClass.getSimpleName() + "Auto", command);
+				autoChooser.addOption(autoClass.getSimpleName() + " Auto", command);
+
 			} catch (NoSuchMethodException
 					| SecurityException
 					| InstantiationException
@@ -220,6 +220,21 @@ public class RobotContainer {
 					| InvocationTargetException e) {
 				// TODO Auto-generated catch block
 				DriverStation.reportError(e.getMessage(), e.getStackTrace());
+				Constructor<? extends AutoBase> constructor;
+				try {
+					constructor = autoClass.getConstructor(WristSubsystem.class, ElevatorSubsystem.class);
+					SequentialCommandGroup command;
+					command = constructor.newInstance(wristSubsystem, elevatorSubsystem);
+					autoChooser.addOption(autoClass.getSimpleName() + " Auto", command);
+				} catch (NoSuchMethodException
+						| SecurityException
+						| InstantiationException
+						| IllegalAccessException
+						| IllegalArgumentException
+						| InvocationTargetException e1) {
+					// TODO Auto-generated catch block
+					DriverStation.reportError(e.getMessage(), e.getStackTrace());
+				}
 			}
 		}
 

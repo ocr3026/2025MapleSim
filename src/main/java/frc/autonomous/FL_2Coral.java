@@ -9,7 +9,7 @@ public class FL_2Coral extends AutoBase {
 	/*
 	 * Update paths and elevator heights, this is just a starting position
 	 */
-	public FL_2Coral(ElevatorSubsystem elevator, WristSubsystem wrist) {
+	public FL_2Coral(WristSubsystem wrist, ElevatorSubsystem elevator) {
 		super(elevator, wrist);
 		addCommands(delayStartTime());
 		addCommands(setStartPose(Paths.FL_C3));
