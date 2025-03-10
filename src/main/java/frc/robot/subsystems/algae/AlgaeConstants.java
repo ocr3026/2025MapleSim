@@ -4,5 +4,5 @@ public class AlgaeConstants {
 	public static final int algaeMotorID = 52;
 	public static final int currentLimit = 50;
 
-	public static final double kickoutVoltage = 6;
+	public static final double kickoutVoltage = -6;
 }

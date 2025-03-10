@@ -109,7 +109,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 			if (io.getPosition().in(Meters) <= softwareLimit.in(Meters)) {
 				io.tick();
 			} else {
-				io.setSpeed(0);
+				io.tick();
 			}
 		} else {
 			io.tick();

@@ -28,7 +28,7 @@ import frc.robot.commands.WristCommands;
 import frc.robot.subsystems.algae.AlgaeIO;
 import frc.robot.subsystems.algae.AlgaeIOSpark;
 import frc.robot.subsystems.algae.AlgaeSubsystem;
-import frc.robot.subsystems.climber.ClimberSparkIO;
+import frc.robot.subsystems.climber.ClimberIOSpark;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveConstants;
@@ -82,39 +82,40 @@ public class RobotContainer {
 		switch (Constants.currentMode) {
 			case SIM:
 				SmartDashboard.putString("Current Pos Mode", "SIM positions");
-				ElevatorCommands.highPOS = Meters.of(0.590).plus(minPosition);
-				ElevatorCommands.midPOS = Meters.of(0.269).plus(minPosition);
-				ElevatorCommands.lowPOS = Meters.of(0.2).plus(minPosition);
-				ElevatorCommands.homePOS = Meters.of(0.0).plus(minPosition);
-				ElevatorCommands.intakePOS = Meters.of(0.5).plus(minPosition);
+				ElevatorCommands.highPOS = highPosConst.plus(minPosition);
+				ElevatorCommands.midPOS = midPosConst.plus(minPosition);
+				ElevatorCommands.lowPOS = lowPosConst.plus(minPosition);
+				ElevatorCommands.homePOS = homePosConst.plus(minPosition);
+				ElevatorCommands.intakePOS = intakePosConst.plus(minPosition);
 				break;
 
 			case REAL:
 				SmartDashboard.putString("Current Pos Mode", "REAL positions");
 
-				ElevatorCommands.highPOS = Meters.of(0.590);
-				ElevatorCommands.midPOS = Meters.of(0.269);
-				ElevatorCommands.lowPOS = Meters.of(0);
-				ElevatorCommands.homePOS = Meters.of(0.0);
-				ElevatorCommands.intakePOS = Meters.of(0);
+				ElevatorCommands.highPOS = highPosConst;
+				ElevatorCommands.midPOS = midPosConst;
+				ElevatorCommands.lowPOS = lowPosConst;
+				ElevatorCommands.homePOS = homePosConst;
+				ElevatorCommands.intakePOS = intakePosConst;
 				break;
 
 			case REPLAY:
 				SmartDashboard.putString("Current Pos Mode", "REPLAY positions");
 
-				ElevatorCommands.highPOS = Meters.of(0.590);
-				ElevatorCommands.midPOS = Meters.of(0.269);
-				ElevatorCommands.lowPOS = Meters.of(0);
-				ElevatorCommands.homePOS = Meters.of(0.0);
-				ElevatorCommands.intakePOS = Meters.of(0);
+				ElevatorCommands.highPOS = highPosConst;
+				ElevatorCommands.midPOS = midPosConst;
+				ElevatorCommands.lowPOS = lowPosConst;
+				ElevatorCommands.homePOS = homePosConst;
+				ElevatorCommands.intakePOS = intakePosConst;
 				break;
 
 			default:
-				ElevatorCommands.highPOS = Meters.of(0.0);
-				ElevatorCommands.midPOS = Meters.of(0.0);
-				ElevatorCommands.lowPOS = Meters.of(0);
-				ElevatorCommands.homePOS = Meters.of(0.0);
-				ElevatorCommands.intakePOS = Meters.of(0);
+				ElevatorCommands.highPOS = highPosConst;
+				ElevatorCommands.midPOS = midPosConst;
+				ElevatorCommands.lowPOS = lowPosConst;
+				ElevatorCommands.homePOS = homePosConst;
+				ElevatorCommands.intakePOS = intakePosConst;
+
 				break;
 		}
 		SmartDashboard.putNumber("delayStartTime", 0);
@@ -137,7 +138,7 @@ public class RobotContainer {
 				vision = new Vision(
 						drive, new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
 
-				climberSubsystem = new ClimberSubsystem(new ClimberSparkIO());
+				climberSubsystem = new ClimberSubsystem(new ClimberIOSpark());
 				break;
 			case SIM:
 				SmartDashboard.putString("currentRobotMode", "SIM");
@@ -172,7 +173,7 @@ public class RobotContainer {
 								VisionConstants.robotToCamera1,
 								driveSimulation::getSimulatedDriveTrainPose));
 
-				climberSubsystem = new ClimberSubsystem(new ClimberSparkIO());
+				climberSubsystem = new ClimberSubsystem(new ClimberIOSpark());
 				break;
 			default:
 				SmartDashboard.putString("currentRobotMode", "DEFAULT");
@@ -190,7 +191,7 @@ public class RobotContainer {
 				algaeSubsystem = new AlgaeSubsystem(new AlgaeIO() {});
 				vision = new Vision(drive, new VisionIO() {}, new VisionIO() {});
 
-				climberSubsystem = new ClimberSubsystem(new ClimberSparkIO());
+				climberSubsystem = new ClimberSubsystem(new ClimberIOSpark());
 				break;
 		}
 		// Test01Auto test01Auto = new Test01Auto(elevatorSubsystem, wristSubsystem);
@@ -263,8 +264,6 @@ public class RobotContainer {
 
 		translationJoystick.button(12).onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
 
-		xbox.b().whileTrue(ClimberCommands.moveClimber(climberSubsystem, -.5));
-		xbox.x().whileTrue(ClimberCommands.moveClimber(climberSubsystem, .5));
 		// climberSubsystem.setDefaultCommand(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
 		//	xbox.y().whileTrue(ClimberCommands.autoPositionClimber(climberSubsystem, 45)
 		//	.andThen(ClimberCommands.autoPositionClimber(climberSubsystem, 135)));
@@ -272,15 +271,26 @@ public class RobotContainer {
 		xbox.leftBumper().onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
 		xbox.rightBumper().onTrue(ElevatorCommands.incrementValue(elevatorSubsystem));
 
+		// xbox.y().and(translationJoystick.button(3)).whileTrue(ClimberCommands.runTrapdoor(climberSubsystem));
+
+		// R3
+
+		xbox.button(9).whileTrue(ClimberCommands.moveClimber(climberSubsystem));
+
+		// outtake for home/t1
+		xbox.b().whileTrue(WristCommands.runIntake(wristSubsystem, -3, -0.1));
+		xbox.b().onFalse(WristCommands.runIntake(wristSubsystem, 0, 0));
+
+		xbox.x().whileTrue(algaeSubsystem.runAlgaeManipulator());
+
 		xbox.rightTrigger().whileTrue(WristCommands.runIntake(wristSubsystem, intakeVoltage, intakeVoltage));
 		xbox.rightTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0, 0));
 
 		xbox.leftTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
-		xbox.leftTrigger().onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
+		xbox.leftTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0, 0));
 
-		// TODO: Make outtake command for t1 placing, both in WristCommands and RobotContainer
 		xbox.y().whileTrue(ElevatorCommands.runMotors(elevatorSubsystem));
-		xbox.y().whileFalse(ElevatorCommands.stopMotors(elevatorSubsystem));
+		xbox.y().onFalse(ElevatorCommands.stopMotors(elevatorSubsystem));
 	}
 
 	public Command getAutonomousCommand() {

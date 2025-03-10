@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import static frc.robot.RobotContainer.xbox;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,10 +31,17 @@ public class ClimberCommands {
 				climberSubsystem);
 	}
 
-	public static Command moveClimber(ClimberSubsystem climberSubsystem, double speed) {
+	public static Command moveClimber(ClimberSubsystem climberSubsystem) {
+
 		return Commands.runEnd(
 				() -> {
-					climberSubsystem.setSpeed(speed);
+					if (xbox.getRightY() <= -0.1) {
+						climberSubsystem.setSpeed(-0.9);
+					} else if (xbox.getRightY() >= 0.1) {
+						climberSubsystem.setSpeed(0.9);
+					} else {
+						climberSubsystem.setSpeed(0);
+					}
 				},
 				() -> {
 					climberSubsystem.setSpeed(0);

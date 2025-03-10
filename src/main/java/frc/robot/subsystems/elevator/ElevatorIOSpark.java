@@ -44,7 +44,9 @@ public class ElevatorIOSpark implements ElevatorIO {
 		// pid = new PIDController(kP, kI, kD);
 		SparkMaxConfig followConfig = new SparkMaxConfig();
 		SparkMaxConfig leadConfig = new SparkMaxConfig();
-		followConfig.follow(leadMotorID).idleMode(IdleMode.kCoast);
+		followConfig.follow(leadMotorID).idleMode(IdleMode.kBrake);
+		leadConfig.idleMode(IdleMode.kBrake);
+
 		followConfig.inverted(true);
 		followConfig.smartCurrentLimit(60);
 		leadConfig.smartCurrentLimit(60);
@@ -60,7 +62,6 @@ public class ElevatorIOSpark implements ElevatorIO {
 				.outputCurrentPeriodMs(20);
 		followConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pidf(kP, 0, kD, 0);
 
-		leadConfig.idleMode(IdleMode.kBrake);
 		leadConfig
 				.encoder
 				.velocityConversionFactor(encoderVelocityFactor)
@@ -78,7 +79,7 @@ public class ElevatorIOSpark implements ElevatorIO {
 				.appliedOutputPeriodMs(20)
 				.busVoltagePeriodMs(20)
 				.outputCurrentPeriodMs(20);
-		leadConfig.closedLoop.pidf(kP, kI, kD, 0).maxOutput(0.4).minOutput(-0.01);
+		leadConfig.closedLoop.pidf(kP, kI, kD, 0).maxOutput(0.2).minOutput(-0.1);
 		SparkUtil.tryUntilOk(
 				followMotor,
 				5,
@@ -148,13 +149,13 @@ public class ElevatorIOSpark implements ElevatorIO {
 		if (Meters.of(leadEncoder.getPosition()).in(Inches) <= softwareLimit.in(Inches)) {
 			motorSpeed = speed;
 		} else {
-			motorSpeed = 0;
+			motorSpeed = MathUtil.clamp(speed, -0.1, 0);
 		}
 	}
 
 	@Override
 	public void tick() {
 		// leadMotor.set(MathUtil.clamp(ffValue, 0, 0.4));
-		leadMotor.set(MathUtil.clamp(motorSpeed, 0, 1));
+		leadMotor.set(MathUtil.clamp(motorSpeed, -.1, 1));
 	}
 }

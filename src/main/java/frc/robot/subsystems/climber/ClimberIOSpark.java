@@ -16,7 +16,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.units.measure.Angle;
 import frc.robot.util.SparkUtil;
 
-public class ClimberSparkIO implements ClimberIO {
+public class ClimberIOSpark implements ClimberIO {
 	private final SparkMax climbMotor;
 	private final RelativeEncoder climbEncoder;
 	private final SparkClosedLoopController climbSparkPID;
@@ -26,7 +26,7 @@ public class ClimberSparkIO implements ClimberIO {
 
 	// private double appliedVolts = 0;
 
-	public ClimberSparkIO() {
+	public ClimberIOSpark() {
 		climbMotor = new SparkMax(climbMotorID, MotorType.kBrushless);
 		climbSparkPID = climbMotor.getClosedLoopController();
 		climbEncoder = climbMotor.getEncoder();
@@ -84,7 +84,7 @@ public class ClimberSparkIO implements ClimberIO {
 		inputs.trapdoorAppliedVolts = trapdoorMotor.getAppliedOutput();
 		inputs.trapdoorConnected = true;
 		inputs.trapdoorCurrentAmps = trapdoorMotor.getOutputCurrent();
-		inputs.trapdoorPosition = Rotations.of(trapdoorEncoder.getPosition());
+		inputs.trapdoorPosition = trapdoorEncoder.getPosition();
 		inputs.trapdoorVelocity = RPM.of(trapdoorEncoder.getVelocity());
 	}
 
@@ -105,7 +105,11 @@ public class ClimberSparkIO implements ClimberIO {
 
 	@Override
 	public void runTrapdoor() {
-		trapdoorMotor.setVoltage(openTrapdoorVoltage);
+		if (trapdoorEncoder.getPosition() > -20) {
+			trapdoorMotor.setVoltage(openTrapdoorVoltage);
+		} else {
+			stopTrapdoor();
+		}
 	}
 
 	@Override

@@ -24,4 +24,8 @@ public interface WristIO {
 	public default void updateInputs(WristIOInputs inputs) {}
 
 	public default void setVoltage(double leadVoltage, double followVoltage) {}
+
+	public default boolean getCoralInput() {
+		return false;
+	}
 }

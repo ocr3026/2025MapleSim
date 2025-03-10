@@ -15,8 +15,8 @@ public interface ClimberIO {
 		public double winchCurrentAmps = 0;
 
 		public boolean trapdoorConnected = false;
-		public Angle trapdoorPosition = Degrees.of(0);
-		public AngularVelocity trapdoorVelocity = DegreesPerSecond.of(0);
+		public double trapdoorPosition = 0;
+		public AngularVelocity trapdoorVelocity = RPM.of(0);
 		public double trapdoorAppliedVolts = 0;
 		public double trapdoorCurrentAmps = 0;
 	}

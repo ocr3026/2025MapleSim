@@ -32,4 +32,9 @@ public class WristIOSim implements WristIO {
 	public void setVoltage(double leadVoltage, double followVoltage) {
 		flywheelSim.setInputVoltage(leadVoltage);
 	}
+
+	@Override
+	public boolean getCoralInput() {
+		return true;
+	}
 }
