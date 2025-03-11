@@ -30,7 +30,7 @@ public class WristSubsystem extends SubsystemBase {
 	public void periodic() {
 		io.updateInputs(inputs);
 		Logger.processInputs("Wrist", inputs);
-		getCoralInputBool = ultrasonicDebouncer.calculate(getCoralInput());
+		getCoralInputBool = getCoralInput();
 		SmartDashboard.putBoolean("has coral or summ", getCoralInputBool);
 	}
 }

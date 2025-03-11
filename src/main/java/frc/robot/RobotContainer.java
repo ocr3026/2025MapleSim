@@ -7,7 +7,6 @@ package frc.robot;
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.subsystems.elevator.ElevatorConstants.*;
 import static frc.robot.subsystems.wrist.WristConstants.intakeVoltage;
-import static frc.robot.subsystems.wrist.WristConstants.outtakeVoltage;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -42,6 +41,7 @@ import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.elevator.ElevatorIOSpark;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorPos;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
@@ -286,7 +286,12 @@ public class RobotContainer {
 		xbox.rightTrigger().whileTrue(WristCommands.runIntake(wristSubsystem, intakeVoltage, intakeVoltage));
 		xbox.rightTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0, 0));
 
-		xbox.leftTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
+		// xbox.leftTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
+		// xbox.leftTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0, 0));
+
+		xbox.leftTrigger()
+				.whileTrue(AutoBase.moveElevatorAndIntake(wristSubsystem, elevatorSubsystem, ElevatorPos.INTAKE));
+		xbox.leftTrigger().onTrue(AutoBase.setElevatorSetpoint(ElevatorPos.INTAKE, elevatorSubsystem));
 		xbox.leftTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0, 0));
 
 		xbox.y().whileTrue(ElevatorCommands.runMotors(elevatorSubsystem));

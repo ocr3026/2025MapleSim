@@ -1,6 +1,7 @@
 package frc.autonomous;
 
 import static edu.wpi.first.units.Units.Meters;
+import static frc.robot.subsystems.wrist.WristConstants.outtakeVoltage;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.commands.ElevatorCommands;
+import frc.robot.commands.WristCommands;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorPos;
 import frc.robot.subsystems.wrist.WristConstants;
@@ -200,7 +202,8 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	public static final ParallelRaceGroup moveElevatorAndIntake(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
 		elevator.pos = pos;
-		return new ParallelRaceGroup(wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator));
+		return new ParallelRaceGroup(
+				WristCommands.runOuttake(wrist, outtakeVoltage, outtakeVoltage), ElevatorCommands.setPos(elevator));
 	}
 
 	public static final Command setStartPose(PathPlannerPath path) {

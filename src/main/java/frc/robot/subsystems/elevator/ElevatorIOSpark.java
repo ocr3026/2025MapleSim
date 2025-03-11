@@ -79,7 +79,7 @@ public class ElevatorIOSpark implements ElevatorIO {
 				.appliedOutputPeriodMs(20)
 				.busVoltagePeriodMs(20)
 				.outputCurrentPeriodMs(20);
-		leadConfig.closedLoop.pidf(kP, kI, kD, 0).maxOutput(0.2).minOutput(-0.1);
+		leadConfig.closedLoop.pidf(kP, kI, kD, 0).maxOutput(0.25).minOutput(-0.2);
 		SparkUtil.tryUntilOk(
 				followMotor,
 				5,
@@ -156,6 +156,6 @@ public class ElevatorIOSpark implements ElevatorIO {
 	@Override
 	public void tick() {
 		// leadMotor.set(MathUtil.clamp(ffValue, 0, 0.4));
-		leadMotor.set(MathUtil.clamp(motorSpeed, -.1, 1));
+		leadMotor.set(MathUtil.clamp(motorSpeed, -.25, 1));
 	}
 }
