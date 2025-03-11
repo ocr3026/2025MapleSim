@@ -271,7 +271,7 @@ public class RobotContainer {
 		xbox.leftBumper().onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
 		xbox.rightBumper().onTrue(ElevatorCommands.incrementValue(elevatorSubsystem));
 
-		// xbox.y().and(translationJoystick.button(3)).whileTrue(ClimberCommands.runTrapdoor(climberSubsystem));
+		xbox.y().and(translationJoystick.button(3)).whileTrue(ClimberCommands.runTrapdoor(climberSubsystem));
 
 		// R3
 
@@ -294,8 +294,8 @@ public class RobotContainer {
 		xbox.leftTrigger().onTrue(AutoBase.setElevatorSetpoint(ElevatorPos.INTAKE, elevatorSubsystem));
 		xbox.leftTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0, 0));
 
-		xbox.y().whileTrue(ElevatorCommands.runMotors(elevatorSubsystem));
-		xbox.y().onFalse(ElevatorCommands.stopMotors(elevatorSubsystem));
+		// xbox.y().whileTrue(ElevatorCommands.runMotors(elevatorSubsystem));
+		// xbox.y().onFalse(ElevatorCommands.stopMotors(elevatorSubsystem));
 	}
 
 	public Command getAutonomousCommand() {
