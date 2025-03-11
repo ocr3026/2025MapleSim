@@ -27,6 +27,9 @@ import frc.robot.subsystems.wrist.WristConstants;
 import frc.robot.subsystems.wrist.WristSubsystem;
 
 public abstract class AutoBase extends SequentialCommandGroup {
+	public static boolean seenCoral = false;
+	public static boolean coralInWrist = false;
+	public static boolean coralInPosition = false;
 	public static Timer timer = new Timer();
 	public static int TotalCommandsAdded = 0;
 
@@ -149,6 +152,9 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	public static final Command wristIntake(WristSubsystem wrist, ElevatorSubsystem elevator) {
 		return new FunctionalCommand(
 				() -> {
+					seenCoral = false;
+					coralInWrist = false;
+					coralInPosition = false;
 					timer.reset();
 					wrist.setVoltage(0, 0);
 				},
@@ -158,7 +164,28 @@ public abstract class AutoBase extends SequentialCommandGroup {
 							elevator.getPosition().in(Meters),
 							.05)) {
 						timer.start();
-						wrist.setVoltage(WristConstants.intakeVoltage, WristConstants.intakeVoltage);
+						if (coralInPosition) {
+							return;
+						}
+	
+						if (seenCoral) {
+							if (WristSubsystem.getCoralInputBool && !coralInWrist) {
+								wrist.setVoltage(WristConstants.slowOuttakeVoltage, WristConstants.slowOuttakeVoltage);
+							} else {
+								coralInWrist = true;
+								if (WristSubsystem.getCoralInputBool) {
+									wrist.setVoltage(0, 0);
+									coralInPosition = true;
+								} else {
+									wrist.setVoltage(WristConstants.slowIntakeVoltage, WristConstants.slowIntakeVoltage);
+								}
+							}
+						} else {
+							if (WristSubsystem.getCoralInputBool) {
+								seenCoral = true;
+							}
+							wrist.setVoltage(WristConstants.intakeVoltage, WristConstants.intakeFollowVoltage);
+						}
 					}
 				},
 				(interupted) -> {
@@ -203,7 +230,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
 		elevator.pos = pos;
 		return new ParallelRaceGroup(
-				WristCommands.runOuttake(wrist, outtakeVoltage, outtakeVoltage), ElevatorCommands.setPos(elevator));
+				wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator));
 	}
 
 	public static final Command setStartPose(PathPlannerPath path) {

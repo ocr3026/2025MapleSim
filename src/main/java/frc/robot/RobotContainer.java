@@ -279,12 +279,12 @@ public class RobotContainer {
 
 		// outtake for home/t1
 		xbox.b().whileTrue(WristCommands.runIntake(wristSubsystem, -3, -0.1));
-		xbox.b().onFalse(WristCommands.runIntake(wristSubsystem, 0, 0));
+		xbox.b().onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
 		xbox.x().whileTrue(algaeSubsystem.runAlgaeManipulator());
 
-		xbox.rightTrigger().whileTrue(WristCommands.runIntake(wristSubsystem, intakeVoltage, intakeVoltage));
-		xbox.rightTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0, 0));
+		xbox.rightTrigger().whileTrue(AutoBase.moveElevatorAndOuttake(wristSubsystem, elevatorSubsystem, elevatorSubsystem.pos));
+		xbox.rightTrigger().onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
 		// xbox.leftTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
 		// xbox.leftTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0, 0));
@@ -292,7 +292,7 @@ public class RobotContainer {
 		xbox.leftTrigger()
 				.whileTrue(AutoBase.moveElevatorAndIntake(wristSubsystem, elevatorSubsystem, ElevatorPos.INTAKE));
 		xbox.leftTrigger().onTrue(AutoBase.setElevatorSetpoint(ElevatorPos.INTAKE, elevatorSubsystem));
-		xbox.leftTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0, 0));
+		xbox.leftTrigger().onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
 		// xbox.y().whileTrue(ElevatorCommands.runMotors(elevatorSubsystem));
 		// xbox.y().onFalse(ElevatorCommands.stopMotors(elevatorSubsystem));
