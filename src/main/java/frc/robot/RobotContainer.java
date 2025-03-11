@@ -6,7 +6,6 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.subsystems.elevator.ElevatorConstants.*;
-import static frc.robot.subsystems.wrist.WristConstants.intakeVoltage;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -283,7 +282,8 @@ public class RobotContainer {
 
 		xbox.x().whileTrue(algaeSubsystem.runAlgaeManipulator());
 
-		xbox.rightTrigger().whileTrue(AutoBase.moveElevatorAndOuttake(wristSubsystem, elevatorSubsystem, elevatorSubsystem.pos));
+		xbox.rightTrigger()
+				.whileTrue(AutoBase.moveElevatorAndOuttake(wristSubsystem, elevatorSubsystem, elevatorSubsystem.pos));
 		xbox.rightTrigger().onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
 		// xbox.leftTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
