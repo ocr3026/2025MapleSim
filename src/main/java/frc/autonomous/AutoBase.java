@@ -233,9 +233,10 @@ public abstract class AutoBase extends SequentialCommandGroup {
 
 	public static final Command setStartPose(PathPlannerPath path) {
 		if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {
-			return AutoBuilder.resetOdom(FlippingUtil.flipFieldPose(path.getStartingDifferentialPose()));
+			return AutoBuilder.resetOdom(
+					FlippingUtil.flipFieldPose(path.getStartingHolonomicPose().get()));
 		}
-		return AutoBuilder.resetOdom(path.getStartingDifferentialPose());
+		return AutoBuilder.resetOdom(path.getStartingHolonomicPose().get());
 	}
 
 	public static final Command feedCoralCommand(ElevatorSubsystem elevator, WristSubsystem wrist) {
@@ -244,6 +245,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	}
 
 	public static final class Paths {
+
 
 		// C1 Paths
 		public static final PathPlannerPath FR_C1 = getPathFromFile("FR to C1");
