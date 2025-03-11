@@ -3,6 +3,7 @@ package frc.robot.commands;
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveConstants;
+import frc.robot.subsystems.vision.Vision;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
@@ -38,6 +40,8 @@ public class DriveCommands {
 	private static final double FF_RAMP_RATE = 0.1; // Volts/Sec
 	private static final AngularVelocity WHEEL_RADIUS_MAX_VELOCITY = RadiansPerSecond.of(0.25);
 	private static final AngularAcceleration WHEEL_RADIUS_RAMP_RATE = RadiansPerSecondPerSecond.of(0.05);
+
+	private static final PIDController rotationPID = new PIDController(5, 0, 0);
 
 	private DriveCommands() {}
 
@@ -248,6 +252,15 @@ public class DriveCommands {
 											+ formatter.format(Units.metersToInches(wheelRadius))
 											+ " inches");
 								})));
+	}
+
+	public static Command lookAtCoral(Drive drive, Vision vision) {
+		return Commands.run(
+				() -> {
+					drive.runVelocity(new ChassisSpeeds(
+							0, 0, rotationPID.calculate(vision.getTargetX(0).getRotations())));
+				},
+				drive);
 	}
 
 	private static class WheelRadiusCharacterizationState {

@@ -81,7 +81,7 @@ public final class DriveConstants {
 	public static final double frontLeftMagnetOffset = -0.03369140625 + .5;
 	public static final double frontRightMagnetOffset = 0.35498046875 - .5;
 	public static final double rearLeftMagnetOffset = 0.289306640625 - .5;
- 	public static final double rearRightMagnetOffset = 0.194580078125 - .5;
+	public static final double rearRightMagnetOffset = 0.194580078125 - .5;
 	public static final double turnKp = 5, turnKd = 0;
 	public static final double turnSimP = 8, turnSimD = 0;
 	public static final Angle turnPIDMinInput = Degrees.of(-180), turnPIDMaxInput = Degrees.of(180);

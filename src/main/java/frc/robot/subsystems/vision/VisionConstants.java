@@ -12,11 +12,7 @@ public final class VisionConstants {
 	public static AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
 	public static String camera0Name = "Arducam_OV9281_USB_Camera";
-	public static String camera1Name = "Arducam_OV9281_USB_Camera (1)";
-	public static String camera2Name = "Arducam_OV9281_USB_Camera (2)";
-
 	public static Transform3d robotToCamera0 = new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0));
-	public static Transform3d robotToCamera1 = new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0));
 
 	public static double maxAmbiguity = 0.3;
 	public static double maxZError = 0.75;

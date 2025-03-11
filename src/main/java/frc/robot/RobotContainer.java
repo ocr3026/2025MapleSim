@@ -166,10 +166,6 @@ public class RobotContainer {
 						new VisionIOPhotonVisionSim(
 								VisionConstants.camera0Name,
 								VisionConstants.robotToCamera0,
-								driveSimulation::getSimulatedDriveTrainPose),
-						new VisionIOPhotonVisionSim(
-								VisionConstants.camera1Name,
-								VisionConstants.robotToCamera1,
 								driveSimulation::getSimulatedDriveTrainPose));
 
 				climberSubsystem = new ClimberSubsystem(new ClimberIOSpark());

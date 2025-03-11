@@ -24,7 +24,7 @@ public class VisionIOPhotonVisionSim extends VisionIOPhotonVision {
 			visionSim.addAprilTags(aprilTagFieldLayout);
 		}
 
-		SimCameraProperties cameraProperties = new SimCameraProperties();
+		SimCameraProperties cameraProperties = SimCameraProperties.PERFECT_90DEG();
 		cameraSim = new PhotonCameraSim(camera, cameraProperties);
 		visionSim.addCamera(cameraSim, robotToCamera);
 	}
