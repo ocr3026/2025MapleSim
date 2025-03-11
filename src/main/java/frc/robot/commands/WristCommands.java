@@ -12,11 +12,11 @@ public class WristCommands {
 	static boolean coralInWrist = false;
 	static boolean coralInPosition = false;
 
-	public static Command runIntake(WristSubsystem subsystem, double leadVoltage, double followVoltage) {
+	public static Command runOuttake(WristSubsystem subsystem, double leadVoltage, double followVoltage) {
 		return Commands.run(() -> subsystem.setVoltage(leadVoltage, followVoltage));
 	}
 
-	public static Command runOuttake(WristSubsystem subsystem, double leadVoltage, double followVoltage) {
+	public static Command runIntake(WristSubsystem subsystem, double leadVoltage, double followVoltage) {
 		return Commands.startRun(
 				() -> {
 					seenCoral = false;
