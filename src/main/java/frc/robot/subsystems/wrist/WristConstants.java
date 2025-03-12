@@ -10,7 +10,7 @@ public class WristConstants {
 	public static final DCMotor gearbox = DCMotor.getNeo550(2);
 
 	public static final double intakeVoltage = -3;
-	public static final double intakeFollowVoltage = -.1;
+	public static final double intakeFollowVoltage = -3;
 	public static final double outtakeVoltage = -6;
 	public static final double slowOuttakeVoltage = -2;
 	public static final double slowIntakeVoltage = 0;

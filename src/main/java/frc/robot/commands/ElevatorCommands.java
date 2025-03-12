@@ -12,7 +12,9 @@ import frc.robot.subsystems.wrist.WristSubsystem;
 public class ElevatorCommands {
 
 	public static Distance highPOS;
+	public static Distance midAlgaePOS;
 	public static Distance midPOS;
+	public static Distance lowAlgaePOS;
 	public static Distance lowPOS;
 	public static Distance homePOS;
 	public static Distance intakePOS;
@@ -23,7 +25,9 @@ public class ElevatorCommands {
 				return Commands.run(() -> {
 					switch (subsystem.pos) {
 						case HIGH -> subsystem.setPosition((highPOS));
+						case MIDALGAE -> subsystem.setPosition(midAlgaePOS);
 						case MID -> subsystem.setPosition((midPOS));
+						case LOWALGAE -> subsystem.setPosition(lowAlgaePOS);
 						case LOW -> subsystem.setPosition((lowPOS));
 						case INTAKE -> subsystem.setPosition((intakePOS));
 						case HOME -> subsystem.setPosition((homePOS));
@@ -37,7 +41,9 @@ public class ElevatorCommands {
 			return Commands.run(() -> {
 				switch (subsystem.pos) {
 					case HIGH -> subsystem.setPosition((highPOS));
+					case MIDALGAE -> subsystem.setPosition(midAlgaePOS);
 					case MID -> subsystem.setPosition((midPOS));
+					case LOWALGAE -> subsystem.setPosition(lowAlgaePOS);
 					case LOW -> subsystem.setPosition((lowPOS));
 					case INTAKE -> subsystem.setPosition((intakePOS));
 					case HOME -> subsystem.setPosition((homePOS));

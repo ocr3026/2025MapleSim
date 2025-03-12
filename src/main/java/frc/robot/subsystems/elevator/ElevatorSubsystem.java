@@ -23,7 +23,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 	public enum ElevatorPos {
 		HIGH,
+		MIDALGAE,
 		MID,
+		LOWALGAE,
 		LOW,
 		HOME,
 		INTAKE;
@@ -31,8 +33,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 		public ElevatorPos increment() {
 			return switch (this) {
 				case HIGH -> HOME;
-				case MID -> HIGH;
-				case LOW -> MID;
+				case MIDALGAE -> HIGH;
+				case MID -> MIDALGAE;
+				case LOWALGAE -> MID;
+				case LOW -> LOWALGAE;
 				case INTAKE -> LOW;
 				case HOME -> INTAKE;
 			};
@@ -40,8 +44,11 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 		public ElevatorPos decrement() {
 			return switch (this) {
-				case HIGH -> MID;
-				case MID -> LOW;
+				case HIGH -> MIDALGAE;
+				case MIDALGAE -> MID;
+				case MID -> LOWALGAE;
+				case LOWALGAE -> LOW;
+
 				case LOW -> INTAKE;
 				case INTAKE -> HOME;
 				case HOME -> HIGH;
