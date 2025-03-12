@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants;
 import frc.robot.commands.ElevatorCommands;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorPos;
@@ -72,44 +71,12 @@ public abstract class AutoBase extends SequentialCommandGroup {
 					wrist.setVoltage(0, 0);
 				},
 				() -> {
-					boolean hasCoral = false;
-					if (Constants.currentMode == Constants.Mode.REAL) {
-						if (MathUtil.isNear(
-										elevator.getTargetPosition(elevator.pos).in(Meters),
-										elevator.getPosition().in(Meters),
-										.05)
-								&& wrist.getCoralInput()) {
-							hasCoral = true;
-							timer.start();
-							wrist.setVoltage(WristConstants.outtakeVoltage, WristConstants.outtakeVoltage);
-						} else if (MathUtil.isNear(
-										elevator.getTargetPosition(elevator.pos).in(Meters),
-										elevator.getPosition().in(Meters),
-										.05)
-								&& !wrist.getCoralInput()
-								&& hasCoral) {
-							wrist.setVoltage(0, 0);
-						}
-					} else if (Constants.currentMode == Constants.Mode.SIM) {
-						if (MathUtil.isNear(
-										elevator.getTargetPosition(elevator.pos).in(Meters),
-										elevator.getPosition().in(Meters),
-										.05)
-								&& wrist.getCoralInput()) {
-							hasCoral = true;
-							timer.start();
-							wrist.setVoltage(WristConstants.outtakeVoltage, WristConstants.outtakeVoltage);
-						}
-					} else {
-						if (MathUtil.isNear(
-										elevator.getTargetPosition(elevator.pos).in(Meters),
-										elevator.getPosition().in(Meters),
-										.05)
-								&& wrist.getCoralInput()) {
-							hasCoral = true;
-							timer.start();
-							wrist.setVoltage(WristConstants.outtakeVoltage, WristConstants.outtakeVoltage);
-						}
+					if (MathUtil.isNear(
+							elevator.getTargetPosition(elevator.pos).in(Meters),
+							elevator.getPosition().in(Meters),
+							.03)) {
+						timer.start();
+						wrist.setVoltage(WristConstants.outtakeVoltage, WristConstants.outtakeVoltage);
 					}
 				},
 				(interupted) -> {
@@ -183,7 +150,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 							if (WristSubsystem.getCoralInputBool) {
 								seenCoral = true;
 							}
-							wrist.setVoltage(WristConstants.intakeVoltage, WristConstants.intakeFollowVoltage);
+							wrist.setVoltage(WristConstants.intakeVoltage, WristConstants.intakeVoltage);
 						}
 					}
 				},

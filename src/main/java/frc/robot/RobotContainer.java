@@ -6,6 +6,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.subsystems.elevator.ElevatorConstants.*;
+import static frc.robot.subsystems.wrist.WristConstants.outtakeVoltage;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -247,7 +248,10 @@ public class RobotContainer {
 
 	private void configureBindings() {
 		drive.setDefaultCommand(DriveCommands.joystickDrive(
-				drive, translationJoystick::getY, translationJoystick::getX, () -> -rotationJoystick.getX()));
+				drive,
+				() -> translationJoystick.getY(),
+				() -> translationJoystick.getX(),
+				() -> -rotationJoystick.getX()));
 
 		translationJoystick.button(11).onTrue(Commands.runOnce(drive::stopWithX, drive));
 
@@ -258,6 +262,7 @@ public class RobotContainer {
 				: () -> drive.resetOdometry(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
 
 		translationJoystick.button(12).onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
+		rotationJoystick.button(3).whileTrue(DriveCommands.lookAtCoral(drive, vision));
 
 		// climberSubsystem.setDefaultCommand(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
 		//	xbox.y().whileTrue(ClimberCommands.autoPositionClimber(climberSubsystem, 45)
@@ -278,8 +283,7 @@ public class RobotContainer {
 
 		xbox.x().whileTrue(algaeSubsystem.runAlgaeManipulator());
 
-		xbox.rightTrigger()
-				.whileTrue(AutoBase.moveElevatorAndOuttake(wristSubsystem, elevatorSubsystem, elevatorSubsystem.pos));
+		xbox.rightTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
 		xbox.rightTrigger().onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
 		// xbox.leftTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
