@@ -82,7 +82,10 @@ public class RobotContainer {
 			case SIM:
 				SmartDashboard.putString("Current Pos Mode", "SIM positions");
 				ElevatorCommands.highPOS = highPosConst.plus(minPosition);
+				ElevatorCommands.midAlgaePOS = midAlgaePosConst.plus(minPosition);
+
 				ElevatorCommands.midPOS = midPosConst.plus(minPosition);
+				ElevatorCommands.lowAlgaePOS = lowAlgaePosConst.plus(minPosition);
 				ElevatorCommands.lowPOS = lowPosConst.plus(minPosition);
 				ElevatorCommands.homePOS = homePosConst.plus(minPosition);
 				ElevatorCommands.intakePOS = intakePosConst.plus(minPosition);
@@ -92,7 +95,9 @@ public class RobotContainer {
 				SmartDashboard.putString("Current Pos Mode", "REAL positions");
 
 				ElevatorCommands.highPOS = highPosConst;
+				ElevatorCommands.midAlgaePOS = midAlgaePosConst;
 				ElevatorCommands.midPOS = midPosConst;
+				ElevatorCommands.lowAlgaePOS = lowAlgaePosConst;
 				ElevatorCommands.lowPOS = lowPosConst;
 				ElevatorCommands.homePOS = homePosConst;
 				ElevatorCommands.intakePOS = intakePosConst;
@@ -102,7 +107,9 @@ public class RobotContainer {
 				SmartDashboard.putString("Current Pos Mode", "REPLAY positions");
 
 				ElevatorCommands.highPOS = highPosConst;
+				ElevatorCommands.midAlgaePOS = midAlgaePosConst;
 				ElevatorCommands.midPOS = midPosConst;
+				ElevatorCommands.lowAlgaePOS = lowAlgaePosConst;
 				ElevatorCommands.lowPOS = lowPosConst;
 				ElevatorCommands.homePOS = homePosConst;
 				ElevatorCommands.intakePOS = intakePosConst;
@@ -110,7 +117,9 @@ public class RobotContainer {
 
 			default:
 				ElevatorCommands.highPOS = highPosConst;
+				ElevatorCommands.midAlgaePOS = midAlgaePosConst;
 				ElevatorCommands.midPOS = midPosConst;
+				ElevatorCommands.lowAlgaePOS = lowAlgaePosConst;
 				ElevatorCommands.lowPOS = lowPosConst;
 				ElevatorCommands.homePOS = homePosConst;
 				ElevatorCommands.intakePOS = intakePosConst;

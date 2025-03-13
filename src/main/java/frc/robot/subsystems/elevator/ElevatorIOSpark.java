@@ -131,8 +131,12 @@ public class ElevatorIOSpark implements ElevatorIO {
 		switch (givenPos) {
 			case HIGH:
 				return ((ElevatorCommands.highPOS));
+			case MIDALGAE:
+				return ((ElevatorCommands.midAlgaePOS));
 			case MID:
 				return ((ElevatorCommands.midPOS));
+			case LOWALGAE:
+				return ((ElevatorCommands.lowAlgaePOS));
 			case LOW:
 				return ((ElevatorCommands.lowPOS));
 			case INTAKE:

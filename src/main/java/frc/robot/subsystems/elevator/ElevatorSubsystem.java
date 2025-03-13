@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.ElevatorCommands;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
@@ -100,6 +101,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+		SmartDashboard.putNumber("midAlgaePOS", ElevatorCommands.midAlgaePOS.in(Meters));
+		SmartDashboard.putNumber("lowAlgaePOS", ElevatorCommands.lowAlgaePOS.in(Meters));
+		SmartDashboard.putNumber("midAlgaeConstPOS", ElevatorConstants.midAlgaePosConst.in(Meters));
+		SmartDashboard.putNumber("lowAlgaeConstPOS", ElevatorConstants.lowAlgaePosConst.in(Meters));
 		// timesRAN++;
 		SmartDashboard.putNumber("TIME RAN", timesRAN);
 		mechLigament.setLength(inputs.masterPosition.in(Meter));
@@ -126,7 +131,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 				"CurrentSelectedPos",
 				switch (pos) {
 					case HIGH -> "HIGH";
+					case MIDALGAE -> "MIDALGAE";
 					case MID -> "MID";
+					case LOWALGAE -> "LOWALGAE";
 					case LOW -> "LOW";
 					case INTAKE -> "INTAKE";
 					case HOME -> "HOME";
