@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.Meters;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.FileVersionException;
 import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -22,6 +23,9 @@ import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorPos;
 import frc.robot.subsystems.wrist.WristConstants;
 import frc.robot.subsystems.wrist.WristSubsystem;
+import frc.robot.util.Util;
+import java.io.File;
+import java.util.HashMap;
 
 public abstract class AutoBase extends SequentialCommandGroup {
 	public static boolean seenCoral = false;
@@ -40,6 +44,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 			return path;
 		} catch (Exception e) {
 			DriverStation.reportError("Cant Find Path : " + e.getMessage(), e.getStackTrace());
+			SmartDashboard.putString("PathErrors", "Cant Find Path : " + name);
 			return null;
 		}
 	}
@@ -212,6 +217,29 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	}
 
 	public static final class Paths {
+		public static HashMap<String, PathPlannerPath> paths = new HashMap<>();
+
+		public static void initPaths() {
+			paths.clear();
+			File filePath = new File("./src/main/deploy/pathplanner/paths");
+			File[] files = filePath.listFiles();
+			for (File f : files) {
+				SmartDashboard.putString("filePath", f.getName());
+				SmartDashboard.putString("fileNoPath", Util.removeFileExtention(f.getName()));
+				String s = Util.removeFileExtention(f.getName());
+				try {
+					PathPlannerPath path = getPathFromFile(s);
+					if (path != null) {
+						paths.put(s, path);
+					} else {
+						SmartDashboard.putString("tragic shii 4nem", "that jawn is null");
+						SmartDashboard.putString("nullVal at :", s);
+					}
+				} catch (FileVersionException e) {
+					DriverStation.reportError(e.getMessage(), e.getStackTrace());
+				}
+			}
+		}
 
 		// C1 Paths
 		public static final PathPlannerPath FR_C1 = getPathFromFile("FR to C1");

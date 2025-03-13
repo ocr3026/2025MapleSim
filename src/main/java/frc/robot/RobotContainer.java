@@ -9,6 +9,8 @@ import static frc.robot.subsystems.elevator.ElevatorConstants.*;
 import static frc.robot.subsystems.wrist.WristConstants.outtakeVoltage;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -67,10 +69,10 @@ public class RobotContainer {
 	private final AlgaeSubsystem algaeSubsystem;
 	private final Drive drive;
 
-	@SuppressWarnings("unused")
 	private final Vision vision;
 
 	private SwerveDriveSimulation driveSimulation = null;
+	UsbCamera climbCamera = CameraServer.startAutomaticCapture();
 
 	private final CommandJoystick translationJoystick = new CommandJoystick(0);
 	private final CommandJoystick rotationJoystick = new CommandJoystick(1);
@@ -280,7 +282,7 @@ public class RobotContainer {
 		xbox.leftBumper().onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
 		xbox.rightBumper().onTrue(ElevatorCommands.incrementValue(elevatorSubsystem));
 
-		xbox.y().and(translationJoystick.button(3)).whileTrue(ClimberCommands.runTrapdoor(climberSubsystem));
+		xbox.button(8).and(translationJoystick.button(3)).whileTrue(ClimberCommands.runTrapdoor(climberSubsystem));
 
 		// R3
 
@@ -294,6 +296,9 @@ public class RobotContainer {
 
 		xbox.rightTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
 		xbox.rightTrigger().onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
+
+		xbox.y().whileTrue(WristCommands.runOuttake(wristSubsystem, 2, 2));
+		xbox.y().onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
 		// xbox.leftTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
 		// xbox.leftTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0, 0));
