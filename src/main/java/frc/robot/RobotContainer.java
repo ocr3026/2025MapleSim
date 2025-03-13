@@ -90,7 +90,6 @@ public class RobotContainer {
 				ElevatorCommands.midPOS = midPosConst.plus(minPosition);
 				ElevatorCommands.lowAlgaePOS = lowAlgaePosConst.plus(minPosition);
 				ElevatorCommands.lowPOS = lowPosConst.plus(minPosition);
-				ElevatorCommands.homePOS = homePosConst.plus(minPosition);
 				ElevatorCommands.intakePOS = intakePosConst.plus(minPosition);
 				break;
 
@@ -102,7 +101,6 @@ public class RobotContainer {
 				ElevatorCommands.midPOS = midPosConst;
 				ElevatorCommands.lowAlgaePOS = lowAlgaePosConst;
 				ElevatorCommands.lowPOS = lowPosConst;
-				ElevatorCommands.homePOS = homePosConst;
 				ElevatorCommands.intakePOS = intakePosConst;
 				break;
 
@@ -114,7 +112,6 @@ public class RobotContainer {
 				ElevatorCommands.midPOS = midPosConst;
 				ElevatorCommands.lowAlgaePOS = lowAlgaePosConst;
 				ElevatorCommands.lowPOS = lowPosConst;
-				ElevatorCommands.homePOS = homePosConst;
 				ElevatorCommands.intakePOS = intakePosConst;
 				break;
 
@@ -124,7 +121,6 @@ public class RobotContainer {
 				ElevatorCommands.midPOS = midPosConst;
 				ElevatorCommands.lowAlgaePOS = lowAlgaePosConst;
 				ElevatorCommands.lowPOS = lowPosConst;
-				ElevatorCommands.homePOS = homePosConst;
 				ElevatorCommands.intakePOS = intakePosConst;
 
 				break;
@@ -260,9 +256,9 @@ public class RobotContainer {
 	private void configureBindings() {
 		drive.setDefaultCommand(DriveCommands.joystickDrive(
 				drive,
-				() -> translationJoystick.getY(),
-				() -> translationJoystick.getX(),
-				() -> -rotationJoystick.getX()));
+				() -> -translationJoystick.getY(),
+				() -> -translationJoystick.getX(),
+				() -> rotationJoystick.getX()));
 
 		translationJoystick.button(11).onTrue(Commands.runOnce(drive::stopWithX, drive));
 

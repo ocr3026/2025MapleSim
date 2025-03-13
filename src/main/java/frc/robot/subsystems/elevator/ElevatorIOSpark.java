@@ -141,8 +141,6 @@ public class ElevatorIOSpark implements ElevatorIO {
 				return ((ElevatorCommands.lowPOS));
 			case INTAKE:
 				return ((ElevatorCommands.intakePOS));
-			case HOME:
-				return ((ElevatorCommands.homePOS));
 			default:
 				return null;
 		}

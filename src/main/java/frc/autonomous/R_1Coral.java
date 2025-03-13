@@ -11,6 +11,6 @@ public class R_1Coral extends AutoBase {
 		addCommands(delayStartTime());
 		addCommands(setStartPose(Paths.R_C1));
 		addCommands(followPath(Paths.R_C1));
-		addCommands(moveElevatorAndOuttake(wrist, elevator, ElevatorPos.MID));
+		addCommands(moveElevatorAndOuttake(wrist, elevator, ElevatorPos.INTAKE));
 	}
 }

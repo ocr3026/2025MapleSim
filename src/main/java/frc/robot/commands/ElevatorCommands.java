@@ -16,7 +16,6 @@ public class ElevatorCommands {
 	public static Distance midPOS;
 	public static Distance lowAlgaePOS;
 	public static Distance lowPOS;
-	public static Distance homePOS;
 	public static Distance intakePOS;
 
 	public static Command setPos(ElevatorSubsystem subsystem) {
@@ -30,7 +29,6 @@ public class ElevatorCommands {
 						case LOWALGAE -> subsystem.setPosition(lowAlgaePOS);
 						case LOW -> subsystem.setPosition((lowPOS));
 						case INTAKE -> subsystem.setPosition((intakePOS));
-						case HOME -> subsystem.setPosition((homePOS));
 						default -> throw new Error("NOthing selected");
 					}
 				});
@@ -46,7 +44,6 @@ public class ElevatorCommands {
 					case LOWALGAE -> subsystem.setPosition(lowAlgaePOS);
 					case LOW -> subsystem.setPosition((lowPOS));
 					case INTAKE -> subsystem.setPosition((intakePOS));
-					case HOME -> subsystem.setPosition((homePOS));
 					default -> throw new Error("NOthing selected");
 				}
 			});
