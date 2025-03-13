@@ -49,7 +49,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 				case MIDALGAE -> MID;
 				case MID -> LOWALGAE;
 				case LOWALGAE -> LOW;
-
 				case LOW -> INTAKE;
 				case INTAKE -> HOME;
 				case HOME -> HIGH;
