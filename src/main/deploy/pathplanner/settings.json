@@ -1,11 +1,10 @@
 {
-  "robotWidth": 0.9,
-  "robotLength": 0.9,
+  "robotWidth": 0.9652,
+  "robotLength": 0.9652,
   "holonomicMode": true,
   "pathFolders": [
     "C1 Paths",
     "C10 Paths",
-    "C11 Paths",
     "C12 Paths",
     "C2 Paths",
     "C3 Paths",
@@ -15,7 +14,7 @@
     "C7 Paths",
     "C8 Paths",
     "C9 Paths",
-    "Test Paths"
+    "C11 Paths"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,
