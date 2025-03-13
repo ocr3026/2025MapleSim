@@ -7,6 +7,7 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.FileVersionException;
 import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
@@ -79,9 +80,11 @@ public abstract class AutoBase extends SequentialCommandGroup {
 					if (MathUtil.isNear(
 							elevator.getTargetPosition(elevator.pos).in(Meters),
 							elevator.getPosition().in(Meters),
-							.03)) {
+							.01)) {
 						timer.start();
-						wrist.setVoltage(WristConstants.outtakeVoltage, WristConstants.outtakeVoltage);
+						if (timer.hasElapsed(0.3)) {
+							wrist.setVoltage(WristConstants.outtakeVoltage, WristConstants.outtakeVoltage);
+						}
 					}
 				},
 				(interupted) -> {
@@ -204,16 +207,17 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	}
 
 	public static final Command setStartPose(PathPlannerPath path) {
+		Pose2d holoPose = path.getStartingHolonomicPose().get();
+
 		if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {
-			return AutoBuilder.resetOdom(
-					FlippingUtil.flipFieldPose(path.getStartingHolonomicPose().get()));
+			return AutoBuilder.resetOdom(FlippingUtil.flipFieldPose(holoPose));
 		}
-		return AutoBuilder.resetOdom(path.getStartingHolonomicPose().get());
+		return AutoBuilder.resetOdom(holoPose);
 	}
 
 	public static final Command feedCoralCommand(ElevatorSubsystem elevator, WristSubsystem wrist) {
 		setElevatorSetpoint(ElevatorPos.INTAKE, elevator);
-		return new ParallelRaceGroup(wristOuttake(wrist, elevator), ElevatorCommands.setPos(elevator));
+		return new ParallelRaceGroup(wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator));
 	}
 
 	public static final class Paths {

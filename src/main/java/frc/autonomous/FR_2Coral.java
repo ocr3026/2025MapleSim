@@ -11,11 +11,12 @@ public class FR_2Coral extends AutoBase {
 		addCommands(delayStartTime());
 		addCommands(setStartPose(Paths.FR_C10));
 		addCommands(followPath(Paths.FR_C10));
-		addCommands(moveElevatorAndOuttake(wrist, elevator, ElevatorPos.LOW));
+		addCommands(moveElevatorAndOuttakeHome(wrist, elevator, ElevatorPos.INTAKE));
 		addCommands(followPath(Paths.C10_FeedR));
 		addCommands(setElevatorSetpoint(ElevatorPos.INTAKE, elevator));
+		addCommands(wait(0.5));
 		addCommands(feedCoralCommand(elevator, wrist));
-		addCommands(followPath(Paths.FeedR_C10));
+		addCommands(followPath(Paths.FeedR_C9));
 		addCommands(moveElevatorAndOuttakeHome(wrist, elevator, ElevatorPos.INTAKE));
 	}
 }

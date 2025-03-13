@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.autonomous.AutoBase;
 import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.DriveCommands;
@@ -241,6 +240,7 @@ public class RobotContainer {
 			}
 		}
 
+		/*
 		autoChooser.addOption("Drive Wheel Radius Characterization6", DriveCommands.wheelRadiusCharacterization(drive));
 		autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
 		autoChooser.addOption(
@@ -249,6 +249,7 @@ public class RobotContainer {
 				"Drive SysId (Quasistatic Reverse)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
 		autoChooser.addOption("Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
 		autoChooser.addOption("Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+		*/
 
 		configureBindings();
 	}
@@ -258,7 +259,7 @@ public class RobotContainer {
 				drive,
 				() -> -translationJoystick.getY(),
 				() -> -translationJoystick.getX(),
-				() -> rotationJoystick.getX()));
+				() -> -rotationJoystick.getX()));
 
 		translationJoystick.button(11).onTrue(Commands.runOnce(drive::stopWithX, drive));
 
@@ -328,5 +329,43 @@ public class RobotContainer {
 				"FieldSimulation/Coral", SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
 		Logger.recordOutput(
 				"FieldSimulation/Algae", SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
+	}
+
+	public void onTeamSwitch() {
+		Reflections reflection = new Reflections("frc.autonomous");
+		Set<Class<? extends AutoBase>> autoClasses = reflection.getSubTypesOf(AutoBase.class);
+
+		for (Class<? extends AutoBase> autoClass : autoClasses) {
+			try {
+
+				Constructor<? extends AutoBase> constructor =
+						autoClass.getConstructor(ElevatorSubsystem.class, WristSubsystem.class);
+				SequentialCommandGroup command;
+				command = constructor.newInstance(elevatorSubsystem, wristSubsystem);
+				autoChooser.addOption(autoClass.getSimpleName() + " Auto", command);
+
+			} catch (NoSuchMethodException
+					| SecurityException
+					| InstantiationException
+					| IllegalAccessException
+					| IllegalArgumentException
+					| InvocationTargetException e) {
+				Constructor<? extends AutoBase> constructor;
+				try {
+					constructor = autoClass.getConstructor(WristSubsystem.class, ElevatorSubsystem.class);
+					SequentialCommandGroup command;
+					command = constructor.newInstance(wristSubsystem, elevatorSubsystem);
+					autoChooser.addOption(autoClass.getSimpleName() + " Auto", command);
+				} catch (NoSuchMethodException
+						| SecurityException
+						| InstantiationException
+						| IllegalAccessException
+						| IllegalArgumentException
+						| InvocationTargetException e1) {
+					// TODO Auto-generated catch block
+					DriverStation.reportError(e.getMessage(), e.getStackTrace());
+				}
+			}
+		}
 	}
 }

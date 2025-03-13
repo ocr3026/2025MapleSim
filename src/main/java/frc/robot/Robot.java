@@ -4,11 +4,9 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Threads;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -22,6 +20,8 @@ import org.littletonrobotics.urcl.URCL;
 public class Robot extends LoggedRobot {
 	private Command autonomousCommand;
 	private final RobotContainer robotContainer;
+
+	DriverStation.Alliance lastAlliance = Alliance.Blue;
 
 	public Robot() {
 		Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
@@ -73,12 +73,6 @@ public class Robot extends LoggedRobot {
 		CommandScheduler.getInstance().run();
 
 		Threads.setCurrentThreadPriority(false, 10);
-
-		Logger.recordOutput("RobotPose", new Pose2d());
-		Logger.recordOutput("ZeroedComponenetPoses", new Pose3d[] {new Pose3d()});
-		Logger.recordOutput("FinalComponenetPoses", new Pose3d[] {
-			new Pose3d(-0.238, 0.0, 0.298, new Rotation3d(0.0, Math.sin(Timer.getTimestamp()) - 1.0, 0.0))
-		});
 	}
 
 	@Override
@@ -89,6 +83,11 @@ public class Robot extends LoggedRobot {
 	@Override
 	public void disabledPeriodic() {
 		autonomousCommand = robotContainer.getAutonomousCommand();
+
+		if (DriverStation.getAlliance().orElse(Alliance.Blue) != lastAlliance) {
+			robotContainer.onTeamSwitch();
+			lastAlliance = DriverStation.getAlliance().orElse(Alliance.Blue);
+		}
 	}
 
 	@Override
