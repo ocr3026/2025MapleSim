@@ -316,5 +316,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		public static final PathPlannerPath R_C12 = getPathFromFile("R to C12");
 		public static final PathPlannerPath C12_FeedR = getPathFromFile("C12 to FeedR");
 		public static final PathPlannerPath FeedR_C12 = getPathFromFile("FeedR to C12");
+
+		public static final PathPlannerPath driveForwardSlow = getPathFromFile("Drive forward slow");
 	}
 }
