@@ -9,6 +9,8 @@ import static frc.robot.subsystems.elevator.ElevatorConstants.*;
 import static frc.robot.subsystems.wrist.WristConstants.outtakeVoltage;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -18,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.autonomous.AutoBase;
 import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.DriveCommands;
@@ -67,10 +68,10 @@ public class RobotContainer {
 	private final AlgaeSubsystem algaeSubsystem;
 	private final Drive drive;
 
-	@SuppressWarnings("unused")
 	private final Vision vision;
 
 	private SwerveDriveSimulation driveSimulation = null;
+	UsbCamera climbCamera = CameraServer.startAutomaticCapture();
 
 	private final CommandJoystick translationJoystick = new CommandJoystick(0);
 	private final CommandJoystick rotationJoystick = new CommandJoystick(1);
@@ -88,7 +89,6 @@ public class RobotContainer {
 				ElevatorCommands.midPOS = midPosConst.plus(minPosition);
 				ElevatorCommands.lowAlgaePOS = lowAlgaePosConst.plus(minPosition);
 				ElevatorCommands.lowPOS = lowPosConst.plus(minPosition);
-				ElevatorCommands.homePOS = homePosConst.plus(minPosition);
 				ElevatorCommands.intakePOS = intakePosConst.plus(minPosition);
 				break;
 
@@ -100,7 +100,6 @@ public class RobotContainer {
 				ElevatorCommands.midPOS = midPosConst;
 				ElevatorCommands.lowAlgaePOS = lowAlgaePosConst;
 				ElevatorCommands.lowPOS = lowPosConst;
-				ElevatorCommands.homePOS = homePosConst;
 				ElevatorCommands.intakePOS = intakePosConst;
 				break;
 
@@ -112,7 +111,6 @@ public class RobotContainer {
 				ElevatorCommands.midPOS = midPosConst;
 				ElevatorCommands.lowAlgaePOS = lowAlgaePosConst;
 				ElevatorCommands.lowPOS = lowPosConst;
-				ElevatorCommands.homePOS = homePosConst;
 				ElevatorCommands.intakePOS = intakePosConst;
 				break;
 
@@ -122,7 +120,6 @@ public class RobotContainer {
 				ElevatorCommands.midPOS = midPosConst;
 				ElevatorCommands.lowAlgaePOS = lowAlgaePosConst;
 				ElevatorCommands.lowPOS = lowPosConst;
-				ElevatorCommands.homePOS = homePosConst;
 				ElevatorCommands.intakePOS = intakePosConst;
 
 				break;
@@ -243,6 +240,7 @@ public class RobotContainer {
 			}
 		}
 
+		/*
 		autoChooser.addOption("Drive Wheel Radius Characterization6", DriveCommands.wheelRadiusCharacterization(drive));
 		autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
 		autoChooser.addOption(
@@ -251,6 +249,7 @@ public class RobotContainer {
 				"Drive SysId (Quasistatic Reverse)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
 		autoChooser.addOption("Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
 		autoChooser.addOption("Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+		*/
 
 		configureBindings();
 	}
@@ -258,8 +257,8 @@ public class RobotContainer {
 	private void configureBindings() {
 		drive.setDefaultCommand(DriveCommands.joystickDrive(
 				drive,
-				() -> translationJoystick.getY(),
-				() -> translationJoystick.getX(),
+				() -> -translationJoystick.getY(),
+				() -> -translationJoystick.getX(),
 				() -> -rotationJoystick.getX()));
 
 		translationJoystick.button(11).onTrue(Commands.runOnce(drive::stopWithX, drive));
@@ -280,7 +279,7 @@ public class RobotContainer {
 		xbox.leftBumper().onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
 		xbox.rightBumper().onTrue(ElevatorCommands.incrementValue(elevatorSubsystem));
 
-		xbox.y().and(translationJoystick.button(3)).whileTrue(ClimberCommands.runTrapdoor(climberSubsystem));
+		xbox.button(8).and(translationJoystick.button(3)).whileTrue(ClimberCommands.runTrapdoor(climberSubsystem));
 
 		// R3
 
@@ -294,6 +293,9 @@ public class RobotContainer {
 
 		xbox.rightTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
 		xbox.rightTrigger().onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
+
+		xbox.y().whileTrue(WristCommands.runOuttake(wristSubsystem, 2, 2));
+		xbox.y().onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
 		// xbox.leftTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
 		// xbox.leftTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0, 0));
@@ -327,5 +329,43 @@ public class RobotContainer {
 				"FieldSimulation/Coral", SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
 		Logger.recordOutput(
 				"FieldSimulation/Algae", SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
+	}
+
+	public void onTeamSwitch() {
+		Reflections reflection = new Reflections("frc.autonomous");
+		Set<Class<? extends AutoBase>> autoClasses = reflection.getSubTypesOf(AutoBase.class);
+
+		for (Class<? extends AutoBase> autoClass : autoClasses) {
+			try {
+
+				Constructor<? extends AutoBase> constructor =
+						autoClass.getConstructor(ElevatorSubsystem.class, WristSubsystem.class);
+				SequentialCommandGroup command;
+				command = constructor.newInstance(elevatorSubsystem, wristSubsystem);
+				autoChooser.addOption(autoClass.getSimpleName() + " Auto", command);
+
+			} catch (NoSuchMethodException
+					| SecurityException
+					| InstantiationException
+					| IllegalAccessException
+					| IllegalArgumentException
+					| InvocationTargetException e) {
+				Constructor<? extends AutoBase> constructor;
+				try {
+					constructor = autoClass.getConstructor(WristSubsystem.class, ElevatorSubsystem.class);
+					SequentialCommandGroup command;
+					command = constructor.newInstance(wristSubsystem, elevatorSubsystem);
+					autoChooser.addOption(autoClass.getSimpleName() + " Auto", command);
+				} catch (NoSuchMethodException
+						| SecurityException
+						| InstantiationException
+						| IllegalAccessException
+						| IllegalArgumentException
+						| InvocationTargetException e1) {
+					// TODO Auto-generated catch block
+					DriverStation.reportError(e.getMessage(), e.getStackTrace());
+				}
+			}
+		}
 	}
 }

@@ -28,38 +28,34 @@ public class ElevatorSubsystem extends SubsystemBase {
 		MID,
 		LOWALGAE,
 		LOW,
-		HOME,
 		INTAKE;
 
 		public ElevatorPos increment() {
 			return switch (this) {
-				case HIGH -> HOME;
-				case MIDALGAE -> HIGH;
-				case MID -> MIDALGAE;
-				case LOWALGAE -> MID;
-				case LOW -> LOWALGAE;
-				case INTAKE -> LOW;
-				case HOME -> INTAKE;
+				case HIGH -> INTAKE;
+				case MIDALGAE -> LOW;
+				case MID -> HIGH;
+				case LOWALGAE -> MIDALGAE;
+				case LOW -> MID;
+				case INTAKE -> LOWALGAE;
 			};
 		}
 
 		public ElevatorPos decrement() {
 			return switch (this) {
-				case HIGH -> MIDALGAE;
-				case MIDALGAE -> MID;
-				case MID -> LOWALGAE;
-				case LOWALGAE -> LOW;
-
-				case LOW -> INTAKE;
-				case INTAKE -> HOME;
-				case HOME -> HIGH;
+				case HIGH -> MID;
+				case MIDALGAE -> LOWALGAE;
+				case MID -> LOW;
+				case LOWALGAE -> INTAKE;
+				case LOW -> MIDALGAE;
+				case INTAKE -> HIGH;
 			};
 		}
 	}
 
 	private final ElevatorIO io;
 	private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
-	public ElevatorPos pos = ElevatorPos.HOME;
+	public ElevatorPos pos = ElevatorPos.INTAKE;
 
 	private LoggedMechanism2d mech2d;
 	public static LoggedMechanismRoot2d mechRoot;
@@ -136,7 +132,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 					case LOWALGAE -> "LOWALGAE";
 					case LOW -> "LOW";
 					case INTAKE -> "INTAKE";
-					case HOME -> "HOME";
 					default -> throw new Error("john error");
 				});
 
