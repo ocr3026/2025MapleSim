@@ -37,9 +37,9 @@ public class ClimberCommands {
 				() -> {
 					if (xbox.getRightY() <= -0.1) {
 
-						climberSubsystem.setSpeed(-0.9);
+						climberSubsystem.setSpeed(-1);
 					} else if (xbox.getRightY() >= 0.1) {
-						climberSubsystem.setSpeed(0.9);
+						climberSubsystem.setSpeed(1);
 					} else {
 						climberSubsystem.setSpeed(0);
 					}
