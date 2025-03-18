@@ -37,7 +37,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 				case MID -> HIGH;
 				case LOWALGAE -> MIDALGAE;
 				case LOW -> MID;
-				case INTAKE -> LOWALGAE;
+				case INTAKE -> LOW;
 			};
 		}
 
@@ -47,7 +47,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 				case MIDALGAE -> LOWALGAE;
 				case MID -> LOW;
 				case LOWALGAE -> INTAKE;
-				case LOW -> MIDALGAE;
+				case LOW -> INTAKE;
 				case INTAKE -> HIGH;
 			};
 		}

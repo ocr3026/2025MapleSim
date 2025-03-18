@@ -5,11 +5,9 @@ import static edu.wpi.first.units.Units.Meters;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.FileVersionException;
-import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -97,7 +95,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				});
 	}
 
-	public static final Command wristOuttakeHome(WristSubsystem wrist, ElevatorSubsystem elevator) {
+	public static final Command wristOuttakeHomeRight(WristSubsystem wrist, ElevatorSubsystem elevator) {
 		return new FunctionalCommand(
 				() -> {
 					timer.reset();
@@ -109,7 +107,32 @@ public abstract class AutoBase extends SequentialCommandGroup {
 							elevator.getPosition().in(Meters),
 							.05)) {
 						timer.start();
-						wrist.setVoltage(WristConstants.outtakeVoltage, 0.1);
+						wrist.setVoltage(-3, -0.5);
+					}
+				},
+				(interupted) -> {
+					wrist.setVoltage(0, 0);
+					timer.stop();
+					timer.reset();
+				},
+				() -> {
+					return timer.hasElapsed(1.5);
+				});
+	}
+
+	public static final Command wristOuttakeHomeLeft(WristSubsystem wrist, ElevatorSubsystem elevator) {
+		return new FunctionalCommand(
+				() -> {
+					timer.reset();
+					wrist.setVoltage(0, 0);
+				},
+				() -> {
+					if (MathUtil.isNear(
+							elevator.getTargetPosition(elevator.pos).in(Meters),
+							elevator.getPosition().in(Meters),
+							.05)) {
+						timer.start();
+						wrist.setVoltage(-0.3, -3);
 					}
 				},
 				(interupted) -> {
@@ -190,14 +213,24 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				new ParallelRaceGroup(wristOuttake(wrist, elevator), ElevatorCommands.setPos(elevator)));
 	}
 
-	public static final ParallelCommandGroup moveElevatorAndOuttakeHome(
+	public static final ParallelCommandGroup moveElevatorAndOuttakeHomeRight(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
 		elevator.pos = pos;
 		SmartDashboard.putString("Elevator.pos", elevator.pos.toString());
 
 		return new ParallelCommandGroup(
 				setElevatorSetpoint(pos, elevator),
-				new ParallelRaceGroup(wristOuttakeHome(wrist, elevator), ElevatorCommands.setPos(elevator)));
+				new ParallelRaceGroup(wristOuttakeHomeRight(wrist, elevator), ElevatorCommands.setPos(elevator)));
+	}
+
+	public static final ParallelCommandGroup moveElevatorAndOuttakeHomeLeft(
+			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
+		elevator.pos = pos;
+		SmartDashboard.putString("Elevator.pos", elevator.pos.toString());
+
+		return new ParallelCommandGroup(
+				setElevatorSetpoint(pos, elevator),
+				new ParallelRaceGroup(wristOuttakeHomeLeft(wrist, elevator), ElevatorCommands.setPos(elevator)));
 	}
 
 	public static final ParallelRaceGroup moveElevatorAndIntake(
@@ -209,19 +242,21 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	public static final Command setStartPose(PathPlannerPath path) {
 		Pose2d holoPose = path.getStartingHolonomicPose().get();
 
-		if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {
-			return AutoBuilder.resetOdom(FlippingUtil.flipFieldPose(holoPose));
-		}
+		// if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {
+		// 	return AutoBuilder.resetOdom(FlippingUtil.flipFieldPose(holoPose));
+		// }
 		return AutoBuilder.resetOdom(holoPose);
 	}
 
 	public static final Command feedCoralCommand(ElevatorSubsystem elevator, WristSubsystem wrist) {
-		setElevatorSetpoint(ElevatorPos.INTAKE, elevator);
-		return new ParallelRaceGroup(wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator));
+		return new ParallelCommandGroup(
+				setElevatorSetpoint(ElevatorPos.INTAKE, elevator),
+				new ParallelRaceGroup(wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator)));
 	}
 
 	public static final class Paths {
 		public static HashMap<String, PathPlannerPath> paths = new HashMap<>();
+		public static PathPlannerPath pathsArray[];
 
 		public static void initPaths() {
 			paths.clear();

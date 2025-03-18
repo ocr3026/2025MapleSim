@@ -289,7 +289,7 @@ public class RobotContainer {
 		xbox.button(9).whileTrue(ClimberCommands.moveClimber(climberSubsystem));
 
 		// outtake for home/t1
-		xbox.b().whileTrue(WristCommands.runIntake(wristSubsystem, -3, -0.1));
+		xbox.b().whileTrue(WristCommands.runIntake(wristSubsystem, -3, -0.5));
 		xbox.b().onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
 		xbox.x().whileTrue(algaeSubsystem.runAlgaeManipulator());
