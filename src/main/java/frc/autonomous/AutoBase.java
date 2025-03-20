@@ -25,6 +25,7 @@ import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.util.Util;
 import java.io.File;
 import java.util.HashMap;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public abstract class AutoBase extends SequentialCommandGroup {
 	public static boolean seenCoral = false;
@@ -251,15 +252,17 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	public static final Command feedCoralCommand(ElevatorSubsystem elevator, WristSubsystem wrist) {
 		return new ParallelCommandGroup(
 				setElevatorSetpoint(ElevatorPos.INTAKE, elevator),
-				new ParallelRaceGroup(wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator)));
+				moveElevatorAndIntake(wrist, elevator, ElevatorPos.INTAKE));
 	}
 
 	public static final class Paths {
+
 		public static HashMap<String, PathPlannerPath> paths = new HashMap<>();
 		public static PathPlannerPath pathsArray[];
 
 		public static void initPaths() {
 			paths.clear();
+
 			File filePath = new File("./src/main/deploy/pathplanner/paths");
 			File[] files = filePath.listFiles();
 			for (File f : files) {
@@ -276,6 +279,50 @@ public abstract class AutoBase extends SequentialCommandGroup {
 					}
 				} catch (FileVersionException e) {
 					DriverStation.reportError(e.getMessage(), e.getStackTrace());
+				}
+			}
+		}
+		/*
+		 * Choose paths based on what coral spots you want to go to, auto get the path to the feed and then the next path will be from the feed to the coral
+		 * Ex: First Path chooses starting pos AND coral spot
+		 * Second Path only chooses coral, same with third.
+		 */
+		public static void initAutoFactory() {
+			final LoggedDashboardChooser<PathPlannerPath> firstPathChooser =
+					new LoggedDashboardChooser<>("Choose First Path");
+			final LoggedDashboardChooser<PathPlannerPath> secondPathChooser =
+					new LoggedDashboardChooser<>("Choose Second Path");
+			for (PathPlannerPath p : paths.values()) {
+				SmartDashboard.putBoolean("contains HI-C", p.name.contains("C"));
+				if (p.name.contains("C")) {
+					int index = p.name.indexOf("C");
+					if (index == -1) {
+						index = p.name.indexOf("c");
+					}
+					SmartDashboard.putNumber("index", index);
+					if (index <= 1) {
+						secondPathChooser.addOption(p.name, p);
+					}
+				}
+				if (p.name.contains("R")) {
+					int index = p.name.indexOf("R");
+					if (index <= 2) {
+						firstPathChooser.addOption(p.name, p);
+					}
+				} else if (p.name.contains("L")) {
+					int index = p.name.indexOf("L");
+					if (index <= 2) {
+						firstPathChooser.addOption(p.name, p);
+					}
+				} else if (p.name.contains("C")) {
+					int index = p.name.indexOf("C");
+					if (index == -1) {
+						index = p.name.indexOf("c");
+					}
+					SmartDashboard.putNumber("index", index);
+					if (index <= 1) {
+						secondPathChooser.addOption(p.name, p);
+					}
 				}
 			}
 		}
