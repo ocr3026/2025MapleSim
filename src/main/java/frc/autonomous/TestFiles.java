@@ -1,6 +1,5 @@
 package frc.autonomous;
 
-import com.pathplanner.lib.path.PathPlannerPath;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
 
