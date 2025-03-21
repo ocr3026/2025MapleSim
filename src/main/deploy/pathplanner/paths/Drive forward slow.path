@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.085,
-        "y": 0.7583504098360652
+        "x": 7.192622950819672,
+        "y": 0.8063012295081955
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.334458619732443,
-        "y": 0.7747941637014293
+        "x": 7.442081570552115,
+        "y": 0.8227449833735596
       },
       "isLocked": false,
       "linkedName": "Far Right Start"
@@ -45,7 +45,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Test Paths",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0
