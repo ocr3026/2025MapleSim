@@ -28,6 +28,7 @@ import frc.robot.commands.WristCommands;
 import frc.robot.subsystems.algae.AlgaeIO;
 import frc.robot.subsystems.algae.AlgaeIOSpark;
 import frc.robot.subsystems.algae.AlgaeSubsystem;
+import frc.robot.subsystems.climber.ClimberIOFalcon;
 import frc.robot.subsystems.climber.ClimberIOSpark;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drive.Drive;
@@ -144,7 +145,7 @@ public class RobotContainer {
 				vision = new Vision(
 						drive, new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
 
-				climberSubsystem = new ClimberSubsystem(new ClimberIOSpark());
+				climberSubsystem = new ClimberSubsystem(new ClimberIOFalcon());
 				break;
 			case SIM:
 				SmartDashboard.putString("currentRobotMode", "SIM");
