@@ -1,6 +1,5 @@
 package frc.robot.subsystems.climber;
 
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
@@ -14,17 +13,9 @@ public class ClimberSubsystem extends SubsystemBase {
 		this.io = climberIO;
 	}
 
-	public void setPosition(Angle position) {
-		io.setAngularPosition(position);
-	}
-
 	public void setSpeed(double speed) {
 		io.setAngularSpeed(speed);
 		SmartDashboard.putNumber("climberSpeed", speed);
-	}
-
-	public double getPositionInDegrees() {
-		return io.getPositionInDegrees();
 	}
 
 	public void runTrapdoor() {
@@ -39,6 +30,5 @@ public class ClimberSubsystem extends SubsystemBase {
 	public void periodic() {
 		io.updateInputs(inputs);
 		Logger.processInputs("Climber", inputs);
-		SmartDashboard.putNumber("ClimberPos", getPositionInDegrees());
 	}
 }

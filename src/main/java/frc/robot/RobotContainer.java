@@ -203,6 +203,9 @@ public class RobotContainer {
 		autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 		// autoChooser.addOption("Far Left to C3 2 Coral", new FL_C3_2C(elevatorSubsystem, wristSubsystem));
 
+		// Paths.initPaths();
+		// Paths.initAutoFactory();
+
 		Reflections reflection = new Reflections("frc.autonomous");
 		Set<Class<? extends AutoBase>> autoClasses = reflection.getSubTypesOf(AutoBase.class);
 
@@ -287,7 +290,7 @@ public class RobotContainer {
 		xbox.button(9).whileTrue(ClimberCommands.moveClimber(climberSubsystem));
 
 		// outtake for home/t1
-		xbox.b().whileTrue(WristCommands.runIntake(wristSubsystem, -3, -0.1));
+		xbox.b().whileTrue(WristCommands.runIntake(wristSubsystem, -3, -0.5));
 		xbox.b().onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
 		xbox.x().whileTrue(algaeSubsystem.runAlgaeManipulator());

@@ -23,13 +23,7 @@ public interface ClimberIO {
 
 	public default void updateInputs(ClimberIOInputs inputs) {}
 
-	public default void setAngularPosition(Angle position) {}
-
 	public default void setAngularSpeed(double speed) {}
-
-	public default double getPositionInDegrees() {
-		return 0;
-	}
 
 	public default void runTrapdoor() {}
 

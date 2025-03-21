@@ -5,7 +5,6 @@ import static frc.robot.subsystems.climber.ClimberConstants.*;
 import static frc.robot.subsystems.drive.DriveConstants.odometryFrequency;
 
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -13,7 +12,6 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.units.measure.Angle;
 import frc.robot.util.SparkUtil;
 
 public class ClimberIOSpark implements ClimberIO {
@@ -69,7 +67,7 @@ public class ClimberIOSpark implements ClimberIO {
 		SparkUtil.tryUntilOk(
 				trapdoorMotor,
 				5,
-				() -> climbMotor.configure(
+				() -> trapdoorMotor.configure(
 						trapdoorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
 	}
 
@@ -89,18 +87,8 @@ public class ClimberIOSpark implements ClimberIO {
 	}
 
 	@Override
-	public void setAngularPosition(Angle position) {
-		climbSparkPID.setReference(position.in(Degrees), ControlType.kPosition);
-	}
-
-	@Override
 	public void setAngularSpeed(double speed) {
 		climbMotor.set(speed);
-	}
-
-	@Override
-	public double getPositionInDegrees() {
-		return climbEncoder.getPosition() * 360;
 	}
 
 	@Override
