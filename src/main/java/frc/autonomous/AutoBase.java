@@ -146,26 +146,30 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				});
 	}
 
+	public static boolean timedOut = false;
+
 	public static final Command wristIntake(WristSubsystem wrist, ElevatorSubsystem elevator) {
 		return new FunctionalCommand(
+				// INIT
 				() -> {
 					seenCoral = false;
 					coralInWrist = false;
 					coralInPosition = false;
+					timedOut = false;
 					timer.reset();
+					SmartDashboard.putBoolean("Has timed out", timedOut);
+
 					wrist.setVoltage(0, 0);
 				},
+				// EXECUTE
 				() -> {
 					if (MathUtil.isNear(
 							elevator.getTargetPosition(elevator.pos).in(Meters),
 							elevator.getPosition().in(Meters),
 							.05)) {
 						timer.start();
-						if (coralInPosition) {
-							return;
-						}
 
-						if (seenCoral) {
+						if (seenCoral || timer.hasElapsed(1.0)) {
 							if (WristSubsystem.getCoralInputBool && !coralInWrist) {
 								wrist.setVoltage(WristConstants.slowOuttakeVoltage, WristConstants.slowOuttakeVoltage);
 							} else {
@@ -186,13 +190,21 @@ public abstract class AutoBase extends SequentialCommandGroup {
 						}
 					}
 				},
+				// END
 				(interupted) -> {
+					if (timer.hasElapsed(5)) {
+						timedOut = true;
+					}
 					wrist.setVoltage(0, 0);
 					timer.stop();
 					timer.reset();
+					SmartDashboard.putBoolean("Has timed out", timedOut);
 				},
+
+				// INTERUPTED
+
 				() -> {
-					return timer.hasElapsed(1.5);
+					return timer.hasElapsed(5) || coralInPosition;
 				});
 	}
 
