@@ -74,8 +74,8 @@ public class RobotContainer {
 	private SwerveDriveSimulation driveSimulation = null;
 	UsbCamera climbCamera = CameraServer.startAutomaticCapture();
 
-	private final CommandJoystick translationJoystick = new CommandJoystick(0);
-	private final CommandJoystick rotationJoystick = new CommandJoystick(1);
+	public static final CommandJoystick translationJoystick = new CommandJoystick(0);
+	public static final CommandJoystick rotationJoystick = new CommandJoystick(1);
 	public static final CommandXboxController xbox = new CommandXboxController(2);
 
 	public final LoggedDashboardChooser<Command> autoChooser;
@@ -265,52 +265,52 @@ public class RobotContainer {
 				() -> -translationJoystick.getX(),
 				() -> -rotationJoystick.getX()));
 
-		translationJoystick.button(11).onTrue(Commands.runOnce(drive::stopWithX, drive));
-
 		final Runnable resetGyro = Constants.currentMode == Constants.Mode.SIM
 				? () -> drive.resetOdometry(
 						driveSimulation
 								.getSimulatedDriveTrainPose()) // reset odometry to actual robot pose during simulation
 				: () -> drive.resetOdometry(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
 
-		translationJoystick.button(12).onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
-		rotationJoystick.button(3).whileTrue(DriveCommands.lookAtCoral(drive, vision));
+		Keybinds.resetGyroTrigger.onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
+		Keybinds.lookAtCoralTrigger.whileTrue(DriveCommands.lookAtCoral(drive, vision));
+
+		Keybinds.moveElevatorTrigger.whileTrue(ElevatorCommands.setPos(elevatorSubsystem));
+		Keybinds.decrementElevatorEnumTrigger.onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
+		Keybinds.incrementElevatorEnumTrigger.onTrue(ElevatorCommands.incrementValue(elevatorSubsystem));
+
+		Keybinds.runIntakeWithSensorTrigger.whileTrue(WristCommands.runIntake(wristSubsystem, -3, -0.5));
+		Keybinds.runIntakeWithSensorTrigger.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
+
+		Keybinds.runIntakeTrigger.whileTrue(WristCommands.runOuttake(wristSubsystem, 2, 2));
+		Keybinds.runIntakeTrigger.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
+
+		Keybinds.runOuttakeTrigger.whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
+		Keybinds.runOuttakeTrigger.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
+
+		Keybinds.runIntakeAndElevatorTrigger.whileTrue(
+				AutoBase.moveElevatorAndIntake(wristSubsystem, elevatorSubsystem, ElevatorPos.INTAKE));
+		Keybinds.runIntakeAndElevatorTrigger.onTrue(
+				AutoBase.setElevatorSetpoint(ElevatorPos.INTAKE, elevatorSubsystem));
+		Keybinds.runIntakeAndElevatorTrigger.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
+
+		Keybinds.runAlgaeManipulatorTrigger.whileTrue(algaeSubsystem.runAlgaeManipulator());
+
+		Keybinds.moveClimberTrigger.whileTrue(ClimberCommands.moveClimber(climberSubsystem));
+		Keybinds.xboxTrapdoorTrigger
+				.and(Keybinds.joystickTrapdoorTrigger)
+				.whileTrue(ClimberCommands.runTrapdoor(climberSubsystem));
 
 		// climberSubsystem.setDefaultCommand(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
 		//	xbox.y().whileTrue(ClimberCommands.autoPositionClimber(climberSubsystem, 45)
 		//	.andThen(ClimberCommands.autoPositionClimber(climberSubsystem, 135)));
-		xbox.a().whileTrue(ElevatorCommands.setPos(elevatorSubsystem));
-		xbox.leftBumper().onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
-		xbox.rightBumper().onTrue(ElevatorCommands.incrementValue(elevatorSubsystem));
-
-		xbox.button(8).and(translationJoystick.button(3)).whileTrue(ClimberCommands.runTrapdoor(climberSubsystem));
-
-		// R3
-
-		xbox.button(9).whileTrue(ClimberCommands.moveClimber(climberSubsystem));
-
-		// outtake for home/t1
-		xbox.b().whileTrue(WristCommands.runIntake(wristSubsystem, -3, -0.5));
-		xbox.b().onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
-
-		xbox.x().whileTrue(algaeSubsystem.runAlgaeManipulator());
-
-		xbox.rightTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
-		xbox.rightTrigger().onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
-
-		xbox.y().whileTrue(WristCommands.runOuttake(wristSubsystem, 2, 2));
-		xbox.y().onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
-
-		// xbox.leftTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
-		// xbox.leftTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0, 0));
-
-		xbox.leftTrigger()
-				.whileTrue(AutoBase.moveElevatorAndIntake(wristSubsystem, elevatorSubsystem, ElevatorPos.INTAKE));
-		xbox.leftTrigger().onTrue(AutoBase.setElevatorSetpoint(ElevatorPos.INTAKE, elevatorSubsystem));
-		xbox.leftTrigger().onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
-
 		// xbox.y().whileTrue(ElevatorCommands.runMotors(elevatorSubsystem));
 		// xbox.y().onFalse(ElevatorCommands.stopMotors(elevatorSubsystem));
+		// xbox.leftTrigger().whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
+		// xbox.leftTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0, 0));
+		// R3
+
+		// outtake for home/t1
+
 	}
 
 	public Command getAutonomousCommand() {

@@ -134,7 +134,6 @@ public abstract class AutoBase extends SequentialCommandGroup {
 							.05)) {
 						timer.start();
 						wrist.setVoltage(-0.3, -3);
-						wrist.setVoltage(-0.3, -3);
 					}
 				},
 				(interupted) -> {
@@ -272,9 +271,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	}
 
 	public static final Command getPathToFeed() {
-		return Commands.runOnce(() -> {
-			
-		});
+		return Commands.runOnce(() -> {});
 	}
 
 	public static final class Paths {
