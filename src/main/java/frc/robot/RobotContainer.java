@@ -29,7 +29,6 @@ import frc.robot.subsystems.algae.AlgaeIO;
 import frc.robot.subsystems.algae.AlgaeIOSpark;
 import frc.robot.subsystems.algae.AlgaeSubsystem;
 import frc.robot.subsystems.climber.ClimberIOFalcon;
-import frc.robot.subsystems.climber.ClimberIOSpark;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveConstants;
@@ -176,7 +175,7 @@ public class RobotContainer {
 								VisionConstants.robotToCamera0,
 								driveSimulation::getSimulatedDriveTrainPose));
 
-				climberSubsystem = new ClimberSubsystem(new ClimberIOSpark());
+				climberSubsystem = new ClimberSubsystem(new ClimberIOFalcon());
 				break;
 			default:
 				SmartDashboard.putString("currentRobotMode", "DEFAULT");
@@ -194,7 +193,7 @@ public class RobotContainer {
 				algaeSubsystem = new AlgaeSubsystem(new AlgaeIO() {});
 				vision = new Vision(drive, new VisionIO() {}, new VisionIO() {});
 
-				climberSubsystem = new ClimberSubsystem(new ClimberIOSpark());
+				climberSubsystem = new ClimberSubsystem(new ClimberIOFalcon());
 				break;
 		}
 		// Test01Auto test01Auto = new Test01Auto(elevatorSubsystem, wristSubsystem);
