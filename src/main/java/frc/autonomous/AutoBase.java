@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.autonomous.AutoBase.Paths;
+import frc.robot.Constants;
 import frc.robot.commands.ElevatorCommands;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorPos;
@@ -220,10 +222,17 @@ public abstract class AutoBase extends SequentialCommandGroup {
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
 		elevator.pos = pos;
 		SmartDashboard.putString("Elevator.pos", elevator.pos.toString());
-
-		return new ParallelCommandGroup(
-				setElevatorSetpoint(pos, elevator),
-				new ParallelRaceGroup(wristOuttake(wrist, elevator), ElevatorCommands.setPos(elevator)));
+		if (pos == ElevatorPos.INTAKE) {
+			return new ParallelCommandGroup(
+					Commands.runOnce(() -> SmartDashboard.putString("outtakeMode", "outtake trough")),
+					setElevatorSetpoint(pos, elevator),
+					new ParallelRaceGroup(wristOuttakeHomeRight(wrist, elevator), ElevatorCommands.setPos(elevator)));
+		} else {
+			return new ParallelCommandGroup(
+					Commands.runOnce(() -> SmartDashboard.putString("outtakeMode", "outtake coral")),
+					setElevatorSetpoint(pos, elevator),
+					new ParallelRaceGroup(wristOuttake(wrist, elevator), ElevatorCommands.setPos(elevator)));
+		}
 	}
 
 	public static final ParallelCommandGroup moveElevatorAndOuttakeHomeRight(
@@ -288,9 +297,13 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		public static PathPlannerPath pathsArray[];
 
 		public static void initPaths() {
+			File filePath;
 			paths.clear();
-
-			File filePath = new File("./src/main/deploy/pathplanner/paths");
+			if (Constants.currentMode == Constants.Mode.SIM) {
+				filePath = new File("./src/main/deploy/pathplanner/paths");
+			} else {
+				filePath = new File("/home/lvuser/deploy/pathplanner/paths");
+			}
 			File[] files = filePath.listFiles();
 			for (File f : files) {
 				SmartDashboard.putString("filePath", f.getName());
@@ -318,10 +331,35 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		public static final LoggedDashboardChooser<PathPlannerPath> thirdPathChooser =
 				new LoggedDashboardChooser<>("Choose Third Path");
 
+		public static final LoggedDashboardChooser<ElevatorPos> firstElevatorPosChooser =
+				new LoggedDashboardChooser<>("Choose First Elevator Pos");
+		public static final LoggedDashboardChooser<ElevatorPos> secondElevatorPosChooser =
+				new LoggedDashboardChooser<>("Choose Second Elevator Pos");
+		public static final LoggedDashboardChooser<ElevatorPos> thirdElevatorPosChooser =
+				new LoggedDashboardChooser<>("Choose Third Elevator Pos");
+		public static final LoggedDashboardChooser<ElevatorPos> fourthElevatorPosChooser =
+				new LoggedDashboardChooser<>("Choose Fourth Elevator Pos");
+
+		public static final void initElevatorEnum() {
+			for (ElevatorPos pos : ElevatorPos.values()) {
+				pos.name();
+				firstElevatorPosChooser.addOption(pos.name(), pos);
+				secondElevatorPosChooser.addOption(pos.name(), pos);
+				thirdElevatorPosChooser.addOption(pos.name(), pos);
+				fourthElevatorPosChooser.addOption(pos.name(), pos);
+			}
+		}
+
 		public static void initAutoFactory() {
 			firstPathChooser.addDefaultOption("Default", paths.get("Drive forward slow"));
 			secondPathChooser.addDefaultOption("Default", paths.get("Drive forward slow"));
 			thirdPathChooser.addDefaultOption("Default", paths.get("Drive forward slow"));
+			firstElevatorPosChooser.addDefaultOption("Default", ElevatorPos.INTAKE);
+			secondElevatorPosChooser.addDefaultOption("Default", ElevatorPos.INTAKE);
+			thirdElevatorPosChooser.addDefaultOption("Default", ElevatorPos.INTAKE);
+			fourthElevatorPosChooser.addDefaultOption("Default", ElevatorPos.INTAKE);
+
+			initElevatorEnum();
 
 			for (PathPlannerPath p : paths.values()) {
 				if (p.name.contains("R")) {
@@ -350,6 +388,34 @@ public abstract class AutoBase extends SequentialCommandGroup {
 					}
 				}
 			}
+		}
+
+		public static PathPlannerPath lastPathFirst = Paths.firstPathChooser.get();
+		public static PathPlannerPath lastPathSecond = Paths.secondPathChooser.get();
+		public static PathPlannerPath lastPathThird = Paths.thirdPathChooser.get();
+		public static ElevatorPos lastPosFirst = firstElevatorPosChooser.get();
+		public static ElevatorPos lastPosSecond = secondElevatorPosChooser.get();
+		public static ElevatorPos lastPosThird = thirdElevatorPosChooser.get();
+		public static ElevatorPos lastPosFourth = fourthElevatorPosChooser.get();
+
+		public static boolean recompileNeeded() {
+			return (Paths.firstPathChooser.get() != lastPathFirst
+					|| Paths.secondPathChooser.get() != lastPathSecond
+					|| Paths.thirdPathChooser.get() != lastPathThird
+					|| Paths.firstElevatorPosChooser.get() != lastPosFirst
+					|| Paths.secondElevatorPosChooser.get() != lastPosSecond
+					|| Paths.thirdElevatorPosChooser.get() != lastPosThird
+					|| Paths.fourthElevatorPosChooser.get() != lastPosFourth);
+		}
+
+		public static void updateStoredChooser() {
+			lastPathFirst = Paths.firstPathChooser.get();
+			lastPathSecond = Paths.secondPathChooser.get();
+			lastPathThird = Paths.thirdPathChooser.get();
+			lastPosFirst = firstElevatorPosChooser.get();
+			lastPosSecond = secondElevatorPosChooser.get();
+			lastPosThird = thirdElevatorPosChooser.get();
+			lastPosFourth = fourthElevatorPosChooser.get();
 		}
 
 		// C1 Paths

@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Threads;
@@ -25,9 +24,7 @@ public class Robot extends LoggedRobot {
 	private final RobotContainer robotContainer;
 
 	DriverStation.Alliance lastAlliance = Alliance.Blue;
-	PathPlannerPath lastPathFirst = Paths.firstPathChooser.get();
-	PathPlannerPath lastPathSecond = Paths.secondPathChooser.get();
-	PathPlannerPath lastPathThird = Paths.thirdPathChooser.get();
+	int timesRecompiled = 0;
 
 	public Robot() {
 		Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
@@ -88,27 +85,14 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void disabledPeriodic() {
-		// Consumer<String> onPathChange = str -> {
-		// 	robotContainer.recompileAutos();
-		// 	if (Paths.firstPathChooser.get() != null) {
-		// 		SmartDashboard.putString("hasRecompiled", Paths.firstPathChooser.get().name);
-		// 	}
-		// };
+
 		autonomousCommand = robotContainer.getAutonomousCommand();
 
-		// Paths.firstPathChooser.getSendableChooser().onChange(onPathChange);
-		if (Paths.firstPathChooser.get() != lastPathFirst
-				|| Paths.secondPathChooser.get() != lastPathSecond
-				|| Paths.thirdPathChooser.get() != lastPathThird) {
+		if (DriverStation.getAlliance().orElse(Alliance.Blue) != lastAlliance || Paths.recompileNeeded()) {
+			timesRecompiled++;
 			robotContainer.recompileAutos();
-			SmartDashboard.putString("hasRecompiled", Paths.firstPathChooser.get().name);
-			lastPathFirst = Paths.firstPathChooser.get();
-			lastPathSecond = Paths.secondPathChooser.get();
-			lastPathThird = Paths.thirdPathChooser.get();
-		}
-
-		if (DriverStation.getAlliance().orElse(Alliance.Blue) != lastAlliance) {
-			robotContainer.recompileAutos();
+			SmartDashboard.putString("hasRecompiled", "Recompiled: " + timesRecompiled + " times");
+			Paths.updateStoredChooser();
 			lastAlliance = DriverStation.getAlliance().orElse(Alliance.Blue);
 		}
 	}

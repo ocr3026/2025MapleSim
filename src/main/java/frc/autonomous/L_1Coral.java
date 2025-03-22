@@ -14,7 +14,7 @@ public class L_1Coral extends AutoBase {
 		addCommands(Commands.runOnce(() -> SmartDashboard.putBoolean("Has timed out", false)));
 		addCommands(setStartPose(Paths.FL_C1));
 		addCommands(followPath(Paths.FL_C5));
-		addCommands(moveElevatorAndOuttakeHomeRight(wrist, elevator, ElevatorSubsystem.firstElevatorPosChooser.get()));
+		addCommands(moveElevatorAndOuttakeHomeRight(wrist, elevator, Paths.firstElevatorPosChooser.get()));
 		addCommands(followPath(Paths.C5_FeedL));
 		addCommands(setElevatorSetpoint(ElevatorPos.INTAKE, elevator));
 		addCommands(moveElevatorAndIntake(wrist, elevator, ElevatorPos.INTAKE));
