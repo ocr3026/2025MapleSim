@@ -205,7 +205,7 @@ public class RobotContainer {
 		// autoChooser.addOption("Far Left to C3 2 Coral", new FL_C3_2C(elevatorSubsystem, wristSubsystem));
 
 		Paths.initPaths();
-		//Paths.initAutoFactory();
+		Paths.initAutoFactory();
 
 		Reflections reflection = new Reflections("frc.autonomous");
 		Set<Class<? extends AutoBase>> autoClasses = reflection.getSubTypesOf(AutoBase.class);
