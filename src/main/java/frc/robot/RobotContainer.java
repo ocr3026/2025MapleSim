@@ -55,7 +55,6 @@ import frc.robot.subsystems.wrist.WristIOSpark;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.security.Key;
 import java.util.Set;
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
@@ -267,46 +266,41 @@ public class RobotContainer {
 				() -> -translationJoystick.getX(),
 				() -> -rotationJoystick.getX()));
 
-
 		final Runnable resetGyro = Constants.currentMode == Constants.Mode.SIM
 				? () -> drive.resetOdometry(
 						driveSimulation
 								.getSimulatedDriveTrainPose()) // reset odometry to actual robot pose during simulation
 				: () -> drive.resetOdometry(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
 
-
 		Keybinds.resetGyroTrigger.onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
 		Keybinds.lookAtCoralTrigger.whileTrue(DriveCommands.lookAtCoral(drive, vision));
-
 
 		Keybinds.moveElevatorTrigger.whileTrue(ElevatorCommands.setPos(elevatorSubsystem));
 		Keybinds.decrementElevatorEnumTrigger.onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
 		Keybinds.incrementElevatorEnumTrigger.onTrue(ElevatorCommands.incrementValue(elevatorSubsystem));
 
-
 		Keybinds.runIntakeWithSensorTrigger.whileTrue(WristCommands.runIntake(wristSubsystem, -3, -0.5));
 		Keybinds.runIntakeWithSensorTrigger.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
-	
+
 		Keybinds.runIntakeTrigger.whileTrue(WristCommands.runOuttake(wristSubsystem, 2, 2));
 		Keybinds.runIntakeTrigger.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
 		Keybinds.runOuttakeTrigger.whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
 		Keybinds.runOuttakeTrigger.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
-		Keybinds.runIntakeAndElevatorTrigger
-			.whileTrue(AutoBase.moveElevatorAndIntake(wristSubsystem, elevatorSubsystem, ElevatorPos.INTAKE));
-		Keybinds.runIntakeAndElevatorTrigger
-			.onTrue(AutoBase.setElevatorSetpoint(ElevatorPos.INTAKE, elevatorSubsystem));
-		Keybinds.runIntakeAndElevatorTrigger
-			.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
-
+		Keybinds.runIntakeAndElevatorTrigger.whileTrue(
+				AutoBase.moveElevatorAndIntake(wristSubsystem, elevatorSubsystem, ElevatorPos.INTAKE));
+		Keybinds.runIntakeAndElevatorTrigger.onTrue(
+				AutoBase.setElevatorSetpoint(ElevatorPos.INTAKE, elevatorSubsystem));
+		Keybinds.runIntakeAndElevatorTrigger.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
 		Keybinds.runAlgaeManipulatorTrigger.whileTrue(algaeSubsystem.runAlgaeManipulator());
 
-
 		Keybinds.moveClimberTrigger.whileTrue(ClimberCommands.moveClimber(climberSubsystem));
-		Keybinds.xboxTrapdoorTrigger.and(Keybinds.joystickTrapdoorTrigger).whileTrue(ClimberCommands.runTrapdoor(climberSubsystem));
-		
+		Keybinds.xboxTrapdoorTrigger
+				.and(Keybinds.joystickTrapdoorTrigger)
+				.whileTrue(ClimberCommands.runTrapdoor(climberSubsystem));
+
 		// climberSubsystem.setDefaultCommand(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
 		//	xbox.y().whileTrue(ClimberCommands.autoPositionClimber(climberSubsystem, 45)
 		//	.andThen(ClimberCommands.autoPositionClimber(climberSubsystem, 135)));
@@ -316,10 +310,8 @@ public class RobotContainer {
 		// xbox.leftTrigger().onFalse(WristCommands.runIntake(wristSubsystem, 0, 0));
 		// R3
 
-		
-
 		// outtake for home/t1
-		
+
 	}
 
 	public Command getAutonomousCommand() {
