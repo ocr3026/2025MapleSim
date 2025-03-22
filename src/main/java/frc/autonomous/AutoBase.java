@@ -109,8 +109,6 @@ public abstract class AutoBase extends SequentialCommandGroup {
 							.05)) {
 						timer.start();
 						wrist.setVoltage(-3, -0.5);
-<<<<<<< Updated upstream
-=======
 					}
 				},
 				(interupted) -> {
@@ -136,31 +134,6 @@ public abstract class AutoBase extends SequentialCommandGroup {
 							.05)) {
 						timer.start();
 						wrist.setVoltage(-0.3, -3);
->>>>>>> Stashed changes
-					}
-				},
-				(interupted) -> {
-					wrist.setVoltage(0, 0);
-					timer.stop();
-					timer.reset();
-				},
-				() -> {
-					return timer.hasElapsed(1.5);
-				});
-	}
-
-	public static final Command wristOuttakeHomeLeft(WristSubsystem wrist, ElevatorSubsystem elevator) {
-		return new FunctionalCommand(
-				() -> {
-					timer.reset();
-					wrist.setVoltage(0, 0);
-				},
-				() -> {
-					if (MathUtil.isNear(
-							elevator.getTargetPosition(elevator.pos).in(Meters),
-							elevator.getPosition().in(Meters),
-							.05)) {
-						timer.start();
 						wrist.setVoltage(-0.3, -3);
 					}
 				},
@@ -286,17 +259,22 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		// if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {
 		// 	return AutoBuilder.resetOdom(FlippingUtil.flipFieldPose(holoPose));
 		// }
+		// if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {
+		// 	return AutoBuilder.resetOdom(FlippingUtil.flipFieldPose(holoPose));
+		// }
 		return AutoBuilder.resetOdom(holoPose);
 	}
 
 	public static final Command feedCoralCommand(ElevatorSubsystem elevator, WristSubsystem wrist) {
 		return new ParallelCommandGroup(
 				setElevatorSetpoint(ElevatorPos.INTAKE, elevator),
-<<<<<<< Updated upstream
 				moveElevatorAndIntake(wrist, elevator, ElevatorPos.INTAKE));
-=======
-				new ParallelRaceGroup(wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator)));
->>>>>>> Stashed changes
+	}
+
+	public static final Command getPathToFeed() {
+		return Commands.runOnce(() -> {
+			
+		});
 	}
 
 	public static final class Paths {
@@ -331,11 +309,15 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		 * Ex: First Path chooses starting pos AND coral spot
 		 * Second Path only chooses coral, same with third.
 		 */
+		public static final LoggedDashboardChooser<PathPlannerPath> firstPathChooser =
+				new LoggedDashboardChooser<>("Choose First Path");
+		public static final LoggedDashboardChooser<PathPlannerPath> secondPathChooser =
+				new LoggedDashboardChooser<>("Choose Second Path");
+		public static final LoggedDashboardChooser<PathPlannerPath> thirdPathChooser =
+				new LoggedDashboardChooser<>("Choose Third Path");
+
 		public static void initAutoFactory() {
-			final LoggedDashboardChooser<PathPlannerPath> firstPathChooser =
-					new LoggedDashboardChooser<>("Choose First Path");
-			final LoggedDashboardChooser<PathPlannerPath> secondPathChooser =
-					new LoggedDashboardChooser<>("Choose Second Path");
+
 			for (PathPlannerPath p : paths.values()) {
 				SmartDashboard.putBoolean("contains HI-C", p.name.contains("C"));
 				if (p.name.contains("C")) {
@@ -353,19 +335,18 @@ public abstract class AutoBase extends SequentialCommandGroup {
 					if (index <= 2) {
 						firstPathChooser.addOption(p.name, p);
 					}
-				} else if (p.name.contains("L")) {
+				}
+				if (p.name.contains("L")) {
 					int index = p.name.indexOf("L");
 					if (index <= 2) {
 						firstPathChooser.addOption(p.name, p);
 					}
-				} else if (p.name.contains("C")) {
-					int index = p.name.indexOf("C");
-					if (index == -1) {
-						index = p.name.indexOf("c");
-					}
+				}
+				if (p.name.contains("Feed")) {
+					int index = p.name.indexOf("e");
 					SmartDashboard.putNumber("index", index);
-					if (index <= 1) {
-						secondPathChooser.addOption(p.name, p);
+					if (index <= 2) {
+						thirdPathChooser.addOption(p.name, p);
 					}
 				}
 			}

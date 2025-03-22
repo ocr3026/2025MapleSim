@@ -7,7 +7,7 @@ public class TestFiles extends AutoBase {
 
 	public TestFiles(ElevatorSubsystem elevator, WristSubsystem wrist) {
 		super(elevator, wrist);
-
-		addCommands(followPath(Paths.paths.get("C1 to FeedL")));
+		addCommands(setStartPose(Paths.firstPathChooser.get()));
+		addCommands(followPath(Paths.firstPathChooser.get()));
 	}
 }

@@ -7,8 +7,11 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Threads;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.autonomous.AutoBase.Paths;
+import java.util.function.Consumer;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -82,10 +85,18 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void disabledPeriodic() {
+		Consumer<String> onPathChange = str -> {
+			robotContainer.recompileAutos();
+			if (Paths.firstPathChooser.get() != null) {
+				SmartDashboard.putString("hasRecompiled", Paths.firstPathChooser.get().name);
+			}
+		};
 		autonomousCommand = robotContainer.getAutonomousCommand();
 
+		Paths.firstPathChooser.getSendableChooser().onChange(onPathChange);
+
 		if (DriverStation.getAlliance().orElse(Alliance.Blue) != lastAlliance) {
-			robotContainer.onTeamSwitch();
+			robotContainer.recompileAutos();
 			lastAlliance = DriverStation.getAlliance().orElse(Alliance.Blue);
 		}
 	}

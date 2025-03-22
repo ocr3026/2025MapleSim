@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.autonomous.AutoBase;
-import frc.autonomous.TestFiles;
+import frc.autonomous.AutoBase.Paths;
 import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.ElevatorCommands;
@@ -78,7 +78,8 @@ public class RobotContainer {
 	private final CommandJoystick rotationJoystick = new CommandJoystick(1);
 	public static final CommandXboxController xbox = new CommandXboxController(2);
 
-	private final LoggedDashboardChooser<Command> autoChooser;
+	public final LoggedDashboardChooser<Command> autoChooser;
+	public static Command currentSelectedCommand = null;
 
 	public RobotContainer() {
 		switch (Constants.currentMode) {
@@ -203,8 +204,8 @@ public class RobotContainer {
 		autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 		// autoChooser.addOption("Far Left to C3 2 Coral", new FL_C3_2C(elevatorSubsystem, wristSubsystem));
 
-		// Paths.initPaths();
-		// Paths.initAutoFactory();
+		Paths.initPaths();
+		Paths.initAutoFactory();
 
 		Reflections reflection = new Reflections("frc.autonomous");
 		Set<Class<? extends AutoBase>> autoClasses = reflection.getSubTypesOf(AutoBase.class);
@@ -243,8 +244,6 @@ public class RobotContainer {
 				}
 			}
 		}
-		autoChooser.addOption("TestFiles", new TestFiles(elevatorSubsystem, wristSubsystem));
-
 		/*
 		autoChooser.addOption("Drive Wheel Radius Characterization6", DriveCommands.wheelRadiusCharacterization(drive));
 		autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
@@ -318,6 +317,10 @@ public class RobotContainer {
 		return autoChooser.get();
 	}
 
+	public static Command getSelectedAuto() {
+		return currentSelectedCommand;
+	}
+
 	public void resetSimulationField() {
 		if (Constants.currentMode != Constants.Mode.SIM) return;
 
@@ -336,7 +339,7 @@ public class RobotContainer {
 				"FieldSimulation/Algae", SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
 	}
 
-	public void onTeamSwitch() {
+	public void recompileAutos() {
 		Reflections reflection = new Reflections("frc.autonomous");
 		Set<Class<? extends AutoBase>> autoClasses = reflection.getSubTypesOf(AutoBase.class);
 
