@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.autonomous.AutoBase;
+import frc.autonomous.TestFiles;
 import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.ElevatorCommands;
@@ -242,6 +243,7 @@ public class RobotContainer {
 				}
 			}
 		}
+		autoChooser.addOption("TestFiles", new TestFiles(elevatorSubsystem, wristSubsystem));
 
 		/*
 		autoChooser.addOption("Drive Wheel Radius Characterization6", DriveCommands.wheelRadiusCharacterization(drive));

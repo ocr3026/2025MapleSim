@@ -109,6 +109,34 @@ public abstract class AutoBase extends SequentialCommandGroup {
 							.05)) {
 						timer.start();
 						wrist.setVoltage(-3, -0.5);
+<<<<<<< Updated upstream
+=======
+					}
+				},
+				(interupted) -> {
+					wrist.setVoltage(0, 0);
+					timer.stop();
+					timer.reset();
+				},
+				() -> {
+					return timer.hasElapsed(1.5);
+				});
+	}
+
+	public static final Command wristOuttakeHomeLeft(WristSubsystem wrist, ElevatorSubsystem elevator) {
+		return new FunctionalCommand(
+				() -> {
+					timer.reset();
+					wrist.setVoltage(0, 0);
+				},
+				() -> {
+					if (MathUtil.isNear(
+							elevator.getTargetPosition(elevator.pos).in(Meters),
+							elevator.getPosition().in(Meters),
+							.05)) {
+						timer.start();
+						wrist.setVoltage(-0.3, -3);
+>>>>>>> Stashed changes
 					}
 				},
 				(interupted) -> {
@@ -264,7 +292,11 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	public static final Command feedCoralCommand(ElevatorSubsystem elevator, WristSubsystem wrist) {
 		return new ParallelCommandGroup(
 				setElevatorSetpoint(ElevatorPos.INTAKE, elevator),
+<<<<<<< Updated upstream
 				moveElevatorAndIntake(wrist, elevator, ElevatorPos.INTAKE));
+=======
+				new ParallelRaceGroup(wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator)));
+>>>>>>> Stashed changes
 	}
 
 	public static final class Paths {
