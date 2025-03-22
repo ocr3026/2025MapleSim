@@ -270,8 +270,16 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				moveElevatorAndIntake(wrist, elevator, ElevatorPos.INTAKE));
 	}
 
-	public static final Command getPathToFeed() {
-		return Commands.runOnce(() -> {});
+	public static final PathPlannerPath getPathToFeed(PathPlannerPath path) {
+		String name = path.name;
+		int index = name.indexOf("C");
+		String subString = name.substring(index, (index + 2));
+		for (PathPlannerPath p : Paths.paths.values()) {
+			if (p.name.contains(subString) && p.name.contains("Feed")) {
+				return p;
+			}
+		}
+		return new PathPlannerPath(null, null, null, null);
 	}
 
 	public static final class Paths {
@@ -292,9 +300,6 @@ public abstract class AutoBase extends SequentialCommandGroup {
 					PathPlannerPath path = getPathFromFile(s);
 					if (path != null) {
 						paths.put(s, path);
-					} else {
-						SmartDashboard.putString("tragic shii 4nem", "that jawn is null");
-						SmartDashboard.putString("nullVal at :", s);
 					}
 				} catch (FileVersionException e) {
 					DriverStation.reportError(e.getMessage(), e.getStackTrace());
@@ -314,21 +319,19 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				new LoggedDashboardChooser<>("Choose Third Path");
 
 		public static void initAutoFactory() {
+			firstPathChooser.addDefaultOption("Default", paths.get("Drive forward slow"));
+			secondPathChooser.addDefaultOption("Default", paths.get("Drive forward slow"));
+			thirdPathChooser.addDefaultOption("Default", paths.get("Drive forward slow"));
 
 			for (PathPlannerPath p : paths.values()) {
-				SmartDashboard.putBoolean("contains HI-C", p.name.contains("C"));
-				if (p.name.contains("C")) {
-					int index = p.name.indexOf("C");
-					if (index == -1) {
-						index = p.name.indexOf("c");
-					}
-					SmartDashboard.putNumber("index", index);
-					if (index <= 1) {
-						secondPathChooser.addOption(p.name, p);
-					}
-				}
 				if (p.name.contains("R")) {
 					int index = p.name.indexOf("R");
+					if (index <= 2) {
+						firstPathChooser.addOption(p.name, p);
+					}
+				}
+				if (p.name.contains("M")) {
+					int index = p.name.indexOf("M");
 					if (index <= 2) {
 						firstPathChooser.addOption(p.name, p);
 					}
@@ -341,8 +344,8 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				}
 				if (p.name.contains("Feed")) {
 					int index = p.name.indexOf("e");
-					SmartDashboard.putNumber("index", index);
 					if (index <= 2) {
+						secondPathChooser.addOption(p.name, p);
 						thirdPathChooser.addOption(p.name, p);
 					}
 				}
