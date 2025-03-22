@@ -18,6 +18,7 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
 import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
 import org.littletonrobotics.junction.mechanism.LoggedMechanismRoot2d;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public class ElevatorSubsystem extends SubsystemBase {
 	public int timesRAN = 0;
@@ -52,6 +53,15 @@ public class ElevatorSubsystem extends SubsystemBase {
 			};
 		}
 	}
+
+	public static final LoggedDashboardChooser<ElevatorPos> firstElevatorPosChooser =
+			new LoggedDashboardChooser<>("Choose First Elevator Pos");
+	public static final LoggedDashboardChooser<ElevatorPos> secondElevatorPosChooser =
+			new LoggedDashboardChooser<>("Choose Second Elevator Pos");
+	public static final LoggedDashboardChooser<ElevatorPos> thirdElevatorPosChooser =
+			new LoggedDashboardChooser<>("Choose Third Elevator Pos");
+	public static final LoggedDashboardChooser<ElevatorPos> fourthElevatorPosChooser =
+			new LoggedDashboardChooser<>("Choose Fourth Elevator Pos");
 
 	private final ElevatorIO io;
 	private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
@@ -93,6 +103,16 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 	public Distance getTargetPosition(ElevatorPos givenPos) {
 		return io.getTargetPosition(givenPos);
+	}
+
+	public static final void initElevatorEnum() {
+		for (ElevatorPos pos : ElevatorPos.values()) {
+			pos.name();
+			firstElevatorPosChooser.addOption(pos.name(), pos);
+			secondElevatorPosChooser.addOption(pos.name(), pos);
+			thirdElevatorPosChooser.addOption(pos.name(), pos);
+			fourthElevatorPosChooser.addOption(pos.name(), pos);
+		}
 	}
 
 	@Override
