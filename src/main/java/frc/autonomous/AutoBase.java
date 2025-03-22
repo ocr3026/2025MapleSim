@@ -194,7 +194,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				},
 				// END
 				(interupted) -> {
-					if (timer.hasElapsed(5)) {
+					if (timer.hasElapsed(1.5)) {
 						timedOut = true;
 					}
 					wrist.setVoltage(0, 0);
@@ -206,7 +206,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				// INTERUPTED
 
 				() -> {
-					return timer.hasElapsed(5) || coralInPosition;
+					return timer.hasElapsed(1.5) || coralInPosition;
 				});
 	}
 
@@ -222,17 +222,17 @@ public abstract class AutoBase extends SequentialCommandGroup {
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
 		elevator.pos = pos;
 		SmartDashboard.putString("Elevator.pos", elevator.pos.toString());
-		if (pos == ElevatorPos.INTAKE) {
-			return new ParallelCommandGroup(
-					Commands.runOnce(() -> SmartDashboard.putString("outtakeMode", "outtake trough")),
-					setElevatorSetpoint(pos, elevator),
-					new ParallelRaceGroup(wristOuttakeHomeRight(wrist, elevator), ElevatorCommands.setPos(elevator)));
-		} else {
-			return new ParallelCommandGroup(
-					Commands.runOnce(() -> SmartDashboard.putString("outtakeMode", "outtake coral")),
-					setElevatorSetpoint(pos, elevator),
-					new ParallelRaceGroup(wristOuttake(wrist, elevator), ElevatorCommands.setPos(elevator)));
-		}
+		// if (pos == ElevatorPos.INTAKE) {
+		// 	return new ParallelCommandGroup(
+		// 			Commands.runOnce(() -> SmartDashboard.putString("outtakeMode", "outtake trough")),
+		// 			setElevatorSetpoint(pos, elevator),
+		// 			new ParallelRaceGroup(wristOuttakeHomeRight(wrist, elevator), ElevatorCommands.setPos(elevator)));
+		// } else {
+		return new ParallelCommandGroup(
+				Commands.runOnce(() -> SmartDashboard.putString("outtakeMode", "outtake coral")),
+				setElevatorSetpoint(pos, elevator),
+				new ParallelRaceGroup(wristOuttake(wrist, elevator), ElevatorCommands.setPos(elevator)));
+		// }
 	}
 
 	public static final ParallelCommandGroup moveElevatorAndOuttakeHomeRight(
@@ -259,6 +259,12 @@ public abstract class AutoBase extends SequentialCommandGroup {
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
 		elevator.pos = pos;
 		return new ParallelRaceGroup(wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator));
+	}
+
+	public static final ParallelCommandGroup moveElevatorAndIntakeNoRace(
+			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
+		return new ParallelCommandGroup(
+				setElevatorSetpoint(pos, elevator), wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator));
 	}
 
 	public static final Command setStartPose(PathPlannerPath path) {
