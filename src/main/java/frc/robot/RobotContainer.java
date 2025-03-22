@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.autonomous.AutoBase;
+import frc.autonomous.AutoBase.Paths;
 import frc.autonomous.TestFiles;
 import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.DriveCommands;
@@ -203,7 +204,7 @@ public class RobotContainer {
 		autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 		// autoChooser.addOption("Far Left to C3 2 Coral", new FL_C3_2C(elevatorSubsystem, wristSubsystem));
 
-		// Paths.initPaths();
+		Paths.initPaths();
 		// Paths.initAutoFactory();
 
 		Reflections reflection = new Reflections("frc.autonomous");
