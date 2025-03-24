@@ -9,5 +9,6 @@ public class T1_Coral extends AutoBase {
 		super(elevator, wrist);
 		addCommands(setStartPose(Paths.firstPathChooser.get()));
 		addCommands(followPath(Paths.firstPathChooser.get()));
+		addCommands(moveElevatorAndOuttake(wrist, elevator, Paths.firstElevatorPosChooser.get()));
 	}
 }
