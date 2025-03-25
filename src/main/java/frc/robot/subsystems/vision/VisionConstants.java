@@ -13,7 +13,10 @@ public final class VisionConstants {
 
 	public static String camera0Name = "Arducam_OV9281_USB_Camera";
 	public static Transform3d robotToCamera0 = new Transform3d(
-			Inches.of(6).in(Meters), Inches.of(-10.25).in(Meters), Inches.of(31).in(Meters), new Rotation3d(0, 0, 0));
+			Inches.of(5).in(Meters),
+			Inches.of(11.5).in(Meters),
+			Inches.of(11.25).in(Meters),
+			new Rotation3d(0, 0, 0));
 
 	public static double maxAmbiguity = 0.3;
 	public static double maxZError = 0.75;

@@ -1,6 +1,7 @@
 package frc.autonomous;
 
 import static edu.wpi.first.units.Units.Meters;
+import static frc.autonomous.AutoBase.Paths.pathsHaveInit;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -286,18 +287,25 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	}
 
 	public static final PathPlannerPath getPathToFeed(PathPlannerPath path) {
-		String name = path.name;
-		int index = name.indexOf("C");
-		String subString = name.substring(index, (index + 2));
-		for (PathPlannerPath p : Paths.paths.values()) {
-			if (p.name.contains(subString) && p.name.contains("Feed")) {
-				return p;
+		if (pathsHaveInit) {
+			String name = path.name;
+			int index = name.indexOf("C");
+			SmartDashboard.putString("the index", name + ": " + index);
+			if (index <= 3) {
+				String subString = name.substring(index, (index + 2));
+				for (PathPlannerPath p : Paths.paths.values()) {
+					if (p.name.contains(subString) && p.name.contains("Feed")) {
+						return p;
+					}
+				}
 			}
 		}
-		return new PathPlannerPath(null, null, null, null);
+		return Paths.paths.get("Do Nothing");
 	}
 
 	public static final class Paths {
+
+		public static boolean pathsHaveInit = false;
 
 		public static HashMap<String, PathPlannerPath> paths = new HashMap<>();
 		public static PathPlannerPath pathsArray[];
@@ -394,6 +402,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 					}
 				}
 			}
+			pathsHaveInit = true;
 		}
 
 		public static PathPlannerPath lastPathFirst = Paths.firstPathChooser.get();

@@ -26,10 +26,7 @@ import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.ElevatorCommands;
 import frc.robot.commands.WristCommands;
-import frc.robot.subsystems.algae.AlgaeIO;
-import frc.robot.subsystems.algae.AlgaeIOSpark;
-import frc.robot.subsystems.algae.AlgaeSubsystem;
-import frc.robot.subsystems.climber.ClimberIOFalcon;
+import frc.robot.subsystems.climber.ClimberIOSpark;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveConstants;
@@ -66,7 +63,7 @@ public class RobotContainer {
 	private final ElevatorSubsystem elevatorSubsystem;
 	private final WristSubsystem wristSubsystem;
 	private final ClimberSubsystem climberSubsystem;
-	private final AlgaeSubsystem algaeSubsystem;
+	// private final AlgaeSubsystem algaeSubsystem;
 	private final Drive drive;
 
 	private final Vision vision;
@@ -141,12 +138,12 @@ public class RobotContainer {
 
 				elevatorSubsystem = new ElevatorSubsystem(new ElevatorIOSpark());
 				wristSubsystem = new WristSubsystem(new WristIOSpark());
-				algaeSubsystem = new AlgaeSubsystem(new AlgaeIOSpark());
+				// algaeSubsystem = new AlgaeSubsystem(new AlgaeIOSpark());
 
 				vision = new Vision(
 						drive, new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
 
-				climberSubsystem = new ClimberSubsystem(new ClimberIOFalcon());
+				climberSubsystem = new ClimberSubsystem(new ClimberIOSpark());
 				break;
 			case SIM:
 				SmartDashboard.putString("currentRobotMode", "SIM");
@@ -158,7 +155,7 @@ public class RobotContainer {
 
 				elevatorSubsystem = new ElevatorSubsystem(new ElevatorIOSim());
 				wristSubsystem = new WristSubsystem(new WristIOSim());
-				algaeSubsystem = new AlgaeSubsystem(new AlgaeIO() {});
+				// algaeSubsystem = new AlgaeSubsystem(new AlgaeIO() {});
 
 				SimulatedArena.getInstance().addDriveTrainSimulation(driveSimulation);
 
@@ -177,7 +174,7 @@ public class RobotContainer {
 								VisionConstants.robotToCamera0,
 								driveSimulation::getSimulatedDriveTrainPose));
 
-				climberSubsystem = new ClimberSubsystem(new ClimberIOFalcon());
+				climberSubsystem = new ClimberSubsystem(new ClimberIOSpark());
 				break;
 			default:
 				SmartDashboard.putString("currentRobotMode", "DEFAULT");
@@ -192,10 +189,10 @@ public class RobotContainer {
 
 				elevatorSubsystem = new ElevatorSubsystem(new ElevatorIO() {});
 				wristSubsystem = new WristSubsystem(new WristIO() {});
-				algaeSubsystem = new AlgaeSubsystem(new AlgaeIO() {});
+				// algaeSubsystem = new AlgaeSubsystem(new AlgaeIO() {});
 				vision = new Vision(drive, new VisionIO() {}, new VisionIO() {});
 
-				climberSubsystem = new ClimberSubsystem(new ClimberIOFalcon());
+				climberSubsystem = new ClimberSubsystem(new ClimberIOSpark());
 				break;
 		}
 		// Test01Auto test01Auto = new Test01Auto(elevatorSubsystem, wristSubsystem);
@@ -293,7 +290,7 @@ public class RobotContainer {
 				AutoBase.setElevatorSetpoint(ElevatorPos.INTAKE, elevatorSubsystem));
 		Keybinds.runIntakeAndElevatorTrigger.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
-		Keybinds.runAlgaeManipulatorTrigger.whileTrue(algaeSubsystem.runAlgaeManipulator());
+		// Keybinds.runAlgaeManipulatorTrigger.whileTrue(algaeSubsystem.runAlgaeManipulator());
 
 		Keybinds.moveClimberTrigger.whileTrue(ClimberCommands.moveClimber(climberSubsystem));
 		Keybinds.xboxTrapdoorTrigger
