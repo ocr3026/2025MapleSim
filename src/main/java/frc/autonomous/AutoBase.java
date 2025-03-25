@@ -287,17 +287,20 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	}
 
 	public static final PathPlannerPath getPathToFeed(PathPlannerPath path) {
-		if (pathsHaveInit) {
-			String name = path.name;
-			int index = name.indexOf("C");
-			SmartDashboard.putString("the index", name + ": " + index);
-			if (index <= 3) {
-				String subString = name.substring(index, (index + 2));
-				for (PathPlannerPath p : Paths.paths.values()) {
-					if (p.name.contains(subString) && p.name.contains("Feed")) {
-						return p;
-					}
-				}
+		String name = path.name;
+		int index = name.indexOf("C");
+		String subString;
+		if (name.contains("12") || name.contains("11") || name.contains("10")) {
+			subString = name.substring(index, (index + 3));
+		} else {
+			subString = name.substring(index, (index + 2));
+		}
+		SmartDashboard.putString("fixedPath", subString);
+		for (PathPlannerPath p : Paths.paths.values()) {
+			if (p.name.contains(subString) && p.name.contains("Feed") && p.name.indexOf("F") > 3) {
+				SmartDashboard.putString("fixPath", p.name);
+
+				return p;
 			}
 		}
 		return Paths.paths.get("Do Nothing");
@@ -403,7 +406,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				}
 			}
 			pathsHaveInit = true;
-		}
+ 		}
 
 		public static PathPlannerPath lastPathFirst = Paths.firstPathChooser.get();
 		public static PathPlannerPath lastPathSecond = Paths.secondPathChooser.get();
