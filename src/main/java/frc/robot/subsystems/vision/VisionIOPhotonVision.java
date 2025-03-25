@@ -4,6 +4,7 @@ import static frc.robot.subsystems.vision.VisionConstants.*;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -34,9 +35,11 @@ public class VisionIOPhotonVision implements VisionIO {
 			if (result.hasTargets()) {
 				inputs.latestTargetObservation = new TargetObservation(
 						Rotation2d.fromDegrees(result.getBestTarget().getYaw()),
-						Rotation2d.fromDegrees(result.getBestTarget().getPitch()));
+						Rotation2d.fromDegrees(result.getBestTarget().getPitch()),
+						result.getBestTarget().bestCameraToTarget.getRotation());
 			} else {
-				inputs.latestTargetObservation = new TargetObservation(new Rotation2d(), new Rotation2d());
+				inputs.latestTargetObservation =
+						new TargetObservation(new Rotation2d(), new Rotation2d(), new Rotation3d());
 			}
 
 			if (result.multitagResult.isPresent()) {

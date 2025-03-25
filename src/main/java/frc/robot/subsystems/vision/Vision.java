@@ -8,6 +8,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
@@ -43,6 +44,10 @@ public class Vision extends SubsystemBase {
 
 	public Rotation2d getTargetX(int cameraIndex) {
 		return inputs[cameraIndex].latestTargetObservation.tx();
+	}
+
+	public Rotation3d getTargetRotation(int cameraIndex) {
+		return inputs[cameraIndex].latestTargetObservation.tOmega();
 	}
 
 	@Override
@@ -113,6 +118,7 @@ public class Vision extends SubsystemBase {
 					"Vision/Camera" + Integer.toString(cameraIndex) + "/TagPoses",
 					tagPoses.toArray(new Pose3d[tagPoses.size()]));
 			Logger.recordOutput("Vision/Camera" + Integer.toString(cameraIndex) + "/tx", getTargetX(cameraIndex));
+			Logger.recordOutput("Vision/Camera" + Integer.toString(cameraIndex) + "/tOmega", getTargetRotation(cameraIndex));
 			Logger.recordOutput(
 					"Vision/Camera" + Integer.toString(cameraIndex) + "/RobotPoses",
 					robotPoses.toArray(new Pose3d[robotPoses.size()]));

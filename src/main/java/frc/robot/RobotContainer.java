@@ -69,7 +69,6 @@ public class RobotContainer {
 	private final Vision vision;
 
 	private SwerveDriveSimulation driveSimulation = null;
-	UsbCamera climbCamera = CameraServer.startAutomaticCapture();
 
 	public static final CommandJoystick translationJoystick = new CommandJoystick(0);
 	public static final CommandJoystick rotationJoystick = new CommandJoystick(1);

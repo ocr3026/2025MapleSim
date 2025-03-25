@@ -258,7 +258,7 @@ public class DriveCommands {
 		return Commands.runEnd(
 				() -> {
 					drive.runVelocity(new ChassisSpeeds(
-							0, 0, rotationPID.calculate(vision.getTargetX(0).getRotations())));
+							0, 0, rotationPID.calculate(vision.getTargetRotation(0).getZ())));
 				},
 				() -> {
 					drive.runVelocity(new ChassisSpeeds());
