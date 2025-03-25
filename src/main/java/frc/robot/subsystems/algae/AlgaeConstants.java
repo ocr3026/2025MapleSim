@@ -1,8 +1,8 @@
-package frc.robot.subsystems.algae;
+// package frc.robot.subsystems.algae;
 
-public class AlgaeConstants {
-	public static final int algaeMotorID = 52;
-	public static final int currentLimit = 50;
+// public class AlgaeConstants {
+// 	// public static final int algaeMotorID = 52;
+// 	public static final int currentLimit = 50;
 
-	public static final double kickoutVoltage = -10;
-}
+// 	public static final double kickoutVoltage = -10;
+// }

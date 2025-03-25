@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class Keybinds {
 	public static final Trigger resetGyroTrigger = RobotContainer.translationJoystick.button(12);
-	public static final Trigger lookAtCoralTrigger = RobotContainer.translationJoystick.button(3);
+	public static final Trigger lookAtCoralTrigger = RobotContainer.translationJoystick.button(4);
 
 	public static final Trigger moveElevatorTrigger = RobotContainer.xbox.a();
 	public static final Trigger decrementElevatorEnumTrigger = RobotContainer.xbox.leftBumper();

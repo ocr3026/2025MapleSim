@@ -1,6 +1,7 @@
 package frc.autonomous;
 
 import static edu.wpi.first.units.Units.Meters;
+import static frc.autonomous.AutoBase.Paths.pathsHaveInit;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -302,10 +303,12 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				return p;
 			}
 		}
-		return new PathPlannerPath(null, null, null, null);
+		return Paths.paths.get("Do Nothing");
 	}
 
 	public static final class Paths {
+
+		public static boolean pathsHaveInit = false;
 
 		public static HashMap<String, PathPlannerPath> paths = new HashMap<>();
 		public static PathPlannerPath pathsArray[];
@@ -402,7 +405,8 @@ public abstract class AutoBase extends SequentialCommandGroup {
 					}
 				}
 			}
-		}
+			pathsHaveInit = true;
+ 		}
 
 		public static PathPlannerPath lastPathFirst = Paths.firstPathChooser.get();
 		public static PathPlannerPath lastPathSecond = Paths.secondPathChooser.get();
