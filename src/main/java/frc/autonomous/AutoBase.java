@@ -406,7 +406,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				}
 			}
 			pathsHaveInit = true;
- 		}
+		}
 
 		public static PathPlannerPath lastPathFirst = Paths.firstPathChooser.get();
 		public static PathPlannerPath lastPathSecond = Paths.secondPathChooser.get();

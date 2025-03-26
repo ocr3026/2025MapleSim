@@ -91,6 +91,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 		return io.getPosition();
 	}
 
+	public void zeroElevator() {
+		io.zeroElevator();
+	}
+
 	public Distance getTargetPosition(ElevatorPos givenPos) {
 		return io.getTargetPosition(givenPos);
 	}

@@ -66,6 +66,10 @@ public class ElevatorCommands {
 		return Commands.run(() -> subsystem.setSpeed(0));
 	}
 
+	public static Command setMotorPos(ElevatorSubsystem subsystem) {
+		return Commands.runOnce(() -> subsystem.zeroElevator(), subsystem);
+	}
+
 	// public static Command zeroEncoder(ElevatorSubsystem subsystem) {
 	// 	return Commands.runOnce(() -> subsystem.)
 	// }

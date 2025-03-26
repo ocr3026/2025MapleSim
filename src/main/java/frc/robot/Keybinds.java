@@ -9,6 +9,8 @@ public final class Keybinds {
 	public static final Trigger moveElevatorTrigger = RobotContainer.xbox.a();
 	public static final Trigger decrementElevatorEnumTrigger = RobotContainer.xbox.leftBumper();
 	public static final Trigger incrementElevatorEnumTrigger = RobotContainer.xbox.rightBumper();
+	public static final Trigger manuallyMoveElevatorDownTrigger = RobotContainer.translationJoystick.button(9);
+	public static final Trigger resetElevatorPosTrigger = RobotContainer.translationJoystick.button(10);
 
 	public static final Trigger runIntakeWithSensorTrigger = RobotContainer.xbox.b();
 	public static final Trigger runIntakeTrigger = RobotContainer.xbox.y();

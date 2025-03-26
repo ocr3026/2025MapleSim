@@ -118,7 +118,8 @@ public class Vision extends SubsystemBase {
 					"Vision/Camera" + Integer.toString(cameraIndex) + "/TagPoses",
 					tagPoses.toArray(new Pose3d[tagPoses.size()]));
 			Logger.recordOutput("Vision/Camera" + Integer.toString(cameraIndex) + "/tx", getTargetX(cameraIndex));
-			Logger.recordOutput("Vision/Camera" + Integer.toString(cameraIndex) + "/tOmega", getTargetRotation(cameraIndex));
+			Logger.recordOutput(
+					"Vision/Camera" + Integer.toString(cameraIndex) + "/tOmega", getTargetRotation(cameraIndex));
 			Logger.recordOutput(
 					"Vision/Camera" + Integer.toString(cameraIndex) + "/RobotPoses",
 					robotPoses.toArray(new Pose3d[robotPoses.size()]));
