@@ -41,7 +41,7 @@ public class DriveCommands {
 	private static final AngularVelocity WHEEL_RADIUS_MAX_VELOCITY = RadiansPerSecond.of(0.25);
 	private static final AngularAcceleration WHEEL_RADIUS_RAMP_RATE = RadiansPerSecondPerSecond.of(0.05);
 
-	private static final PIDController rotationPID = new PIDController(1, 0, 0);
+	private static final PIDController rotationPID = new PIDController(2, 0, 0);
 
 	private DriveCommands() {}
 
@@ -256,6 +256,7 @@ public class DriveCommands {
 
 	public static Command lookAtCoral(Drive drive, Vision vision) {
 		rotationPID.enableContinuousInput(-Math.PI, Math.PI);
+		rotationPID.setTolerance((Math.PI / 16));
 
 		return Commands.runEnd(
 				() -> {
