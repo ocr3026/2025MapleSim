@@ -257,6 +257,7 @@ public class DriveCommands {
 
 	public static Command lineUpRightTrigger(Drive drive, Vision vision) {
 		rotationPID.enableContinuousInput(-Math.PI, Math.PI);
+		rotationPID.setTolerance((Math.PI / 16));
 
 		return Commands.runEnd(
 				() -> {
