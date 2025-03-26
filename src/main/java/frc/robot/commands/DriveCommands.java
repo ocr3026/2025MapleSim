@@ -255,10 +255,12 @@ public class DriveCommands {
 	}
 
 	public static Command lookAtCoral(Drive drive, Vision vision) {
+		rotationPID.enableContinuousInput(-Math.PI, Math.PI);
+
 		return Commands.runEnd(
 				() -> {
 					drive.runVelocity(new ChassisSpeeds(
-							0, 0, rotationPID.calculate(vision.getTargetRotation(0).getZ())));
+							0, 0, rotationPID.calculate(vision.getTargetRotation(0).getZ(), Math.PI)));
 				},
 				() -> {
 					drive.runVelocity(new ChassisSpeeds());
