@@ -5,6 +5,7 @@
   "pathFolders": [
     "C1 Paths",
     "C10 Paths",
+    "C11 Paths",
     "C12 Paths",
     "C2 Paths",
     "C3 Paths",
@@ -14,7 +15,7 @@
     "C7 Paths",
     "C8 Paths",
     "C9 Paths",
-    "C11 Paths"
+    "Coral Paths"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,

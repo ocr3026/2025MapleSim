@@ -266,7 +266,8 @@ public class RobotContainer {
 				: () -> drive.resetOdometry(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
 
 		Keybinds.resetGyroTrigger.onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
-		Keybinds.lookAtCoralTrigger.whileTrue(DriveCommands.lineUpRightTrigger(drive, vision));
+		Keybinds.lookAtCoralRightTrigger.whileTrue(DriveCommands.lineUpRightTrigger(drive, vision));
+		Keybinds.lookAtCoralLeftTrigger.whileTrue(DriveCommands.lineUpLeftTrigger(drive, vision));
 
 		Keybinds.moveElevatorTrigger.whileTrue(ElevatorCommands.setPos(elevatorSubsystem));
 		Keybinds.decrementElevatorEnumTrigger.onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
@@ -294,6 +295,7 @@ public class RobotContainer {
 				.and(Keybinds.joystickTrapdoorTrigger)
 				.whileTrue(ClimberCommands.runTrapdoor(climberSubsystem));
 
+		rotationJoystick.button(8).whileTrue(AutoBase.followPath(Paths.paths.get("C6 to C6")));
 		// climberSubsystem.setDefaultCommand(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
 		//	xbox.y().whileTrue(ClimberCommands.autoPositionClimber(climberSubsystem, 45)
 		//	.andThen(ClimberCommands.autoPositionClimber(climberSubsystem, 135)));

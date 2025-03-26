@@ -257,14 +257,16 @@ public class DriveCommands {
 
 	public static Command lineUpRightTrigger(Drive drive, Vision vision) {
 		rotationPID.enableContinuousInput(-Math.PI, Math.PI);
-		rotationPID.setTolerance((Math.PI / 16));
+		rotationPID.setTolerance((Math.PI / 32));
 
 		return Commands.runEnd(
 				() -> {
 					if (rotationPID.atSetpoint()) {
 						drive.runVelocity(new ChassisSpeeds(
 								0,
-								-drivePID.calculate(vision.getTargetTransform(0).getY(), 0.2),
+								-drivePID.calculate(
+										vision.getTargetTransform(0).getY(),
+										0.2 - Inches.of(11.5).in(Meters)),
 								0));
 					} else {
 						drive.runVelocity(new ChassisSpeeds(
@@ -285,14 +287,16 @@ public class DriveCommands {
 
 	public static Command lineUpLeftTrigger(Drive drive, Vision vision) {
 		rotationPID.enableContinuousInput(-Math.PI, Math.PI);
-		rotationPID.setTolerance((Math.PI / 16));
+		rotationPID.setTolerance((Math.PI / 32));
 
 		return Commands.runEnd(
 				() -> {
 					if (rotationPID.atSetpoint()) {
 						drive.runVelocity(new ChassisSpeeds(
 								0,
-								-drivePID.calculate(vision.getTargetTransform(0).getY(), -0.2),
+								-drivePID.calculate(
+										vision.getTargetTransform(0).getY(),
+										-0.2 - Inches.of(11.5).in(Meters)),
 								0));
 					} else {
 						drive.runVelocity(new ChassisSpeeds(
