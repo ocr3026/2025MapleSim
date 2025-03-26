@@ -266,7 +266,7 @@ public class RobotContainer {
 				: () -> drive.resetOdometry(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
 
 		Keybinds.resetGyroTrigger.onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
-		Keybinds.lookAtCoralTrigger.whileTrue(DriveCommands.lookAtCoral(drive, vision));
+		Keybinds.lookAtCoralTrigger.whileTrue(DriveCommands.lineUpRightTrigger(drive, vision));
 
 		Keybinds.moveElevatorTrigger.whileTrue(ElevatorCommands.setPos(elevatorSubsystem));
 		Keybinds.decrementElevatorEnumTrigger.onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
