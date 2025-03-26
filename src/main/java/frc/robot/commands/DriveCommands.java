@@ -41,7 +41,7 @@ public class DriveCommands {
 	private static final AngularVelocity WHEEL_RADIUS_MAX_VELOCITY = RadiansPerSecond.of(0.25);
 	private static final AngularAcceleration WHEEL_RADIUS_RAMP_RATE = RadiansPerSecondPerSecond.of(0.05);
 
-	private static final PIDController rotationPID = new PIDController(5, 0, 0);
+	private static final PIDController rotationPID = new PIDController(1, 0, 0);
 
 	private DriveCommands() {}
 
@@ -260,7 +260,9 @@ public class DriveCommands {
 		return Commands.runEnd(
 				() -> {
 					drive.runVelocity(new ChassisSpeeds(
-							0, 0, rotationPID.calculate(vision.getTargetRotation(0).getZ(), Math.PI)));
+							0,
+							0,
+							-rotationPID.calculate(vision.getTargetRotation(0).getZ(), Math.PI)));
 				},
 				() -> {
 					drive.runVelocity(new ChassisSpeeds());

@@ -9,8 +9,6 @@ import static frc.robot.subsystems.elevator.ElevatorConstants.*;
 import static frc.robot.subsystems.wrist.WristConstants.outtakeVoltage;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
