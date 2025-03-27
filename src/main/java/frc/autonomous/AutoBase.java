@@ -27,7 +27,10 @@ import frc.robot.subsystems.wrist.WristConstants;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.util.Util;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public abstract class AutoBase extends SequentialCommandGroup {
@@ -307,6 +310,8 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	}
 
 	public static final class Paths {
+		public static List<Pose2d> coralPoses = new ArrayList<Pose2d>();
+
 
 		public static boolean pathsHaveInit = false;
 
@@ -402,6 +407,12 @@ public abstract class AutoBase extends SequentialCommandGroup {
 					if (index <= 2) {
 						secondPathChooser.addOption(p.name, p);
 						thirdPathChooser.addOption(p.name, p);
+					}
+				}
+				if(p.name.contains("C")) {
+					int index = p.name.indexOf("S");
+					if(index <= 2) {
+						coralPoses.add(p.getStartingHolonomicPose().get());
 					}
 				}
 			}

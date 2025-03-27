@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import static edu.wpi.first.units.Units.*;
+import static frc.autonomous.AutoBase.Paths.coralPoses;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.autonomous.AutoBase.Paths;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.vision.Vision;
@@ -43,6 +45,8 @@ public class DriveCommands {
 
 	private static final PIDController rotationPID = new PIDController(1, 0, 0);
 	private static final PIDController drivePID = new PIDController(1, 0, 0);
+
+	
 
 	private DriveCommands() {}
 
@@ -313,6 +317,36 @@ public class DriveCommands {
 					drive.runVelocity(new ChassisSpeeds());
 				},
 				drive);
+	}
+
+	public static Command findBestPose(Drive drive, Vision vision) {
+		return Commands.runOnce(() -> {
+			Pose2d prevPose2d = null;
+			Pose2d closestPose = null;
+			for(Pose2d pose : Paths.coralPoses) {
+				if(closestPose == null) {
+					closestPose = pose;
+				}
+				else {
+					double curX = drive.getPose().getX();
+					double curY = drive.getPose().getY();
+					double goalX = pose.getX();
+					double goalY = pose.getY();
+					double prevX = closestPose.getX();
+					double prevY = closestPose.getY();
+					double distSquaredGoal = Math.pow((curX - goalX), 2) + Math.pow((curY - goalY), 2);
+					double distSquaredPrev = Math.pow((curX - prevX), 2) + Math.pow((curY - prevY), 2);
+					if(distSquaredGoal < distSquaredPrev) {
+						closestPose = pose;
+					}
+					else {
+						closestPose = prevPose2d;
+					}
+
+					
+				}
+			}
+		});
 	}
 
 	private static class WheelRadiusCharacterizationState {

@@ -5,9 +5,14 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.path.PathConstraints;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.*;
+import frc.autonomous.AutoBase.Paths;
+
 import org.ironmaple.simulation.drivesims.COTS;
 import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
@@ -116,4 +121,8 @@ public final class DriveConstants {
 					wheelRadius,
 					KilogramSquareMeters.of(0.02),
 					wheelCOF));
+	//TODO: make real constraints
+	public static final PathConstraints constrains = PathConstraints.unlimitedConstraints(12);
+
+
 }
