@@ -9,6 +9,8 @@ import static frc.robot.subsystems.elevator.ElevatorConstants.*;
 import static frc.robot.subsystems.wrist.WristConstants.outtakeVoltage;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathConstraints;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -297,7 +299,8 @@ public class RobotContainer {
 				.and(Keybinds.joystickTrapdoorTrigger)
 				.whileTrue(ClimberCommands.runTrapdoor(climberSubsystem));
 
-		rotationJoystick.button(8).whileTrue(AutoBase.followPath(Paths.paths.get("C6 to C6")));
+		//rotationJoystick.button(8).whileTrue(AutoBase.followPath(Paths.paths.get("C6 to C6")));
+		rotationJoystick.button(8).whileTrue(AutoBuilder.pathfindToPose(null, null));
 		// climberSubsystem.setDefaultCommand(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
 		//	xbox.y().whileTrue(ClimberCommands.autoPositionClimber(climberSubsystem, 45)
 		//	.andThen(ClimberCommands.autoPositionClimber(climberSubsystem, 135)));
