@@ -41,7 +41,8 @@ public class DriveCommands {
 	private static final AngularVelocity WHEEL_RADIUS_MAX_VELOCITY = RadiansPerSecond.of(0.25);
 	private static final AngularAcceleration WHEEL_RADIUS_RAMP_RATE = RadiansPerSecondPerSecond.of(0.05);
 
-	private static final PIDController rotationPID = new PIDController(5, 0, 0);
+	private static final PIDController rotationPID = new PIDController(1, 0, 0);
+	private static final PIDController drivePID = new PIDController(1, 0, 0);
 
 	private DriveCommands() {}
 
@@ -254,8 +255,39 @@ public class DriveCommands {
 								})));
 	}
 
-	public static Command lookAtCoral(Drive drive, Vision vision) {
+	public static Command lineUpRightTrigger(Drive drive, Vision vision) {
 		rotationPID.enableContinuousInput(-Math.PI, Math.PI);
+		rotationPID.setTolerance((Math.PI / 32));
+
+		return Commands.runEnd(
+				() -> {
+					if (rotationPID.atSetpoint()) {
+						drive.runVelocity(new ChassisSpeeds(
+								0,
+								-drivePID.calculate(
+										vision.getTargetTransform(0).getY(),
+										0.2 - Inches.of(11.5).in(Meters)),
+								0));
+					} else {
+						drive.runVelocity(new ChassisSpeeds(
+								0,
+								0,
+								-rotationPID.calculate(
+										vision.getTargetTransform(0)
+												.getRotation()
+												.getZ(),
+										Math.PI)));
+					}
+				},
+				() -> {
+					drive.runVelocity(new ChassisSpeeds());
+				},
+				drive);
+	}
+
+	public static Command lineUpLeftTrigger(Drive drive, Vision vision) {
+		rotationPID.enableContinuousInput(-Math.PI, Math.PI);
+		rotationPID.setTolerance((Math.PI / 32));
 
 		return Commands.runEnd(
 				() -> {
