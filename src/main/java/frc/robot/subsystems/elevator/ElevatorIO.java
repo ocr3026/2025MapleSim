@@ -30,6 +30,8 @@ public interface ElevatorIO {
 		return Inches.of(0);
 	}
 
+	public default void zeroElevator() {}
+
 	public default void tick() {}
 
 	public default void setSpeed(double speed) {}

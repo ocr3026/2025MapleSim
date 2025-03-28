@@ -160,4 +160,10 @@ public class ElevatorIOSpark implements ElevatorIO {
 		// leadMotor.set(MathUtil.clamp(ffValue, 0, 0.4));
 		leadMotor.set(MathUtil.clamp(motorSpeed, -.25, 1));
 	}
+
+	@Override
+	public void zeroElevator() {
+		// TODO Auto-generated method stub
+		leadEncoder.setPosition(0);
+	}
 }
