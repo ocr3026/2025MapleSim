@@ -9,8 +9,6 @@ import static frc.robot.subsystems.elevator.ElevatorConstants.*;
 import static frc.robot.subsystems.wrist.WristConstants.outtakeVoltage;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.path.PathConstraints;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -268,8 +266,6 @@ public class RobotContainer {
 				: () -> drive.resetOdometry(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
 
 		Keybinds.resetGyroTrigger.onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
-		Keybinds.lookAtCoralRightTrigger.whileTrue(DriveCommands.lineUpRightTrigger(drive, vision));
-		Keybinds.lookAtCoralLeftTrigger.whileTrue(DriveCommands.lineUpLeftTrigger(drive, vision));
 
 		Keybinds.moveElevatorTrigger.whileTrue(ElevatorCommands.setPos(elevatorSubsystem));
 		Keybinds.decrementElevatorEnumTrigger.onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
@@ -297,8 +293,9 @@ public class RobotContainer {
 				.and(Keybinds.joystickTrapdoorTrigger)
 				.whileTrue(ClimberCommands.runTrapdoor(climberSubsystem));
 
-		//rotationJoystick.button(8).whileTrue(AutoBase.followPath(Paths.paths.get("C6 to C6")));
-		rotationJoystick.button(8).whileTrue(AutoBuilder.pathfindToPose(null, null));
+		// rotationJoystick.button(8).whileTrue(AutoBase.followPath(Paths.paths.get("C6 to C6")));
+		translationJoystick.button(1).whileTrue(DriveCommands.pathfindToPoseRight(drive));
+		rotationJoystick.button(1).whileTrue(DriveCommands.pathfindToPoseLeft(drive));
 		// climberSubsystem.setDefaultCommand(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
 		//	xbox.y().whileTrue(ClimberCommands.autoPositionClimber(climberSubsystem, 45)
 		//	.andThen(ClimberCommands.autoPositionClimber(climberSubsystem, 135)));
@@ -339,6 +336,7 @@ public class RobotContainer {
 	}
 
 	public void recompileAutos() {
+		Paths.flipCoralPoses();
 		Reflections reflection = new Reflections("frc.autonomous");
 		Set<Class<? extends AutoBase>> autoClasses = reflection.getSubTypesOf(AutoBase.class);
 

@@ -6,6 +6,7 @@ import static frc.autonomous.AutoBase.Paths.pathsHaveInit;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.FileVersionException;
+import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -30,7 +31,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public abstract class AutoBase extends SequentialCommandGroup {
@@ -310,8 +310,8 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	}
 
 	public static final class Paths {
-		public static List<Pose2d> coralPoses = new ArrayList<Pose2d>();
-
+		public static List<Pose2d> coralPosesRight = new ArrayList<Pose2d>();
+		public static List<Pose2d> coralPosesLeft = new ArrayList<Pose2d>();
 
 		public static boolean pathsHaveInit = false;
 
@@ -409,14 +409,48 @@ public abstract class AutoBase extends SequentialCommandGroup {
 						thirdPathChooser.addOption(p.name, p);
 					}
 				}
-				if(p.name.contains("C")) {
-					int index = p.name.indexOf("S");
-					if(index <= 2) {
-						coralPoses.add(p.getStartingHolonomicPose().get());
+
+				if (p.name.contains("C")) {
+					int index = p.name.indexOf("C");
+					if (index <= 2) {
+						String substring;
+						if (p.name.substring(index + 1, index + 3).contains(" ")) {
+							substring = p.name.substring(index + 1, index + 2);
+						} else {
+							substring = p.name.substring(index + 1, index + 3);
+						}
+						try {
+							int num = Integer.parseInt(substring);
+							SmartDashboard.putNumber("parsed int", num);
+							if ((num % 2) == 0) {
+								coralPosesRight.add(p.getStartingHolonomicPose().get());
+							} else {
+								coralPosesLeft.add(p.getStartingHolonomicPose().get());
+							}
+						} catch (Exception e) {
+							DriverStation.reportError(e.getMessage(), e.getStackTrace());
+						}
 					}
 				}
 			}
 			pathsHaveInit = true;
+		}
+
+		public static void flipCoralPoses() {
+
+			ArrayList<Pose2d> flippedPosesRight = new ArrayList<>();
+			for (Pose2d p : coralPosesRight) {
+				flippedPosesRight.add(FlippingUtil.flipFieldPose(p));
+			}
+			coralPosesRight.clear();
+			coralPosesRight = flippedPosesRight;
+
+			ArrayList<Pose2d> flippedPosesLeft = new ArrayList<>();
+			for (Pose2d p : coralPosesLeft) {
+				flippedPosesLeft.add(FlippingUtil.flipFieldPose(p));
+			}
+			coralPosesLeft.clear();
+			coralPosesLeft = flippedPosesLeft;
 		}
 
 		public static PathPlannerPath lastPathFirst = Paths.firstPathChooser.get();

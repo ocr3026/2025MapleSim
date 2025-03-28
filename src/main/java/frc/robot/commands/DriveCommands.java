@@ -1,10 +1,10 @@
 package frc.robot.commands;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.autonomous.AutoBase.Paths.coralPoses;
+import static frc.robot.subsystems.drive.DriveConstants.constraints;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -19,11 +19,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.autonomous.AutoBase.Paths;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveConstants;
-import frc.robot.subsystems.vision.Vision;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
@@ -43,10 +43,7 @@ public class DriveCommands {
 	private static final AngularVelocity WHEEL_RADIUS_MAX_VELOCITY = RadiansPerSecond.of(0.25);
 	private static final AngularAcceleration WHEEL_RADIUS_RAMP_RATE = RadiansPerSecondPerSecond.of(0.05);
 
-	private static final PIDController rotationPID = new PIDController(1, 0, 0);
-	private static final PIDController drivePID = new PIDController(1, 0, 0);
-
-	
+	private static Command autoBuilderCommand = null;
 
 	private DriveCommands() {}
 
@@ -259,94 +256,34 @@ public class DriveCommands {
 								})));
 	}
 
-	public static Command lineUpRightTrigger(Drive drive, Vision vision) {
-		rotationPID.enableContinuousInput(-Math.PI, Math.PI);
-		rotationPID.setTolerance((Math.PI / 32));
-
-		return Commands.runEnd(
-				() -> {
-					if (rotationPID.atSetpoint()) {
-						drive.runVelocity(new ChassisSpeeds(
-								0,
-								-drivePID.calculate(
-										vision.getTargetTransform(0).getY(),
-										0.2 - Inches.of(11.5).in(Meters)),
-								0));
-					} else {
-						drive.runVelocity(new ChassisSpeeds(
-								0,
-								0,
-								-rotationPID.calculate(
-										vision.getTargetTransform(0)
-												.getRotation()
-												.getZ(),
-										Math.PI)));
-					}
-				},
-				() -> {
-					drive.runVelocity(new ChassisSpeeds());
-				},
-				drive);
+	public static Pose2d findBestPoseRight(Drive drive) {
+		return drive.getPose().nearest(Paths.coralPosesRight);
 	}
 
-	public static Command lineUpLeftTrigger(Drive drive, Vision vision) {
-		rotationPID.enableContinuousInput(-Math.PI, Math.PI);
-		rotationPID.setTolerance((Math.PI / 32));
-
-		return Commands.runEnd(
-				() -> {
-					if (rotationPID.atSetpoint()) {
-						drive.runVelocity(new ChassisSpeeds(
-								0,
-								-drivePID.calculate(
-										vision.getTargetTransform(0).getY(),
-										-0.2 - Inches.of(11.5).in(Meters)),
-								0));
-					} else {
-						drive.runVelocity(new ChassisSpeeds(
-								0,
-								0,
-								-rotationPID.calculate(
-										vision.getTargetTransform(0)
-												.getRotation()
-												.getZ(),
-										Math.PI)));
-					}
-				},
-				() -> {
-					drive.runVelocity(new ChassisSpeeds());
-				},
-				drive);
+	public static Pose2d findBestPoseLeft(Drive drive) {
+		return drive.getPose().nearest(Paths.coralPosesLeft);
 	}
 
-	public static Command findBestPose(Drive drive, Vision vision) {
-		return Commands.runOnce(() -> {
-			Pose2d prevPose2d = null;
-			Pose2d closestPose = null;
-			for(Pose2d pose : Paths.coralPoses) {
-				if(closestPose == null) {
-					closestPose = pose;
-				}
-				else {
-					double curX = drive.getPose().getX();
-					double curY = drive.getPose().getY();
-					double goalX = pose.getX();
-					double goalY = pose.getY();
-					double prevX = closestPose.getX();
-					double prevY = closestPose.getY();
-					double distSquaredGoal = Math.pow((curX - goalX), 2) + Math.pow((curY - goalY), 2);
-					double distSquaredPrev = Math.pow((curX - prevX), 2) + Math.pow((curY - prevY), 2);
-					if(distSquaredGoal < distSquaredPrev) {
-						closestPose = pose;
-					}
-					else {
-						closestPose = prevPose2d;
-					}
+	public static Command pathfindToPoseRight(Drive drive) {
+		return Commands.startEnd(
+				() -> {
+					autoBuilderCommand = AutoBuilder.pathfindToPose(findBestPoseRight(drive), constraints);
+					CommandScheduler.getInstance().schedule(autoBuilderCommand);
+				},
+				() -> {
+					CommandScheduler.getInstance().cancel(autoBuilderCommand);
+				});
+	}
 
-					
-				}
-			}
-		});
+	public static Command pathfindToPoseLeft(Drive drive) {
+		return Commands.startEnd(
+				() -> {
+					autoBuilderCommand = AutoBuilder.pathfindToPose(findBestPoseLeft(drive), constraints);
+					CommandScheduler.getInstance().schedule(autoBuilderCommand);
+				},
+				() -> {
+					CommandScheduler.getInstance().cancel(autoBuilderCommand);
+				});
 	}
 
 	private static class WheelRadiusCharacterizationState {

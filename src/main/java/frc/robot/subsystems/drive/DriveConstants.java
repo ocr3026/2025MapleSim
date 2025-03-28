@@ -6,13 +6,9 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.path.PathConstraints;
-
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.*;
-import frc.autonomous.AutoBase.Paths;
-
 import org.ironmaple.simulation.drivesims.COTS;
 import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
@@ -25,7 +21,8 @@ public final class DriveConstants {
 	 * REAR LEFT : GREEN
 	 * REAR RIGHT : YELLOW
 	 */
-	public static final LinearVelocity maxSpeed = MetersPerSecond.of(5.0);
+	public static final LinearVelocity maxSpeed = MetersPerSecond.of(5.3);
+	public static final LinearAcceleration maxAccel = FeetPerSecondPerSecond.of(5);
 	public static final Frequency odometryFrequency = Hertz.of(100);
 	public static final Distance trackWidth = Inches.of(24.75);
 	public static final Distance wheelBase = Inches.of(24.75);
@@ -58,7 +55,7 @@ public final class DriveConstants {
 	public static final int rearRightTurnID = 26;
 	public static final int rearRightEncoderID = 27;
 
-	public static final int driveMotorCurrentLimit = 60;
+	public static final int driveMotorCurrentLimit = 65;
 	public static final Distance wheelRadius = Inches.of(2);
 	public static final double driveMotorReduction = (50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0);
 	public static final DCMotor driveGearbox = DCMotor.getNEO(1);
@@ -77,6 +74,9 @@ public final class DriveConstants {
 	public static final int turnMotorCurrentLimit = 30;
 	public static final double turnMotorReduction = 150.0 / 7.0;
 	public static final DCMotor turnGearbox = DCMotor.getNEO(1);
+
+	public static final AngularVelocity maxAngularVel =
+			RadiansPerSecond.of(maxSpeed.in(MetersPerSecond) / driveBaseRadius.in(Meters) / 4);
 
 	public static final double turnEncoderPositionFactor = 1.0 / (turnMotorReduction);
 	public static final double turnEncoderVelocityFactor = 1.0 / (turnMotorReduction * 60);
@@ -121,8 +121,12 @@ public final class DriveConstants {
 					wheelRadius,
 					KilogramSquareMeters.of(0.02),
 					wheelCOF));
-	//TODO: make real constraints
-	public static final PathConstraints constrains = PathConstraints.unlimitedConstraints(12);
 
-
+	public static final AngularAcceleration maxAngularAccel = DegreesPerSecondPerSecond.of(1923);
+	// TODO: make real constraints
+	public static final PathConstraints constraints = new PathConstraints(
+			maxSpeed.in(MetersPerSecond),
+			maxAccel.in(MetersPerSecondPerSecond),
+			maxAngularVel.in(RadiansPerSecond),
+			maxAngularAccel.in(RadiansPerSecondPerSecond));
 }
