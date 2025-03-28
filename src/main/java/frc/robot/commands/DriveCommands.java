@@ -18,6 +18,7 @@ import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -26,6 +27,7 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveConstants;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -257,11 +259,21 @@ public class DriveCommands {
 	}
 
 	public static Pose2d findBestPoseRight(Drive drive) {
-		return drive.getPose().nearest(Paths.coralPosesRight);
+		SmartDashboard.putString(
+				"best pose",
+				Paths.coralPosesRight.get(
+						(drive.getPose().nearest(new ArrayList<Pose2d>(Paths.coralPosesRight.keySet())))));
+
+		return drive.getPose().nearest(new ArrayList<Pose2d>(Paths.coralPosesRight.keySet()));
 	}
 
 	public static Pose2d findBestPoseLeft(Drive drive) {
-		return drive.getPose().nearest(Paths.coralPosesLeft);
+		SmartDashboard.putString(
+				"best pose",
+				Paths.coralPosesLeft.get(
+						(drive.getPose().nearest(new ArrayList<Pose2d>(Paths.coralPosesLeft.keySet())))));
+
+		return drive.getPose().nearest(new ArrayList<Pose2d>(Paths.coralPosesLeft.keySet()));
 	}
 
 	public static Command pathfindToPoseRight(Drive drive) {

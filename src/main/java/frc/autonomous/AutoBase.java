@@ -28,9 +28,7 @@ import frc.robot.subsystems.wrist.WristConstants;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.util.Util;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public abstract class AutoBase extends SequentialCommandGroup {
@@ -310,8 +308,10 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	}
 
 	public static final class Paths {
-		public static List<Pose2d> coralPosesRight = new ArrayList<Pose2d>();
-		public static List<Pose2d> coralPosesLeft = new ArrayList<Pose2d>();
+		// public static List<Pose2d> coralPosesRight = new ArrayList<Pose2d>();
+		// public static List<Pose2d> coralPosesLeft = new ArrayList<Pose2d>();
+		public static HashMap<Pose2d, String> coralPosesRight = new HashMap<>();
+		public static HashMap<Pose2d, String> coralPosesLeft = new HashMap<>();
 
 		public static boolean pathsHaveInit = false;
 
@@ -423,9 +423,9 @@ public abstract class AutoBase extends SequentialCommandGroup {
 							int num = Integer.parseInt(substring);
 							SmartDashboard.putNumber("parsed int", num);
 							if ((num % 2) == 0) {
-								coralPosesRight.add(p.getStartingHolonomicPose().get());
+								coralPosesRight.put(p.getStartingHolonomicPose().get(), p.name);
 							} else {
-								coralPosesLeft.add(p.getStartingHolonomicPose().get());
+								coralPosesLeft.put(p.getStartingHolonomicPose().get(), p.name);
 							}
 						} catch (Exception e) {
 							DriverStation.reportError(e.getMessage(), e.getStackTrace());
@@ -438,16 +438,17 @@ public abstract class AutoBase extends SequentialCommandGroup {
 
 		public static void flipCoralPoses() {
 
-			ArrayList<Pose2d> flippedPosesRight = new ArrayList<>();
-			for (Pose2d p : coralPosesRight) {
-				flippedPosesRight.add(FlippingUtil.flipFieldPose(p));
+			HashMap<Pose2d, String> flippedPosesRight = new HashMap<>();
+			for (Pose2d p : coralPosesRight.keySet()) {
+
+				flippedPosesRight.put(FlippingUtil.flipFieldPose(p), coralPosesRight.get(p));
 			}
 			coralPosesRight.clear();
 			coralPosesRight = flippedPosesRight;
 
-			ArrayList<Pose2d> flippedPosesLeft = new ArrayList<>();
-			for (Pose2d p : coralPosesLeft) {
-				flippedPosesLeft.add(FlippingUtil.flipFieldPose(p));
+			HashMap<Pose2d, String> flippedPosesLeft = new HashMap<>();
+			for (Pose2d p : coralPosesLeft.keySet()) {
+				flippedPosesLeft.put(FlippingUtil.flipFieldPose(p), coralPosesLeft.get(p));
 			}
 			coralPosesLeft.clear();
 			coralPosesLeft = flippedPosesLeft;

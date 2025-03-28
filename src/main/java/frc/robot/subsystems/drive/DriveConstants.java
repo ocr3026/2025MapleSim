@@ -22,6 +22,7 @@ public final class DriveConstants {
 	 * REAR RIGHT : YELLOW
 	 */
 	public static final LinearVelocity maxSpeed = MetersPerSecond.of(5.3);
+	public static final LinearVelocity maxSpeedCoral = MetersPerSecond.of(2);
 	public static final LinearAcceleration maxAccel = FeetPerSecondPerSecond.of(5);
 	public static final Frequency odometryFrequency = Hertz.of(100);
 	public static final Distance trackWidth = Inches.of(24.75);
@@ -125,7 +126,7 @@ public final class DriveConstants {
 	public static final AngularAcceleration maxAngularAccel = DegreesPerSecondPerSecond.of(1923);
 	// TODO: make real constraints
 	public static final PathConstraints constraints = new PathConstraints(
-			maxSpeed.in(MetersPerSecond),
+			maxSpeedCoral.in(MetersPerSecond),
 			maxAccel.in(MetersPerSecondPerSecond),
 			maxAngularVel.in(RadiansPerSecond),
 			maxAngularAccel.in(RadiansPerSecondPerSecond));

@@ -33,7 +33,7 @@ public final class ElevatorConstants {
 
 	public static final int currentLimit = 50;
 
-	public static final Distance highPosConst = Meters.of(0.670),
+	public static final Distance highPosConst = Meters.of(0.690),
 			midAlgaePosConst = Meters.of(0.5054),
 			midPosConst = Meters.of(0.3507),
 			lowAlgaePosConst = Meters.of(.233),
