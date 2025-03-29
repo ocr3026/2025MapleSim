@@ -10,9 +10,11 @@ public class T2_Coral extends AutoBase {
 		addCommands(setStartPose(Paths.firstPathChooser.get()));
 		addCommands(followPath(Paths.firstPathChooser.get()));
 		addCommands(moveElevatorAndOuttake(wrist, elevator, Paths.firstElevatorPosChooser.get()));
-		addCommands(followPath(getPathToFeed(Paths.firstPathChooser.get())));
+		addCommands(
+				followPathandMoveElevator(elevator, ElevatorPos.INTAKE, getPathToFeed(Paths.firstPathChooser.get())));
 		addCommands(moveElevatorAndIntake(wrist, elevator, ElevatorPos.INTAKE));
 		addCommands(followPath(Paths.secondPathChooser.get()));
 		addCommands(moveElevatorAndOuttake(wrist, elevator, Paths.secondElevatorPosChooser.get()));
 	}
 }
+// 5.34

@@ -33,6 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
+import org.littletonrobotics.junction.Logger;
 
 public class DriveCommands {
 	private static final double DEADBAND = 0.1;
@@ -49,6 +50,11 @@ public class DriveCommands {
 
 	private DriveCommands() {}
 
+	/**
+	 * @param x
+	 * @param y
+	 * @return Translation2d
+	 */
 	private static Translation2d getLinearVelocityFromJoysticks(double x, double y) {
 		double linearMagnitude = MathUtil.applyDeadband(Math.hypot(x, y), DEADBAND);
 		Rotation2d linearDirection = new Rotation2d(Math.atan2(y, x));
@@ -259,21 +265,28 @@ public class DriveCommands {
 	}
 
 	public static Pose2d findBestPoseRight(Drive drive) {
+		Logger.recordOutput("pose2d best", drive.getPose().nearest(Paths.coralPosesRight));
+
 		SmartDashboard.putString(
 				"best pose",
-				Paths.coralPosesRight.get(
-						(drive.getPose().nearest(new ArrayList<Pose2d>(Paths.coralPosesRight.keySet())))));
+				Paths.coralPosesRightMap.get(
+						(drive.getPose().nearest(new ArrayList<Pose2d>(Paths.coralPosesRightMap.keySet())))));
 
-		return drive.getPose().nearest(new ArrayList<Pose2d>(Paths.coralPosesRight.keySet()));
+		return drive.getPose().nearest(Paths.coralPosesRight);
 	}
 
 	public static Pose2d findBestPoseLeft(Drive drive) {
+		Logger.recordOutput("pose2d best", drive.getPose().nearest(Paths.coralPosesLeft));
 		SmartDashboard.putString(
 				"best pose",
-				Paths.coralPosesLeft.get(
-						(drive.getPose().nearest(new ArrayList<Pose2d>(Paths.coralPosesLeft.keySet())))));
+				Paths.coralPosesLeftMap.get(
+						(drive.getPose().nearest(new ArrayList<Pose2d>(Paths.coralPosesLeftMap.keySet())))));
 
-		return drive.getPose().nearest(new ArrayList<Pose2d>(Paths.coralPosesLeft.keySet()));
+		for (Pose2d p : Paths.coralPosesLeft) {
+			Logger.recordOutput("pose in list", p);
+		}
+
+		return drive.getPose().nearest(Paths.coralPosesLeft);
 	}
 
 	public static Command pathfindToPoseRight(Drive drive) {
@@ -290,7 +303,12 @@ public class DriveCommands {
 	public static Command pathfindToPoseLeft(Drive drive) {
 		return Commands.startEnd(
 				() -> {
+					// if (DriverStation.getAlliance().orElse(Alliance.Blue) != Alliance.Blue) {
+					// 	autoBuilderCommand = AutoBuilder.pathfindToPose(
+					// 			FlippingUtil.flipFieldPose(findBestPoseLeft(drive)), constraints);
+					// } else {
 					autoBuilderCommand = AutoBuilder.pathfindToPose(findBestPoseLeft(drive), constraints);
+					// }
 					CommandScheduler.getInstance().schedule(autoBuilderCommand);
 				},
 				() -> {

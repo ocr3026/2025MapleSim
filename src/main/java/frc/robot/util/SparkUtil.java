@@ -63,6 +63,7 @@ public class SparkUtil {
 		}
 	}
 
+	/** @return double[] */
 	public static double[] getSimulationOdometryTimeStamps() {
 		final double[] odometryTimeStamps = new double[SimulatedArena.getSimulationSubTicksIn1Period()];
 		for (int i = 0; i < odometryTimeStamps.length; i++) {

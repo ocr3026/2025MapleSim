@@ -18,6 +18,10 @@ public class ElevatorCommands {
 	public static Distance lowPOS;
 	public static Distance intakePOS;
 
+	/**
+	 * @param subsystem
+	 * @return Command
+	 */
 	public static Command setPos(ElevatorSubsystem subsystem) {
 		if (Constants.currentMode != Constants.Mode.SIM) {
 			if (!WristSubsystem.getCoralInputBool) {

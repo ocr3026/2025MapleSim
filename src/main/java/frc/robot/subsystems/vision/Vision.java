@@ -13,6 +13,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.vision.VisionIO.PoseObservation;
 import java.util.LinkedList;
@@ -21,6 +22,7 @@ import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
 
 public class Vision extends SubsystemBase {
+	PowerDistribution distribution = new PowerDistribution();
 	private final VisionConsumer consumer;
 	private final VisionIO[] io;
 	private final VisionIOInputsAutoLogged[] inputs;
@@ -42,16 +44,26 @@ public class Vision extends SubsystemBase {
 		}
 	}
 
+	/**
+	 * @param cameraIndex
+	 * @return Rotation2d
+	 */
 	public Rotation2d getTargetX(int cameraIndex) {
 		return inputs[cameraIndex].latestTargetObservation.tx();
 	}
 
+	/**
+	 * @param cameraIndex
+	 * @return Transform3d
+	 */
 	public Transform3d getTargetTransform(int cameraIndex) {
 		return inputs[cameraIndex].latestTargetObservation.t3d();
 	}
 
 	@Override
 	public void periodic() {
+		Logger.recordOutput("Vision/Current", distribution.getCurrent(15));
+
 		for (int i = 0; i < io.length; i++) {
 			io[i].updateInputs(inputs[i]);
 			Logger.processInputs("Vision/Camera" + Integer.toString(i), inputs[i]);

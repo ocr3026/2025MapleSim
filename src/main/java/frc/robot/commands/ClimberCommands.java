@@ -10,6 +10,10 @@ public class ClimberCommands {
 
 	public ClimberCommands() {}
 
+	/**
+	 * @param climberSubsystem
+	 * @return Command
+	 */
 	public static Command moveClimber(ClimberSubsystem climberSubsystem) {
 
 		return Commands.runEnd(

@@ -24,6 +24,7 @@ public class VisionIOPhotonVision implements VisionIO {
 		this.robotToCamera = robotToCamera;
 	}
 
+	/** @param inputs */
 	@Override
 	public void updateInputs(VisionIOInputs inputs) {
 		inputs.connected = camera.isConnected();

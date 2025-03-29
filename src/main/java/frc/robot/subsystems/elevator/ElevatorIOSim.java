@@ -17,6 +17,7 @@ public class ElevatorIOSim implements ElevatorIO {
 	double appliedVolts = 0;
 	public Distance setpoint = Meter.of(0);
 
+	/** @param inputs */
 	@Override
 	public void updateInputs(ElevatorIOInputs inputs) {
 		elevatorSim.update(0.02);
@@ -34,6 +35,7 @@ public class ElevatorIOSim implements ElevatorIO {
 		inputs.followVelocity = MetersPerSecond.of(elevatorSim.getVelocityMetersPerSecond());
 	}
 
+	/** @param position */
 	@Override
 	public void setPosition(Distance position) {
 		setpoint = position;
@@ -45,6 +47,7 @@ public class ElevatorIOSim implements ElevatorIO {
 		// 1));
 	}
 
+	/** @return Distance */
 	@Override
 	public Distance getPosition() {
 		return Meters.of((elevatorSim.getPositionMeters()));
@@ -61,6 +64,10 @@ public class ElevatorIOSim implements ElevatorIO {
 		// }
 	}
 
+	/**
+	 * @param givenPos
+	 * @return Distance
+	 */
 	@Override
 	public Distance getTargetPosition(ElevatorPos givenPos) {
 		return (setpoint);

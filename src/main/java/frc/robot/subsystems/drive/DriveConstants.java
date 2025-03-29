@@ -21,9 +21,9 @@ public final class DriveConstants {
 	 * REAR LEFT : GREEN
 	 * REAR RIGHT : YELLOW
 	 */
-	public static final LinearVelocity maxSpeed = MetersPerSecond.of(5.3);
+	public static final LinearVelocity maxSpeed = MetersPerSecond.of(5);
 	public static final LinearVelocity maxSpeedCoral = MetersPerSecond.of(2);
-	public static final LinearAcceleration maxAccel = FeetPerSecondPerSecond.of(5);
+	public static final LinearAcceleration maxAccel = FeetPerSecondPerSecond.of(3);
 	public static final Frequency odometryFrequency = Hertz.of(100);
 	public static final Distance trackWidth = Inches.of(24.75);
 	public static final Distance wheelBase = Inches.of(24.75);
@@ -56,7 +56,7 @@ public final class DriveConstants {
 	public static final int rearRightTurnID = 26;
 	public static final int rearRightEncoderID = 27;
 
-	public static final int driveMotorCurrentLimit = 65;
+	public static final int driveMotorCurrentLimit = 50;
 	public static final Distance wheelRadius = Inches.of(2);
 	public static final double driveMotorReduction = (50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0);
 	public static final DCMotor driveGearbox = DCMotor.getNEO(1);

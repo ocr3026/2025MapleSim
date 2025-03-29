@@ -73,6 +73,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 				new LoggedMechanismLigament2d("Wrist", 0.3, 210, 6, new Color8Bit(Color.kDarkGreen)));
 	}
 
+	/** @param position */
 	public void setPosition(Distance position) {
 		try {
 			SmartDashboard.putNumber("positionsetpointelevator", (position).in(Meter));
@@ -83,10 +84,12 @@ public class ElevatorSubsystem extends SubsystemBase {
 		}
 	}
 
+	/** @param speed */
 	public void setSpeed(double speed) {
 		io.setSpeed(speed);
 	}
 
+	/** @return Distance */
 	public Distance getPosition() {
 		return io.getPosition();
 	}

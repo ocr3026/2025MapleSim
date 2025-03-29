@@ -61,6 +61,7 @@ public class WristIOSpark implements WristIO {
 				() -> leadMotor.configure(leadConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
 	}
 
+	/** @param inputs */
 	@Override
 	public void updateInputs(WristIOInputs inputs) {
 		inputs.leadConnected = true;
@@ -76,6 +77,10 @@ public class WristIOSpark implements WristIO {
 		inputs.followVelocity = RotationsPerSecond.of(followEncoder.getVelocity() / 60);
 	}
 
+	/**
+	 * @param leadVoltage
+	 * @param followVoltage
+	 */
 	@Override
 	public void setVoltage(double leadVoltage, double followVoltage) {
 
@@ -83,8 +88,13 @@ public class WristIOSpark implements WristIO {
 		followMotor.setVoltage(followVoltage);
 	}
 
+	/** @return boolean */
 	@Override
 	public boolean getCoralInput() {
 		return coralInput.get();
+	}
+
+	public double getRotations() {
+		return leadEncoder.getPosition();
 	}
 }

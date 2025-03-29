@@ -311,6 +311,7 @@ public class RobotContainer {
 
 	}
 
+	/** @return Command */
 	public Command getAutonomousCommand() {
 		return autoChooser.get();
 	}
@@ -338,7 +339,7 @@ public class RobotContainer {
 	}
 
 	public void recompileAutos() {
-		Paths.flipCoralPoses();
+		// Paths.flipCoralPoses();
 		Reflections reflection = new Reflections("frc.autonomous");
 		Set<Class<? extends AutoBase>> autoClasses = reflection.getSubTypesOf(AutoBase.class);
 

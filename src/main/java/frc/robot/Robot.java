@@ -88,12 +88,18 @@ public class Robot extends LoggedRobot {
 
 		autonomousCommand = robotContainer.getAutonomousCommand();
 
-		if (DriverStation.getAlliance().orElse(Alliance.Blue) != lastAlliance || Paths.recompileNeeded()) {
+		if (DriverStation.getAlliance().orElse(Alliance.Blue) != lastAlliance) {
 			timesRecompiled++;
+			Paths.flipCoralPoses();
 			robotContainer.recompileAutos();
 			SmartDashboard.putString("hasRecompiled", "Recompiled: " + timesRecompiled + " times");
 			Paths.updateStoredChooser();
 			lastAlliance = DriverStation.getAlliance().orElse(Alliance.Blue);
+		} else if (Paths.recompileNeeded()) {
+			timesRecompiled++;
+			robotContainer.recompileAutos();
+			SmartDashboard.putString("hasRecompiled", "Recompiled: " + timesRecompiled + " times");
+			Paths.updateStoredChooser();
 		}
 	}
 
@@ -106,6 +112,7 @@ public class Robot extends LoggedRobot {
 		}
 	}
 
+	/** @param teleopInit( */
 	@Override
 	public void autonomousPeriodic() {}
 

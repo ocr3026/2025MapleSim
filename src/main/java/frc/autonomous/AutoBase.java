@@ -9,7 +9,6 @@ import com.pathplanner.lib.util.FileVersionException;
 import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,7 +29,9 @@ import frc.robot.subsystems.wrist.WristConstants;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.util.Util;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public abstract class AutoBase extends SequentialCommandGroup {
@@ -44,8 +45,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 
 	public AutoBase(ElevatorSubsystem elevator, WristSubsystem wrist) {}
 
-	
-	/** 
+	/**
 	 * @param name
 	 * @return PathPlannerPath
 	 */
@@ -60,8 +60,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		}
 	}
 
-	
-	/** 
+	/**
 	 * @param time
 	 * @return Command
 	 */
@@ -69,10 +68,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		return new WaitCommand(time);
 	}
 
-	
-	/** 
-	 * @return Command
-	 */
+	/** @return Command */
 	public static final Command delayStartTime() {
 		return new FunctionalCommand(
 				() -> {
@@ -89,32 +85,29 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				});
 	}
 
-	
-	/** 
-	 * @param elevator
-	 * @param pos
+	/**
+	 * @param elevator ElevatorSubsystem
+	 * @param pos ElevatorPos to set Elevator height to
 	 * @return SequentialCommandGroup
 	 */
 	public static final SequentialCommandGroup moveElevator(ElevatorSubsystem elevator, ElevatorPos pos) {
 		return new SequentialCommandGroup(setElevatorSetpoint(pos, elevator), ElevatorCommands.setPos(elevator));
 	}
-	
-	
-	/** 
-	 * @param elevator
-	 * @param pos
+
+	/**
+	 * @param elevator ElevatorSubsystem
+	 * @param pos ElevatorPos to set Elevator height to
 	 * @param path
 	 * @return ParallelDeadlineGroup
 	 */
-	public static final ParallelDeadlineGroup followPathandMoveElevator(ElevatorSubsystem elevator, ElevatorPos pos, PathPlannerPath path) {
-		return new ParallelDeadlineGroup(
-			followPath(path), moveElevator(elevator, pos));
+	public static final ParallelDeadlineGroup followPathandMoveElevator(
+			ElevatorSubsystem elevator, ElevatorPos pos, PathPlannerPath path) {
+		return new ParallelDeadlineGroup(followPath(path), moveElevator(elevator, pos));
 	}
 
-	
-	/** 
-	 * @param wrist
-	 * @param elevator
+	/**
+	 * @param wrist WristSubsystem
+	 * @param elevator ElevatorSubsystem
 	 * @return Command
 	 */
 	public static final Command wristOuttake(WristSubsystem wrist, ElevatorSubsystem elevator) {
@@ -140,14 +133,13 @@ public abstract class AutoBase extends SequentialCommandGroup {
 					timer.reset();
 				},
 				() -> {
-					return timer.hasElapsed(1.5);
+					return timer.hasElapsed(1);
 				});
 	}
 
-	
-	/** 
-	 * @param wrist
-	 * @param elevator
+	/**
+	 * @param wrist WristSubsystem
+	 * @param elevator ElevatorSubsystem
 	 * @return Command
 	 */
 	public static final Command wristOuttakeHomeRight(WristSubsystem wrist, ElevatorSubsystem elevator) {
@@ -175,10 +167,9 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				});
 	}
 
-	
-	/** 
-	 * @param wrist
-	 * @param elevator
+	/**
+	 * @param wrist WristSubsystem
+	 * @param elevator ElevatorSubsystem
 	 * @return Command
 	 */
 	public static final Command wristOuttakeHomeLeft(WristSubsystem wrist, ElevatorSubsystem elevator) {
@@ -208,11 +199,10 @@ public abstract class AutoBase extends SequentialCommandGroup {
 
 	public static boolean timedOut = false;
 
-	
-	/** 
-	 * @param wrist
-	 * @param elevator
-	 * @return Command
+	/**
+	 * @param wrist WristSubsystem
+	 * @param elevator ElevatorSubsystem
+	 * @return Command that intakes coral using a sensor
 	 */
 	public static final Command wristIntake(WristSubsystem wrist, ElevatorSubsystem elevator) {
 		return new FunctionalCommand(
@@ -258,7 +248,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				},
 				// END
 				(interupted) -> {
-					if (timer.hasElapsed(1.5)) {
+					if (timer.hasElapsed(2.0)) {
 						timedOut = true;
 					}
 					wrist.setVoltage(0, 0);
@@ -270,35 +260,32 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				// INTERUPTED
 
 				() -> {
-					return timer.hasElapsed(1.5) || coralInPosition;
+					return timer.hasElapsed(2.0) || coralInPosition;
 				});
 	}
 
-	
-	/** 
-	 * @param path
-	 * @return Command
+	/**
+	 * @param path PathPlannerPath to follow
+	 * @return Command that follows given path
 	 */
 	public static final Command followPath(PathPlannerPath path) {
 		return AutoBuilder.followPath(path);
 	}
 
-	
-	/** 
-	 * @param setPos
-	 * @param elevator
-	 * @return Command
+	/**
+	 * @param setPos Elevator height setpoint
+	 * @param elevator ElevatorSubsystem
+	 * @return Command that just sets the setpoint, not run it
 	 */
 	public static Command setElevatorSetpoint(ElevatorPos setPos, ElevatorSubsystem elevator) {
 		return Commands.runOnce(() -> elevator.pos = setPos);
 	}
 
-	
-	/** 
-	 * @param wrist
-	 * @param elevator
-	 * @param pos
-	 * @return ParallelCommandGroup
+	/**
+	 * @param wrist WristSubsystem
+	 * @param elevator ElevatorSubsystem
+	 * @param pos ElevatorPos to set Elevator height to
+	 * @return ParallelCommandGroup to move elevator to setpoint and outtake coral
 	 */
 	public static final ParallelCommandGroup moveElevatorAndOuttake(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
@@ -317,12 +304,11 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		// }
 	}
 
-	
-	/** 
-	 * @param wrist
-	 * @param elevator
-	 * @param pos
-	 * @return ParallelCommandGroup
+	/**
+	 * @param wrist WristSubsystem
+	 * @param elevator ElevatorSubsystem
+	 * @param pos ElevatorPos to set Elevator height to
+	 * @return ParallelCommandGroup to move elevator to a setpoint and outtake into trough with coral going to the right
 	 */
 	public static final ParallelCommandGroup moveElevatorAndOuttakeHomeRight(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
@@ -334,11 +320,10 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				new ParallelRaceGroup(wristOuttakeHomeRight(wrist, elevator), ElevatorCommands.setPos(elevator)));
 	}
 
-	
-	/** 
+	/**
 	 * @param wrist WristSubsystem
-	 * @param elevator ElevatorSubsystem
-	 * @param pos ElevatorPos
+	 * @param elevator ElevatorSubsystem ElevatorSubsystem
+	 * @param pos ElevatorPos to set Elevator height to ElevatorPos
 	 * @return ParallelCommandGroup to move the elevator and outtake in trough with coral going to the left
 	 */
 	public static final ParallelCommandGroup moveElevatorAndOuttakeHomeLeft(
@@ -351,12 +336,11 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				new ParallelRaceGroup(wristOuttakeHomeLeft(wrist, elevator), ElevatorCommands.setPos(elevator)));
 	}
 
-	
-	/** 
-	 * @param wrist
-	 * @param elevator
-	 * @param pos
-	 * @return ParallelRaceGroup
+	/**
+	 * @param wrist WristSubsystem
+	 * @param elevator ElevatorSubsystem
+	 * @param pos ElevatorPos to set Elevator height to
+	 * @return ParallelRaceGroup to move the elevator down and intake
 	 */
 	public static final ParallelRaceGroup moveElevatorAndIntake(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
@@ -364,12 +348,11 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		return new ParallelRaceGroup(wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator));
 	}
 
-	
-	/** 
-	 * @param wrist
-	 * @param elevator
-	 * @param pos
-	 * @return ParallelCommandGroup
+	/**
+	 * @param wrist WristSubsystem
+	 * @param elevator ElevatorSubsystem
+	 * @param pos ElevatorPos to set Elevator height to
+	 * @return ParallelCommandGroup to move the elevator down and intake, without using a ParallelRaceGroup
 	 */
 	public static final ParallelCommandGroup moveElevatorAndIntakeNoRace(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
@@ -377,10 +360,9 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				setElevatorSetpoint(pos, elevator), wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator));
 	}
 
-	
-	/** 
-	 * @param path
-	 * @return Command
+	/**
+	 * @param path PathPlannerPath to get the starting pose of
+	 * @return Command to set the starting pose of the autonomous
 	 */
 	public static final Command setStartPose(PathPlannerPath path) {
 		Pose2d holoPose = path.getStartingHolonomicPose().get();
@@ -394,11 +376,10 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		return AutoBuilder.resetOdom(holoPose);
 	}
 
-	
-	/** 
-	 * @param elevator
-	 * @param wrist
-	 * @return Command
+	/**
+	 * @param elevator ElevatorSubsystem
+	 * @param wrist WristSubsystem
+	 * @return Command for intaking coral at Feed station
 	 */
 	public static final Command feedCoralCommand(ElevatorSubsystem elevator, WristSubsystem wrist) {
 		return new ParallelCommandGroup(
@@ -406,10 +387,9 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				moveElevatorAndIntake(wrist, elevator, ElevatorPos.INTAKE));
 	}
 
-	
-	/** 
-	 * @param path
-	 * @return PathPlannerPath
+	/**
+	 * @param path PathPlannerPath of coral path to find path to feed station
+	 * @return PathPlannerPath from coral position to a feed station
 	 */
 	public static final PathPlannerPath getPathToFeed(PathPlannerPath path) {
 		String name = path.name;
@@ -432,10 +412,10 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	}
 
 	public static final class Paths {
-		// public static List<Pose2d> coralPosesRight = new ArrayList<Pose2d>();
-		// public static List<Pose2d> coralPosesLeft = new ArrayList<Pose2d>();
-		public static HashMap<Pose2d, String> coralPosesRight = new HashMap<>();
-		public static HashMap<Pose2d, String> coralPosesLeft = new HashMap<>();
+		public static List<Pose2d> coralPosesRight = new ArrayList<Pose2d>();
+		public static List<Pose2d> coralPosesLeft = new ArrayList<Pose2d>();
+		public static HashMap<Pose2d, String> coralPosesRightMap = new HashMap<>();
+		public static HashMap<Pose2d, String> coralPosesLeftMap = new HashMap<>();
 
 		public static boolean pathsHaveInit = false;
 
@@ -547,9 +527,13 @@ public abstract class AutoBase extends SequentialCommandGroup {
 							int num = Integer.parseInt(substring);
 							SmartDashboard.putNumber("parsed int", num);
 							if ((num % 2) == 0) {
-								coralPosesRight.put(p.getStartingHolonomicPose().get(), p.name);
+								coralPosesRight.add(p.getStartingHolonomicPose().get());
+								coralPosesRightMap.put(
+										p.getStartingHolonomicPose().get(), p.name);
 							} else {
-								coralPosesLeft.put(p.getStartingHolonomicPose().get(), p.name);
+								coralPosesLeft.add(p.getStartingHolonomicPose().get());
+								coralPosesLeftMap.put(
+										p.getStartingHolonomicPose().get(), p.name);
 							}
 						} catch (Exception e) {
 							DriverStation.reportError(e.getMessage(), e.getStackTrace());
@@ -562,20 +546,25 @@ public abstract class AutoBase extends SequentialCommandGroup {
 
 		public static void flipCoralPoses() {
 
-			HashMap<Pose2d, String> flippedPosesRight = new HashMap<>();
-			for (Pose2d p : coralPosesRight.keySet()) {
+			List<Pose2d> flippedPosesRight = new ArrayList<>();
+			SmartDashboard.putNumber("coral poses r size", coralPosesRight.size());
+			SmartDashboard.putNumber("coral poses l size", coralPosesLeft.size());
 
-				flippedPosesRight.put(FlippingUtil.flipFieldPose(p), coralPosesRight.get(p));
+			for (Pose2d p : coralPosesRight) {
+
+				flippedPosesRight.add(FlippingUtil.flipFieldPose(p));
 			}
 			coralPosesRight.clear();
 			coralPosesRight = flippedPosesRight;
 
-			HashMap<Pose2d, String> flippedPosesLeft = new HashMap<>();
-			for (Pose2d p : coralPosesLeft.keySet()) {
-				flippedPosesLeft.put(FlippingUtil.flipFieldPose(p), coralPosesLeft.get(p));
+			List<Pose2d> flippedPosesLeft = new ArrayList<>();
+			for (Pose2d p : coralPosesLeft) {
+				flippedPosesLeft.add(FlippingUtil.flipFieldPose(p));
 			}
 			coralPosesLeft.clear();
 			coralPosesLeft = flippedPosesLeft;
+
+			SmartDashboard.putString("has recompiled the paths", "yes we have !");
 		}
 
 		public static PathPlannerPath lastPathFirst = Paths.firstPathChooser.get();

@@ -92,6 +92,7 @@ public class ElevatorIOSpark implements ElevatorIO {
 				() -> leadMotor.configure(leadConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
 	}
 
+	/** @param inputs */
 	@Override
 	public void updateInputs(ElevatorIOInputs inputs) {
 		inputs.masterAppliedVolts = leadMotor.getAppliedOutput();
@@ -107,6 +108,7 @@ public class ElevatorIOSpark implements ElevatorIO {
 		inputs.followVelocity = MetersPerSecond.of(followEncoder.getVelocity());
 	}
 
+	/** @param position */
 	@Override
 	public void setPosition(Distance position) {
 		sparkPID.setReference(
@@ -121,11 +123,16 @@ public class ElevatorIOSpark implements ElevatorIO {
 
 	}
 
+	/** @return Distance */
 	@Override
 	public Distance getPosition() {
 		return Meters.of(leadEncoder.getPosition());
 	}
 
+	/**
+	 * @param givenPos
+	 * @return Distance
+	 */
 	@Override
 	public Distance getTargetPosition(ElevatorPos givenPos) {
 		switch (givenPos) {

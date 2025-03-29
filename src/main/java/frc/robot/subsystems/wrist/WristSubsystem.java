@@ -18,10 +18,25 @@ public class WristSubsystem extends SubsystemBase {
 		this.io = wristIO;
 	}
 
+	/**
+	 * @param leadVoltage
+	 * @param followVoltage
+	 */
 	public void setVoltage(double leadVoltage, double followVoltage) {
 		io.setVoltage(leadVoltage, followVoltage);
 	}
 
+	public void turnRotations(double rotations) {
+
+		double goalRotations = io.getRotations() + rotations;
+		if (io.getRotations() != goalRotations) {
+			io.setVoltage(-1, -1);
+		} else {
+			io.setVoltage(0, 0);
+		}
+	}
+
+	/** @return boolean */
 	public boolean getCoralInput() {
 		return io.getCoralInput();
 	}
