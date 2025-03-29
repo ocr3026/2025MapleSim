@@ -9,6 +9,7 @@ import com.pathplanner.lib.util.FileVersionException;
 import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -42,6 +44,11 @@ public abstract class AutoBase extends SequentialCommandGroup {
 
 	public AutoBase(ElevatorSubsystem elevator, WristSubsystem wrist) {}
 
+	
+	/** 
+	 * @param name
+	 * @return PathPlannerPath
+	 */
 	public static PathPlannerPath getPathFromFile(String name) {
 		try {
 			PathPlannerPath path = PathPlannerPath.fromPathFile(name);
@@ -53,10 +60,19 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		}
 	}
 
+	
+	/** 
+	 * @param time
+	 * @return Command
+	 */
 	public static final Command wait(double time) {
 		return new WaitCommand(time);
 	}
 
+	
+	/** 
+	 * @return Command
+	 */
 	public static final Command delayStartTime() {
 		return new FunctionalCommand(
 				() -> {
@@ -73,6 +89,34 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				});
 	}
 
+	
+	/** 
+	 * @param elevator
+	 * @param pos
+	 * @return SequentialCommandGroup
+	 */
+	public static final SequentialCommandGroup moveElevator(ElevatorSubsystem elevator, ElevatorPos pos) {
+		return new SequentialCommandGroup(setElevatorSetpoint(pos, elevator), ElevatorCommands.setPos(elevator));
+	}
+	
+	
+	/** 
+	 * @param elevator
+	 * @param pos
+	 * @param path
+	 * @return ParallelDeadlineGroup
+	 */
+	public static final ParallelDeadlineGroup followPathandMoveElevator(ElevatorSubsystem elevator, ElevatorPos pos, PathPlannerPath path) {
+		return new ParallelDeadlineGroup(
+			followPath(path), moveElevator(elevator, pos));
+	}
+
+	
+	/** 
+	 * @param wrist
+	 * @param elevator
+	 * @return Command
+	 */
 	public static final Command wristOuttake(WristSubsystem wrist, ElevatorSubsystem elevator) {
 		return new FunctionalCommand(
 				() -> {
@@ -100,6 +144,12 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				});
 	}
 
+	
+	/** 
+	 * @param wrist
+	 * @param elevator
+	 * @return Command
+	 */
 	public static final Command wristOuttakeHomeRight(WristSubsystem wrist, ElevatorSubsystem elevator) {
 		return new FunctionalCommand(
 				() -> {
@@ -125,6 +175,12 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				});
 	}
 
+	
+	/** 
+	 * @param wrist
+	 * @param elevator
+	 * @return Command
+	 */
 	public static final Command wristOuttakeHomeLeft(WristSubsystem wrist, ElevatorSubsystem elevator) {
 		return new FunctionalCommand(
 				() -> {
@@ -152,6 +208,12 @@ public abstract class AutoBase extends SequentialCommandGroup {
 
 	public static boolean timedOut = false;
 
+	
+	/** 
+	 * @param wrist
+	 * @param elevator
+	 * @return Command
+	 */
 	public static final Command wristIntake(WristSubsystem wrist, ElevatorSubsystem elevator) {
 		return new FunctionalCommand(
 				// INIT
@@ -212,14 +274,32 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				});
 	}
 
+	
+	/** 
+	 * @param path
+	 * @return Command
+	 */
 	public static final Command followPath(PathPlannerPath path) {
 		return AutoBuilder.followPath(path);
 	}
 
+	
+	/** 
+	 * @param setPos
+	 * @param elevator
+	 * @return Command
+	 */
 	public static Command setElevatorSetpoint(ElevatorPos setPos, ElevatorSubsystem elevator) {
 		return Commands.runOnce(() -> elevator.pos = setPos);
 	}
 
+	
+	/** 
+	 * @param wrist
+	 * @param elevator
+	 * @param pos
+	 * @return ParallelCommandGroup
+	 */
 	public static final ParallelCommandGroup moveElevatorAndOuttake(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
 		elevator.pos = pos;
@@ -237,6 +317,13 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		// }
 	}
 
+	
+	/** 
+	 * @param wrist
+	 * @param elevator
+	 * @param pos
+	 * @return ParallelCommandGroup
+	 */
 	public static final ParallelCommandGroup moveElevatorAndOuttakeHomeRight(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
 		elevator.pos = pos;
@@ -247,6 +334,13 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				new ParallelRaceGroup(wristOuttakeHomeRight(wrist, elevator), ElevatorCommands.setPos(elevator)));
 	}
 
+	
+	/** 
+	 * @param wrist WristSubsystem
+	 * @param elevator ElevatorSubsystem
+	 * @param pos ElevatorPos
+	 * @return ParallelCommandGroup to move the elevator and outtake in trough with coral going to the left
+	 */
 	public static final ParallelCommandGroup moveElevatorAndOuttakeHomeLeft(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
 		elevator.pos = pos;
@@ -257,18 +351,37 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				new ParallelRaceGroup(wristOuttakeHomeLeft(wrist, elevator), ElevatorCommands.setPos(elevator)));
 	}
 
+	
+	/** 
+	 * @param wrist
+	 * @param elevator
+	 * @param pos
+	 * @return ParallelRaceGroup
+	 */
 	public static final ParallelRaceGroup moveElevatorAndIntake(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
 		elevator.pos = pos;
 		return new ParallelRaceGroup(wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator));
 	}
 
+	
+	/** 
+	 * @param wrist
+	 * @param elevator
+	 * @param pos
+	 * @return ParallelCommandGroup
+	 */
 	public static final ParallelCommandGroup moveElevatorAndIntakeNoRace(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
 		return new ParallelCommandGroup(
 				setElevatorSetpoint(pos, elevator), wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator));
 	}
 
+	
+	/** 
+	 * @param path
+	 * @return Command
+	 */
 	public static final Command setStartPose(PathPlannerPath path) {
 		Pose2d holoPose = path.getStartingHolonomicPose().get();
 
@@ -281,12 +394,23 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		return AutoBuilder.resetOdom(holoPose);
 	}
 
+	
+	/** 
+	 * @param elevator
+	 * @param wrist
+	 * @return Command
+	 */
 	public static final Command feedCoralCommand(ElevatorSubsystem elevator, WristSubsystem wrist) {
 		return new ParallelCommandGroup(
 				setElevatorSetpoint(ElevatorPos.INTAKE, elevator),
 				moveElevatorAndIntake(wrist, elevator, ElevatorPos.INTAKE));
 	}
 
+	
+	/** 
+	 * @param path
+	 * @return PathPlannerPath
+	 */
 	public static final PathPlannerPath getPathToFeed(PathPlannerPath path) {
 		String name = path.name;
 		int index = name.indexOf("C");
@@ -493,7 +617,6 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		public static final PathPlannerPath FeedL_C1 = getPathFromFile("FeedL to C1");
 		public static final PathPlannerPath C1_FeedR = getPathFromFile("C1 to FeedR");
 		public static final PathPlannerPath FeedR_C1 = getPathFromFile("FeedR to C1");
-		public static final PathPlannerPath C6_C6 = getPathFromFile("C6 to C6");
 
 		// C2 Paths
 		public static final PathPlannerPath FL_C2 = getPathFromFile("FL to C2");

@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.451638524337549,
-        "y": 7.282133548167986
+        "x": 7.024795081967212,
+        "y": 7.01593237704918
       },
       "isLocked": false,
       "linkedName": "Far Left Start"
     },
     {
       "anchor": {
-        "x": 5.814036885245901,
-        "y": 4.186834016393442
+        "x": 5.03483606557377,
+        "y": 5.229764344262294
       },
       "prevControl": {
-        "x": 5.58721685591992,
-        "y": 4.081702316623294
+        "x": 4.9045114804003855,
+        "y": 5.527064668306121
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "C2"
+      "linkedName": "C4"
     }
   ],
   "rotationTargets": [],
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.3,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.5,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -121.66075109663663
   },
   "reversed": false,
-  "folder": "C2 Paths",
+  "folder": "C4 Paths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
