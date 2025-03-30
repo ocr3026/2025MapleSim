@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.autonomous.AutoBase.Paths;
 import frc.robot.Constants;
 import frc.robot.commands.ElevatorCommands;
+import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorPos;
 import frc.robot.subsystems.wrist.WristConstants;
@@ -272,6 +273,10 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		return AutoBuilder.followPath(path);
 	}
 
+	public static final Command pathFindToPose(Pose2d pose) {
+		return AutoBuilder.pathfindToPose(pose, DriveConstants.autoConstraints);
+	}
+
 	/**
 	 * @param setPos Elevator height setpoint
 	 * @param elevator ElevatorSubsystem
@@ -366,6 +371,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	 */
 	public static final Command setStartPose(PathPlannerPath path) {
 		Pose2d holoPose = path.getStartingHolonomicPose().get();
+		// Pose2d diffPose = path.getStartingDifferentialPose();
 
 		// if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {
 		// 	return AutoBuilder.resetOdom(FlippingUtil.flipFieldPose(holoPose));
@@ -412,6 +418,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	}
 
 	public static final class Paths {
+
 		public static List<Pose2d> coralPosesRight = new ArrayList<Pose2d>();
 		public static List<Pose2d> coralPosesLeft = new ArrayList<Pose2d>();
 		public static HashMap<Pose2d, String> coralPosesRightMap = new HashMap<>();
@@ -456,6 +463,8 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				new LoggedDashboardChooser<>("Choose Second Path");
 		public static final LoggedDashboardChooser<PathPlannerPath> thirdPathChooser =
 				new LoggedDashboardChooser<>("Choose Third Path");
+
+		public static final LoggedDashboardChooser<Pose2d> poseChooser = new LoggedDashboardChooser<>("Choose Coral Pose");
 
 		public static final LoggedDashboardChooser<ElevatorPos> firstElevatorPosChooser =
 				new LoggedDashboardChooser<>("Choose First Elevator Pos");
@@ -526,6 +535,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 						try {
 							int num = Integer.parseInt(substring);
 							SmartDashboard.putNumber("parsed int", num);
+							poseChooser.addOption(substring, p.getStartingHolonomicPose().get());
 							if ((num % 2) == 0) {
 								coralPosesRight.add(p.getStartingHolonomicPose().get());
 								coralPosesRightMap.put(

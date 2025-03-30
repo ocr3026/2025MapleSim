@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.192622950819672,
-        "y": 6.212756147540984
+        "x": 7.048770491803278,
+        "y": 6.020952868852459
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.029815573770492,
-        "y": 5.853125
+        "x": 6.341495901639344,
+        "y": 5.745235655737705
       },
       "isLocked": false,
       "linkedName": "Mid Left Start"
@@ -20,8 +20,8 @@
         "y": 5.229764344262294
       },
       "prevControl": {
-        "x": 4.863684746237224,
-        "y": 5.472893125424634
+        "x": 5.274292636879057,
+        "y": 5.3016013156538815
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": "C4 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -124.0193499898264
   },
   "useDefaultConstraints": true
 }

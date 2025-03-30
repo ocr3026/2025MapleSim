@@ -21,9 +21,10 @@ public final class DriveConstants {
 	 * REAR LEFT : GREEN
 	 * REAR RIGHT : YELLOW
 	 */
-	public static final LinearVelocity maxSpeed = MetersPerSecond.of(5);
+	public static final LinearVelocity maxSpeed = MetersPerSecond.of(5.3);
 	public static final LinearVelocity maxSpeedCoral = MetersPerSecond.of(2);
 	public static final LinearAcceleration maxAccel = FeetPerSecondPerSecond.of(3);
+	public static final LinearAcceleration maxAccelAuto = MetersPerSecondPerSecond.of(1.5);
 	public static final Frequency odometryFrequency = Hertz.of(100);
 	public static final Distance trackWidth = Inches.of(24.75);
 	public static final Distance wheelBase = Inches.of(24.75);
@@ -130,4 +131,6 @@ public final class DriveConstants {
 			maxAccel.in(MetersPerSecondPerSecond),
 			maxAngularVel.in(RadiansPerSecond),
 			maxAngularAccel.in(RadiansPerSecondPerSecond));
+	public static PathConstraints autoConstraints =
+			new PathConstraints(maxSpeed, maxAccelAuto, maxAngularVel, maxAngularAccel);
 }
