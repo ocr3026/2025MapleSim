@@ -464,7 +464,8 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		public static final LoggedDashboardChooser<PathPlannerPath> thirdPathChooser =
 				new LoggedDashboardChooser<>("Choose Third Path");
 
-		public static final LoggedDashboardChooser<Pose2d> poseChooser = new LoggedDashboardChooser<>("Choose Coral Pose");
+		public static final LoggedDashboardChooser<Pose2d> poseChooser =
+				new LoggedDashboardChooser<>("Choose Coral Pose");
 
 		public static final LoggedDashboardChooser<ElevatorPos> firstElevatorPosChooser =
 				new LoggedDashboardChooser<>("Choose First Elevator Pos");
@@ -535,7 +536,8 @@ public abstract class AutoBase extends SequentialCommandGroup {
 						try {
 							int num = Integer.parseInt(substring);
 							SmartDashboard.putNumber("parsed int", num);
-							poseChooser.addOption(substring, p.getStartingHolonomicPose().get());
+							poseChooser.addOption(
+									substring, p.getStartingHolonomicPose().get());
 							if ((num % 2) == 0) {
 								coralPosesRight.add(p.getStartingHolonomicPose().get());
 								coralPosesRightMap.put(
