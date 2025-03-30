@@ -533,7 +533,6 @@ public abstract class AutoBase extends SequentialCommandGroup {
 						try {
 							int num = Integer.parseInt(substring);
 							SmartDashboard.putNumber("parsed int", num);
-
 							if ((num % 2) == 0) {
 								coralPosesRight.add(p.getStartingHolonomicPose().get());
 
