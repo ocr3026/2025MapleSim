@@ -274,7 +274,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	}
 
 	public static final Command pathFindToPose(Pose2d pose) {
-		return AutoBuilder.pathfindToPose(pose, DriveConstants.autoConstraints);
+		return AutoBuilder.pathfindToPoseFlipped(pose, DriveConstants.autoConstraints);
 	}
 
 	/**
@@ -296,17 +296,17 @@ public abstract class AutoBase extends SequentialCommandGroup {
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
 		elevator.pos = pos;
 		SmartDashboard.putString("Elevator.pos", elevator.pos.toString());
-		// if (pos == ElevatorPos.INTAKE) {
-		// 	return new ParallelCommandGroup(
-		// 			Commands.runOnce(() -> SmartDashboard.putString("outtakeMode", "outtake trough")),
-		// 			setElevatorSetpoint(pos, elevator),
-		// 			new ParallelRaceGroup(wristOuttakeHomeRight(wrist, elevator), ElevatorCommands.setPos(elevator)));
-		// } else {
-		return new ParallelCommandGroup(
-				Commands.runOnce(() -> SmartDashboard.putString("outtakeMode", "outtake coral")),
-				setElevatorSetpoint(pos, elevator),
-				new ParallelRaceGroup(wristOuttake(wrist, elevator), ElevatorCommands.setPos(elevator)));
-		// }
+		if (pos == ElevatorPos.INTAKE) {
+			return new ParallelCommandGroup(
+					Commands.runOnce(() -> SmartDashboard.putString("outtakeMode", "outtake trough")),
+					setElevatorSetpoint(pos, elevator),
+					new ParallelRaceGroup(wristOuttakeHomeRight(wrist, elevator), ElevatorCommands.setPos(elevator)));
+		} else {
+			return new ParallelCommandGroup(
+					Commands.runOnce(() -> SmartDashboard.putString("outtakeMode", "outtake coral")),
+					setElevatorSetpoint(pos, elevator),
+					new ParallelRaceGroup(wristOuttake(wrist, elevator), ElevatorCommands.setPos(elevator)));
+		}
 	}
 
 	/**
@@ -464,8 +464,6 @@ public abstract class AutoBase extends SequentialCommandGroup {
 		public static final LoggedDashboardChooser<PathPlannerPath> thirdPathChooser =
 				new LoggedDashboardChooser<>("Choose Third Path");
 
-		public static final LoggedDashboardChooser<Pose2d> poseChooser = new LoggedDashboardChooser<>("Choose Coral Pose");
-
 		public static final LoggedDashboardChooser<ElevatorPos> firstElevatorPosChooser =
 				new LoggedDashboardChooser<>("Choose First Elevator Pos");
 		public static final LoggedDashboardChooser<ElevatorPos> secondElevatorPosChooser =
@@ -535,9 +533,10 @@ public abstract class AutoBase extends SequentialCommandGroup {
 						try {
 							int num = Integer.parseInt(substring);
 							SmartDashboard.putNumber("parsed int", num);
-							poseChooser.addOption(substring, p.getStartingHolonomicPose().get());
+
 							if ((num % 2) == 0) {
 								coralPosesRight.add(p.getStartingHolonomicPose().get());
+
 								coralPosesRightMap.put(
 										p.getStartingHolonomicPose().get(), p.name);
 							} else {
