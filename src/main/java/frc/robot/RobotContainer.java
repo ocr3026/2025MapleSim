@@ -296,8 +296,10 @@ public class RobotContainer {
 				.whileTrue(ClimberCommands.runTrapdoor(climberSubsystem));
 
 		// rotationJoystick.button(8).whileTrue(AutoBase.followPath(Paths.paths.get("C6 to C6")));
-		translationJoystick.button(1).whileTrue(DriveCommands.pathfindToPoseRight(drive));
-		rotationJoystick.button(1).whileTrue(DriveCommands.pathfindToPoseLeft(drive));
+		Keybinds.lookAtCoralRightTrigger.whileTrue(DriveCommands.pathfindToPoseRight(drive));
+		Keybinds.lookAtCoralLeftTrigger.whileTrue(DriveCommands.pathfindToPoseLeft(drive));
+		Keybinds.lookAtAlgaeTrigger.whileTrue(DriveCommands.pathfindToPoseAlgae(drive));
+
 		// climberSubsystem.setDefaultCommand(ClimberCommands.moveClimber(climberSubsystem, xbox.getLeftY()));
 		//	xbox.y().whileTrue(ClimberCommands.autoPositionClimber(climberSubsystem, 45)
 		//	.andThen(ClimberCommands.autoPositionClimber(climberSubsystem, 135)));

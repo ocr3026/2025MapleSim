@@ -289,6 +289,20 @@ public class DriveCommands {
 		return drive.getPose().nearest(Paths.coralPosesLeft);
 	}
 
+	public static Pose2d findBestPoseAlgae(Drive drive) {
+		Logger.recordOutput("pose2d best", drive.getPose().nearest(Paths.coralPosesAlgae));
+		SmartDashboard.putString(
+				"best pose",
+				Paths.coralPosesAlgaeMap.get(
+						(drive.getPose().nearest(new ArrayList<Pose2d>(Paths.coralPosesAlgaeMap.keySet())))));
+
+		for (Pose2d p : Paths.coralPosesAlgae) {
+			Logger.recordOutput("pose in list", p);
+		}
+
+		return drive.getPose().nearest(Paths.coralPosesAlgae);
+	}
+
 	public static Command pathfindToPoseRight(Drive drive) {
 		return Commands.startEnd(
 				() -> {
@@ -309,6 +323,17 @@ public class DriveCommands {
 					// } else {
 					autoBuilderCommand = AutoBuilder.pathfindToPose(findBestPoseLeft(drive), constraints);
 					// }
+					CommandScheduler.getInstance().schedule(autoBuilderCommand);
+				},
+				() -> {
+					CommandScheduler.getInstance().cancel(autoBuilderCommand);
+				});
+	}
+
+	public static Command pathfindToPoseAlgae(Drive drive) {
+		return Commands.startEnd(
+				() -> {
+					autoBuilderCommand = AutoBuilder.pathfindToPose(findBestPoseAlgae(drive), constraints);
 					CommandScheduler.getInstance().schedule(autoBuilderCommand);
 				},
 				() -> {
