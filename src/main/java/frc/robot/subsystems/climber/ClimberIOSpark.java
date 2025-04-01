@@ -93,7 +93,7 @@ public class ClimberIOSpark implements ClimberIO {
 
 	@Override
 	public void runTrapdoor() {
-		if (trapdoorEncoder.getPosition() > -20) {
+		if (trapdoorEncoder.getPosition() > -10) {
 			trapdoorMotor.setVoltage(openTrapdoorVoltage);
 		} else {
 			stopTrapdoor();
