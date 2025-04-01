@@ -498,26 +498,26 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				if (p.name.contains("R")) {
 					int index = p.name.indexOf("R");
 					if (index <= 2) {
-						firstPathChooser.addOption(p.name, p);
+						firstPathChooser.addOption(p.name.replace(" ", "_"), p);
 					}
 				}
 				if (p.name.contains("M")) {
 					int index = p.name.indexOf("M");
 					if (index <= 2) {
-						firstPathChooser.addOption(p.name, p);
+						firstPathChooser.addOption(p.name.replace(" ", "_"), p);
 					}
 				}
 				if (p.name.contains("L")) {
 					int index = p.name.indexOf("L");
 					if (index <= 2) {
-						firstPathChooser.addOption(p.name, p);
+						firstPathChooser.addOption(p.name.replace(" ", "_"), p);
 					}
 				}
 				if (p.name.contains("Feed")) {
 					int index = p.name.indexOf("e");
 					if (index <= 2) {
-						secondPathChooser.addOption(p.name, p);
-						thirdPathChooser.addOption(p.name, p);
+						secondPathChooser.addOption(p.name.replace(" ", "_"), p);
+						thirdPathChooser.addOption(p.name.replace(" ", "_"), p);
 					}
 				}
 

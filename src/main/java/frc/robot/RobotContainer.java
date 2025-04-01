@@ -288,7 +288,7 @@ public class RobotContainer {
 				AutoBase.setElevatorSetpoint(ElevatorPos.INTAKE, elevatorSubsystem));
 		Keybinds.runIntakeAndElevatorTrigger.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
-		// Keybinds.runAlgaeManipulatorTrigger.whileTrue(algaeSubsystem.runAlgaeManipulator());
+		Keybinds.runAlgaeManipulatorTrigger.whileTrue(WristCommands.runOuttake(wristSubsystem, 6.0, 6.0));
 
 		Keybinds.moveClimberTrigger.whileTrue(ClimberCommands.moveClimber(climberSubsystem));
 		Keybinds.xboxTrapdoorTrigger
