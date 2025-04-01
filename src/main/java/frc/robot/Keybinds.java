@@ -6,6 +6,7 @@ public final class Keybinds {
 	public static final Trigger resetGyroTrigger = RobotContainer.translationJoystick.button(12);
 	public static final Trigger lookAtCoralRightTrigger = RobotContainer.translationJoystick.button(1);
 	public static final Trigger lookAtCoralLeftTrigger = RobotContainer.rotationJoystick.button(1);
+	public static final Trigger lookAtAlgaeTrigger = RobotContainer.translationJoystick.button(2);
 
 	public static final Trigger moveElevatorTrigger = RobotContainer.xbox.a();
 	public static final Trigger decrementElevatorEnumTrigger = RobotContainer.xbox.leftBumper();

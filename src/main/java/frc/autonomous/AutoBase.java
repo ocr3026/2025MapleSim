@@ -421,8 +421,10 @@ public abstract class AutoBase extends SequentialCommandGroup {
 
 		public static List<Pose2d> coralPosesRight = new ArrayList<Pose2d>();
 		public static List<Pose2d> coralPosesLeft = new ArrayList<Pose2d>();
+		public static List<Pose2d> coralPosesAlgae = new ArrayList<Pose2d>();
 		public static HashMap<Pose2d, String> coralPosesRightMap = new HashMap<>();
 		public static HashMap<Pose2d, String> coralPosesLeftMap = new HashMap<>();
+		public static HashMap<Pose2d, String> coralPosesAlgaeMap = new HashMap<>();
 
 		public static boolean pathsHaveInit = false;
 
@@ -548,6 +550,16 @@ public abstract class AutoBase extends SequentialCommandGroup {
 						}
 					}
 				}
+				if (p.name.contains("A")) {
+					try {
+
+						coralPosesAlgae.add(p.getStartingHolonomicPose().get());
+						coralPosesAlgaeMap.put(p.getStartingHolonomicPose().get(), p.name);
+
+					} catch (Exception e) {
+						DriverStation.reportError(e.getMessage(), e.getStackTrace());
+					}
+				}
 			}
 			pathsHaveInit = true;
 		}
@@ -557,6 +569,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 			List<Pose2d> flippedPosesRight = new ArrayList<>();
 			SmartDashboard.putNumber("coral poses r size", coralPosesRight.size());
 			SmartDashboard.putNumber("coral poses l size", coralPosesLeft.size());
+			SmartDashboard.putNumber("coral poses a size", coralPosesAlgae.size());
 
 			for (Pose2d p : coralPosesRight) {
 
@@ -571,6 +584,13 @@ public abstract class AutoBase extends SequentialCommandGroup {
 			}
 			coralPosesLeft.clear();
 			coralPosesLeft = flippedPosesLeft;
+
+			List<Pose2d> flippedPosesAlgae = new ArrayList<>();
+			for (Pose2d p : coralPosesAlgae) {
+				flippedPosesAlgae.add(FlippingUtil.flipFieldPose(p));
+			}
+			coralPosesAlgae.clear();
+			coralPosesAlgae = flippedPosesAlgae;
 
 			SmartDashboard.putString("has recompiled the paths", "yes we have !");
 		}
