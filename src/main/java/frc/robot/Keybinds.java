@@ -14,7 +14,7 @@ public final class Keybinds {
 	public static final Trigger manuallyMoveElevatorDownTrigger = RobotContainer.translationJoystick.button(9);
 	public static final Trigger resetElevatorPosTrigger = RobotContainer.translationJoystick.button(10);
 
-	public static final Trigger runIntakeWithSensorTrigger = RobotContainer.xbox.b();
+	public static final Trigger runOuttakeTrough = RobotContainer.xbox.b();
 	public static final Trigger runIntakeTrigger = RobotContainer.xbox.y();
 	public static final Trigger runOuttakeTrigger = RobotContainer.xbox.rightTrigger();
 	public static final Trigger runIntakeAndElevatorTrigger = RobotContainer.xbox.leftTrigger();

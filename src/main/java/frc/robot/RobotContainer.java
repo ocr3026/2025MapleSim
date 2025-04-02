@@ -273,8 +273,8 @@ public class RobotContainer {
 		Keybinds.manuallyMoveElevatorDownTrigger.whileTrue(ElevatorCommands.runMotors(elevatorSubsystem));
 		Keybinds.resetElevatorPosTrigger.whileTrue(ElevatorCommands.setMotorPos(elevatorSubsystem));
 
-		Keybinds.runIntakeWithSensorTrigger.whileTrue(WristCommands.runIntake(wristSubsystem, -3, -0.5));
-		Keybinds.runIntakeWithSensorTrigger.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
+		Keybinds.runOuttakeTrough.whileTrue(WristCommands.runOuttake(wristSubsystem, -3, -0.5));
+		Keybinds.runOuttakeTrough.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
 		Keybinds.runIntakeTrigger.whileTrue(WristCommands.runOuttake(wristSubsystem, 2, 2));
 		Keybinds.runIntakeTrigger.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
