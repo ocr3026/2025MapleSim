@@ -551,13 +551,16 @@ public abstract class AutoBase extends SequentialCommandGroup {
 					}
 				}
 				if (p.name.contains("A")) {
-					try {
+					int index = p.name.indexOf("A");
+					if(index <=2) {
+						try {
 
-						coralPosesAlgae.add(p.getStartingHolonomicPose().get());
-						coralPosesAlgaeMap.put(p.getStartingHolonomicPose().get(), p.name);
+							coralPosesAlgae.add(p.getStartingHolonomicPose().get());
+							coralPosesAlgaeMap.put(p.getStartingHolonomicPose().get(), p.name);
 
-					} catch (Exception e) {
-						DriverStation.reportError(e.getMessage(), e.getStackTrace());
+						} catch (Exception e) {
+							DriverStation.reportError(e.getMessage(), e.getStackTrace());
+						}
 					}
 				}
 			}
