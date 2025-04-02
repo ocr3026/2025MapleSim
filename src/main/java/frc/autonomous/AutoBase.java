@@ -226,7 +226,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 							.05)) {
 						timer.start();
 
-						if (seenCoral || timer.hasElapsed(1.0)) {
+						if (seenCoral && timer.hasElapsed(0.5)) {
 							if (WristSubsystem.getCoralInputBool && !coralInWrist) {
 								wrist.setVoltage(WristConstants.slowOuttakeVoltage, WristConstants.slowOuttakeVoltage);
 							} else {
@@ -552,7 +552,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				}
 				if (p.name.contains("A")) {
 					int index = p.name.indexOf("A");
-					if(index <=2) {
+					if (index <= 2) {
 						try {
 
 							coralPosesAlgae.add(p.getStartingHolonomicPose().get());
