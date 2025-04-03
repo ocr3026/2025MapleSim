@@ -7,6 +7,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.pathfinding.Pathfinding;
+import com.pathplanner.lib.util.FlippingUtil;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
@@ -107,9 +108,9 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer {
 
 	@Override
 	public void periodic() {
-		SmartDashboard.putNumber("Robotx", getPose().getX());
-		SmartDashboard.putNumber("Roboty", getPose().getY());
-		SmartDashboard.putNumber("Robotr", getPose().getRotation().getDegrees());
+		SmartDashboard.putNumber("Robotx", FlippingUtil.flipFieldPose(getPose()).getX());
+		SmartDashboard.putNumber("Roboty", FlippingUtil.flipFieldPose(getPose()).getY());
+		SmartDashboard.putNumber("Robotr", FlippingUtil.flipFieldPose(getPose()).getRotation().getDegrees());
 		odometryLock.lock();
 		gyroIO.updateInputs(gyroInputs);
 		Logger.processInputs("Drive/Gyro", gyroInputs);
