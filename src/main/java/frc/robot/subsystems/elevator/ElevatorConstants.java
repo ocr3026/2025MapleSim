@@ -28,12 +28,12 @@ public final class ElevatorConstants {
 	public static final double encoderVelocityFactor =
 			Math.PI * spoolDiameter.in(Meter) / (elevatorReduction * 60); // RPM to m/s
 
-	public static final double kP = 10, kI = 0.1, kD = 0, kS = 0, kV = 1.75, kA = 0.15, kG = 1.40;
+	public static final double kP = 5, kI = 0, kD = 0, kS = 0, kV = 1.75, kA = 0.15, kG = 1.40;
 	public static final double simkP = 5, simkD = 0, simkS = 0, simkV = 1.75, simkA = 0.15, simkG = 1.26;
 
 	public static final int currentLimit = 50;
 
-	public static final Distance highPosConst = Meters.of(0.6725),
+	public static final Distance highPosConst = Meters.of(0.6),
 			midAlgaePosConst = Meters.of(0.374),
 			midPosConst = Meters.of(0.3507),
 			lowAlgaePosConst = Meters.of(0.154),

@@ -268,6 +268,7 @@ public class RobotContainer {
 		Keybinds.resetGyroTrigger.onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
 
 		Keybinds.moveElevatorTrigger.whileTrue(ElevatorCommands.setPos(elevatorSubsystem));
+		Keybinds.moveElevatorTrigger.onFalse(ElevatorCommands.setSpeed(elevatorSubsystem, 0.0));
 		Keybinds.decrementElevatorEnumTrigger.onTrue(ElevatorCommands.decerementValue(elevatorSubsystem));
 		Keybinds.incrementElevatorEnumTrigger.onTrue(ElevatorCommands.incrementValue(elevatorSubsystem));
 		Keybinds.manuallyMoveElevatorDownTrigger.whileTrue(ElevatorCommands.runMotors(elevatorSubsystem));
