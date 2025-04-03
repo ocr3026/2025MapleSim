@@ -1,9 +1,10 @@
 package frc.robot.commands;
 
 import static edu.wpi.first.units.Units.*;
+import static frc.robot.subsystems.drive.DriveConstants.constraints;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.autonomous.AutoBase.Paths;
 import frc.robot.subsystems.drive.Drive;
@@ -44,9 +46,7 @@ public class DriveCommands {
 	private static final AngularVelocity WHEEL_RADIUS_MAX_VELOCITY = RadiansPerSecond.of(0.25);
 	private static final AngularAcceleration WHEEL_RADIUS_RAMP_RATE = RadiansPerSecondPerSecond.of(0.05);
 
-	private static final PIDController xPid = new PIDController(5, 0, 0),
-			yPid = new PIDController(5, 0, 0),
-			omegaPid = new PIDController(5, 0, 0);
+	private static Command autoBuilderCommand = null;
 
 	private DriveCommands() {}
 
@@ -304,63 +304,41 @@ public class DriveCommands {
 	}
 
 	public static Command pathfindToPoseRight(Drive drive) {
-		omegaPid.enableContinuousInput(-Math.PI, Math.PI);
-		return Commands.runEnd(
+		return Commands.startEnd(
 				() -> {
-					Pose2d pose = findBestPoseRight(drive);
-					ChassisSpeeds speeds = new ChassisSpeeds(
-							-xPid.calculate(pose.getX(), drive.getPose().getX()),
-							-yPid.calculate(pose.getY(), drive.getPose().getY()),
-							-omegaPid.calculate(
-									pose.getRotation().getRadians(),
-									drive.getPose().getRotation().getRadians()));
-					speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, drive.getRotation());
-					drive.runVelocity(speeds);
+					autoBuilderCommand = AutoBuilder.pathfindToPose(findBestPoseRight(drive), constraints);
+					CommandScheduler.getInstance().schedule(autoBuilderCommand);
 				},
 				() -> {
-					drive.runVelocity(new ChassisSpeeds());
-				},
-				drive);
+					CommandScheduler.getInstance().cancel(autoBuilderCommand);
+				});
 	}
 
 	public static Command pathfindToPoseLeft(Drive drive) {
-		omegaPid.enableContinuousInput(-Math.PI, Math.PI);
-		return Commands.runEnd(
+		return Commands.startEnd(
 				() -> {
-					Pose2d pose = findBestPoseLeft(drive);
-					ChassisSpeeds speeds = new ChassisSpeeds(
-							-xPid.calculate(pose.getX(), drive.getPose().getX()),
-							-yPid.calculate(pose.getY(), drive.getPose().getY()),
-							-omegaPid.calculate(
-									pose.getRotation().getRadians(),
-									drive.getPose().getRotation().getRadians()));
-					speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, drive.getRotation());
-					drive.runVelocity(speeds);
+					// if (DriverStation.getAlliance().orElse(Alliance.Blue) != Alliance.Blue) {
+					// 	autoBuilderCommand = AutoBuilder.pathfindToPose(
+					// 			FlippingUtil.flipFieldPose(findBestPoseLeft(drive)), constraints);
+					// } else {
+					autoBuilderCommand = AutoBuilder.pathfindToPose(findBestPoseLeft(drive), constraints);
+					// }
+					CommandScheduler.getInstance().schedule(autoBuilderCommand);
 				},
 				() -> {
-					drive.runVelocity(new ChassisSpeeds());
-				},
-				drive);
+					CommandScheduler.getInstance().cancel(autoBuilderCommand);
+				});
 	}
 
 	public static Command pathfindToPoseAlgae(Drive drive) {
-		omegaPid.enableContinuousInput(-Math.PI, Math.PI);
-		return Commands.runEnd(
+		return Commands.startEnd(
 				() -> {
-					Pose2d pose = findBestPoseAlgae(drive);
-					ChassisSpeeds speeds = new ChassisSpeeds(
-							-xPid.calculate(pose.getX(), drive.getPose().getX()),
-							-yPid.calculate(pose.getY(), drive.getPose().getY()),
-							-omegaPid.calculate(
-									pose.getRotation().getRadians(),
-									drive.getPose().getRotation().getRadians()));
-					speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, drive.getRotation());
-					drive.runVelocity(speeds);
+					autoBuilderCommand = AutoBuilder.pathfindToPose(findBestPoseAlgae(drive), constraints);
+					CommandScheduler.getInstance().schedule(autoBuilderCommand);
 				},
 				() -> {
-					drive.runVelocity(new ChassisSpeeds());
-				},
-				drive);
+					CommandScheduler.getInstance().cancel(autoBuilderCommand);
+				});
 	}
 
 	private static class WheelRadiusCharacterizationState {
