@@ -90,7 +90,7 @@ public class Robot extends LoggedRobot {
 
 		if (DriverStation.getAlliance().orElse(Alliance.Blue) != lastAlliance) {
 			timesRecompiled++;
-			Paths.flipCoralPoses();
+			// Paths.flipCoralPoses();
 			robotContainer.recompileAutos();
 			SmartDashboard.putString("hasRecompiled", "Recompiled: " + timesRecompiled + " times");
 			Paths.updateStoredChooser();
