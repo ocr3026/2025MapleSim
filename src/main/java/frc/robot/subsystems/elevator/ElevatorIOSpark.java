@@ -30,8 +30,6 @@ public class ElevatorIOSpark implements ElevatorIO {
 	private final SparkClosedLoopController sparkPID;
 	// private final PIDController pid;
 	// private final ElevatorFeedforward ff;
-	double motorSpeed = 0;
-	double ffValue = 0;
 
 	public ElevatorIOSpark() {
 		leadMotor = new SparkMax(leadMotorID, MotorType.kBrushless);
@@ -115,7 +113,7 @@ public class ElevatorIOSpark implements ElevatorIO {
 				Math.min(position.in(Meter), softwareLimit.in(Meters)),
 				ControlType.kPosition,
 				ClosedLoopSlot.kSlot0,
-				0.1,
+				0.1, // TODO: ask about this
 				ArbFFUnits.kVoltage);
 
 		// ffValue = ff.calculate(pid.calculate(leadEncoder.getPosition(), Math.min(position.in(Meter),
@@ -156,16 +154,16 @@ public class ElevatorIOSpark implements ElevatorIO {
 	@Override
 	public void setSpeed(double speed) {
 		if (Meters.of(leadEncoder.getPosition()).in(Inches) <= softwareLimit.in(Inches)) {
-			motorSpeed = speed;
+			leadMotor.set(speed);
 		} else {
-			motorSpeed = MathUtil.clamp(speed, -0.1, 0);
+			leadMotor.set(MathUtil.clamp(speed, -0.1, 0));
 		}
 	}
 
 	@Override
 	public void tick() {
 		// leadMotor.set(MathUtil.clamp(ffValue, 0, 0.4));
-		leadMotor.set(MathUtil.clamp(motorSpeed, -.25, 1));
+		// leadMotor.set(MathUtil.clamp(motorSpeed, -.25, 1));
 	}
 
 	@Override
