@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.*;
 import static frc.robot.subsystems.drive.DriveConstants.constraints;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -18,7 +19,6 @@ import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -27,7 +27,6 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveConstants;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -265,42 +264,66 @@ public class DriveCommands {
 	}
 
 	public static Pose2d findBestPoseRight(Drive drive) {
-		Logger.recordOutput("pose2d best", drive.getPose().nearest(Paths.coralPosesRight));
+		Pose2d bestPose2d;
+		if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {
+			bestPose2d = FlippingUtil.flipFieldPose(
+					FlippingUtil.flipFieldPose(drive.getPose()).nearest(Paths.coralPosesRight));
+		} else {
+			bestPose2d = drive.getPose().nearest(Paths.coralPosesRight);
+		}
 
-		SmartDashboard.putString(
-				"best pose",
-				Paths.coralPosesRightMap.get(
-						(drive.getPose().nearest(new ArrayList<Pose2d>(Paths.coralPosesRightMap.keySet())))));
+		Logger.recordOutput("pose2d best", bestPose2d);
 
-		return drive.getPose().nearest(Paths.coralPosesRight);
+		// SmartDashboard.putString(
+		// 		"best pose",
+		// 		Paths.coralPosesRightMap.get(
+		// 				(drive.getPose().nearest(new ArrayList<Pose2d>(Paths.coralPosesRightMap.keySet())))));
+
+		return bestPose2d;
 	}
 
 	public static Pose2d findBestPoseLeft(Drive drive) {
-		Logger.recordOutput("pose2d best", drive.getPose().nearest(Paths.coralPosesLeft));
-		SmartDashboard.putString(
-				"best pose",
-				Paths.coralPosesLeftMap.get(
-						(drive.getPose().nearest(new ArrayList<Pose2d>(Paths.coralPosesLeftMap.keySet())))));
-
-		for (Pose2d p : Paths.coralPosesLeft) {
-			Logger.recordOutput("pose in list", p);
+		Pose2d bestPose2d;
+		if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {
+			bestPose2d = FlippingUtil.flipFieldPose(
+					FlippingUtil.flipFieldPose(drive.getPose()).nearest(Paths.coralPosesLeft));
+		} else {
+			bestPose2d = drive.getPose().nearest(Paths.coralPosesLeft);
 		}
 
-		return drive.getPose().nearest(Paths.coralPosesLeft);
+		Logger.recordOutput("pose2d best", bestPose2d);
+		// SmartDashboard.putString(
+		// 		"best pose",
+		// 		Paths.coralPosesLeftMap.get(
+		// 				(drive.getPose().nearest(new ArrayList<Pose2d>(Paths.coralPosesLeftMap.keySet())))));
+
+		// for (Pose2d p : Paths.coralPosesLeft) {
+		// 	Logger.recordOutput("pose in list", p);
+		// }
+
+		return bestPose2d;
 	}
 
 	public static Pose2d findBestPoseAlgae(Drive drive) {
-		Logger.recordOutput("pose2d best", drive.getPose().nearest(Paths.coralPosesAlgae));
-		SmartDashboard.putString(
-				"best pose",
-				Paths.coralPosesAlgaeMap.get(
-						(drive.getPose().nearest(new ArrayList<Pose2d>(Paths.coralPosesAlgaeMap.keySet())))));
+		Pose2d bestPose2d;
+		if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {
+			bestPose2d = FlippingUtil.flipFieldPose(
+					FlippingUtil.flipFieldPose(drive.getPose()).nearest(Paths.coralPosesAlgae));
+		} else {
+			bestPose2d = drive.getPose().nearest(Paths.coralPosesAlgae);
+		}
+
+		Logger.recordOutput("pose2d best", bestPose2d);
+		// SmartDashboard.putString(
+		// 		"best pose",
+		// 		Paths.coralPosesAlgaeMap.get(
+		// 				(drive.getPose().nearest(new ArrayList<Pose2d>(Paths.coralPosesAlgaeMap.keySet())))));
 
 		for (Pose2d p : Paths.coralPosesAlgae) {
 			Logger.recordOutput("pose in list", p);
 		}
 
-		return drive.getPose().nearest(Paths.coralPosesAlgae);
+		return bestPose2d;
 	}
 
 	public static Command pathfindToPoseRight(Drive drive) {
