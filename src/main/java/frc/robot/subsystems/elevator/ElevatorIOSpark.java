@@ -77,7 +77,7 @@ public class ElevatorIOSpark implements ElevatorIO {
 				.appliedOutputPeriodMs(20)
 				.busVoltagePeriodMs(20)
 				.outputCurrentPeriodMs(20);
-		leadConfig.closedLoop.pidf(kP, kI, kD, 0).maxOutput(0.35).minOutput(-0.25);
+		leadConfig.closedLoop.pidf(kP, kI, kD, 0).maxOutput(0.5).minOutput(-0.25);
 		SparkUtil.tryUntilOk(
 				followMotor,
 				5,

@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
-import frc.robot.subsystems.wrist.WristSubsystem;
 
 public class ElevatorCommands {
 
@@ -25,16 +24,14 @@ public class ElevatorCommands {
 	public static Command setPos(ElevatorSubsystem subsystem) {
 		if (Constants.currentMode != Constants.Mode.SIM) {
 			return Commands.run(() -> {
-				if (!WristSubsystem.getCoralInputBool) {
-					switch (subsystem.pos) {
-						case HIGH -> subsystem.setPosition((highPOS));
-						case MIDALGAE -> subsystem.setPosition(midAlgaePOS);
-						case MID -> subsystem.setPosition((midPOS));
-						case LOWALGAE -> subsystem.setPosition(lowAlgaePOS);
-						case LOW -> subsystem.setPosition((lowPOS));
-						case INTAKE -> subsystem.setPosition((intakePOS));
-						default -> throw new Error("NOthing selected");
-					}
+				switch (subsystem.pos) {
+					case HIGH -> subsystem.setPosition((highPOS));
+					case MIDALGAE -> subsystem.setPosition(midAlgaePOS);
+					case MID -> subsystem.setPosition((midPOS));
+					case LOWALGAE -> subsystem.setPosition(lowAlgaePOS);
+					case LOW -> subsystem.setPosition((lowPOS));
+					case INTAKE -> subsystem.setPosition((intakePOS));
+					default -> throw new Error("NOthing selected");
 				}
 			});
 
@@ -63,6 +60,10 @@ public class ElevatorCommands {
 
 	public static Command runMotors(ElevatorSubsystem subsystem) {
 		return Commands.run(() -> subsystem.setSpeed(MathUtil.clamp(RobotContainer.xbox.getLeftY(), -0.05, .05)));
+	}
+
+	public static Command setSpeed(ElevatorSubsystem subsystem, double speed) {
+		return Commands.run(() -> subsystem.setSpeed(speed));
 	}
 
 	public static Command stopMotors(ElevatorSubsystem subsystem) {
