@@ -392,7 +392,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	public static final ParallelDeadlineGroup pathFindToPoseAndMoveElevator(
 			Pose2d pose, ElevatorPos pos, ElevatorSubsystem subsystem) {
 		return new ParallelDeadlineGroup(
-				pathFindToPose(pose), setElevatorSetpoint(pos, subsystem), moveElevator(subsystem, pos));
+				pathFindToPose(pose), moveElevator(subsystem, pos));
 	}
 
 	/**
