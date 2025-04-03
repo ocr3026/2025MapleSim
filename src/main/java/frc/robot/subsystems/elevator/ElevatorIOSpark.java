@@ -42,7 +42,7 @@ public class ElevatorIOSpark implements ElevatorIO {
 		// pid = new PIDController(kP, kI, kD);
 		SparkMaxConfig followConfig = new SparkMaxConfig();
 		SparkMaxConfig leadConfig = new SparkMaxConfig();
-		followConfig.follow(leadMotorID).idleMode(IdleMode.kCoast);
+		followConfig.follow(leadMotorID).idleMode(IdleMode.kBrake);
 		leadConfig.idleMode(IdleMode.kBrake);
 
 		followConfig.inverted(true);
@@ -113,7 +113,7 @@ public class ElevatorIOSpark implements ElevatorIO {
 				Math.min(position.in(Meter), softwareLimit.in(Meters)),
 				ControlType.kPosition,
 				ClosedLoopSlot.kSlot0,
-				0.1, // TODO: ask about this
+				0,
 				ArbFFUnits.kVoltage);
 
 		// ffValue = ff.calculate(pid.calculate(leadEncoder.getPosition(), Math.min(position.in(Meter),

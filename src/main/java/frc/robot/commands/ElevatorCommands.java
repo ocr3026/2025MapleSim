@@ -24,8 +24,8 @@ public class ElevatorCommands {
 	 */
 	public static Command setPos(ElevatorSubsystem subsystem) {
 		if (Constants.currentMode != Constants.Mode.SIM) {
-			if (!WristSubsystem.getCoralInputBool) {
 				return Commands.run(() -> {
+					if (!WristSubsystem.getCoralInputBool) {
 					switch (subsystem.pos) {
 						case HIGH -> subsystem.setPosition((highPOS));
 						case MIDALGAE -> subsystem.setPosition(midAlgaePOS);
@@ -35,10 +35,9 @@ public class ElevatorCommands {
 						case INTAKE -> subsystem.setPosition((intakePOS));
 						default -> throw new Error("NOthing selected");
 					}
+					}
 				});
-			} else {
-				return Commands.run(() -> subsystem.setSpeed(0.05));
-			}
+			
 		} else {
 			return Commands.run(() -> {
 				switch (subsystem.pos) {
