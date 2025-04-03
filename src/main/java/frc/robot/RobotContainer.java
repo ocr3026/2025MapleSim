@@ -284,7 +284,7 @@ public class RobotContainer {
 		Keybinds.runOuttakeTrigger.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
 		Keybinds.runIntakeAndElevatorTrigger.whileTrue(
-				AutoBase.moveElevatorAndIntake(wristSubsystem, elevatorSubsystem, ElevatorPos.INTAKE));
+				AutoBase.moveElevatorAndIntakeNoRaceTele(wristSubsystem, elevatorSubsystem, ElevatorPos.INTAKE));
 		Keybinds.runIntakeAndElevatorTrigger.onTrue(
 				AutoBase.setElevatorSetpoint(ElevatorPos.INTAKE, elevatorSubsystem));
 		Keybinds.runIntakeAndElevatorTrigger.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
