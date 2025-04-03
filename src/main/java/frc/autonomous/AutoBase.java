@@ -265,6 +265,60 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				});
 	}
 
+	public static final Command wristIntakeTele(WristSubsystem wrist, ElevatorSubsystem elevator) {
+		return new FunctionalCommand(
+				// INIT
+				() -> {
+					seenCoral = false;
+					coralInWrist = false;
+					coralInPosition = false;
+					timedOut = false;
+					timer.reset();
+					SmartDashboard.putBoolean("Has timed out", timedOut);
+
+					wrist.setVoltage(0, 0);
+				},
+				// EXECUTE
+				() -> {
+					if (MathUtil.isNear(
+							elevator.getTargetPosition(elevator.pos).in(Meters),
+							elevator.getPosition().in(Meters),
+							.05)) {
+						timer.start();
+
+						if (seenCoral) {
+							if (WristSubsystem.getCoralInputBool && !coralInWrist) {
+								wrist.setVoltage(WristConstants.slowOuttakeVoltage, WristConstants.slowOuttakeVoltage);
+							} else {
+								coralInWrist = true;
+								if (WristSubsystem.getCoralInputBool) {
+									wrist.setVoltage(0, 0);
+									coralInPosition = true;
+								} else {
+									wrist.setVoltage(
+											WristConstants.slowIntakeVoltage, WristConstants.slowIntakeVoltage);
+								}
+							}
+						} else {
+							if (WristSubsystem.getCoralInputBool) {
+								seenCoral = true;
+							}
+							wrist.setVoltage(WristConstants.intakeVoltage, WristConstants.intakeVoltage);
+						}
+					}
+				},
+				// END
+				(interupted) -> {
+					wrist.setVoltage(0, 0);
+				},
+
+				// INTERUPTED
+
+				() -> {
+					return coralInPosition;
+				});
+	}
+
 	/**
 	 * @param path PathPlannerPath to follow
 	 * @return Command that follows given path
@@ -361,6 +415,13 @@ public abstract class AutoBase extends SequentialCommandGroup {
 				setElevatorSetpoint(pos, elevator), wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator));
 	}
 
+	public static final ParallelCommandGroup moveElevatorAndIntakeNoRaceTele(
+			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
+		return new ParallelCommandGroup(
+				setElevatorSetpoint(pos, elevator),
+				wristIntakeTele(wrist, elevator),
+				ElevatorCommands.setPos(elevator));
+	}
 	/**
 	 * @param path PathPlannerPath to get the starting pose of
 	 * @return Command to set the starting pose of the autonomous
