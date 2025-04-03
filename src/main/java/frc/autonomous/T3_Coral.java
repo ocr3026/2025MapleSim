@@ -17,7 +17,7 @@ public class T3_Coral extends AutoBase {
 		PathPlannerPath secondPath = Paths.secondPathChooser.get();
 		PathPlannerPath thirdPath = Paths.thirdPathChooser.get();
 		addCommands(setStartPose(firstPath));
-		addCommands(pathFindToPose(coralPose));
+		addCommands(pathFindToPoseAndMoveElevator(coralPose, Paths.firstElevatorPosChooser.get(), elevator));
 		addCommands(moveElevatorAndOuttake(wrist, elevator, Paths.firstElevatorPosChooser.get()));
 		addCommands(followPathandMoveElevator(elevator, ElevatorPos.INTAKE, getPathToFeed(firstPath)));
 		addCommands(moveElevatorAndIntake(wrist, elevator, ElevatorPos.INTAKE));

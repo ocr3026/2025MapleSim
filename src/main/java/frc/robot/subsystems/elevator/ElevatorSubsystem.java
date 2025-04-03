@@ -33,10 +33,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 		public ElevatorPos increment() {
 			return switch (this) {
 				case HIGH -> INTAKE;
-				case MIDALGAE -> LOW;
+				case MIDALGAE -> MID;
 				case MID -> HIGH;
 				case LOWALGAE -> MIDALGAE;
-				case LOW -> MID;
+				case LOW -> LOWALGAE;
 				case INTAKE -> LOW;
 			};
 		}
@@ -45,8 +45,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 			return switch (this) {
 				case HIGH -> MID;
 				case MIDALGAE -> LOWALGAE;
-				case MID -> LOW;
-				case LOWALGAE -> INTAKE;
+				case MID -> MIDALGAE;
+				case LOWALGAE -> LOW;
 				case LOW -> INTAKE;
 				case INTAKE -> HIGH;
 			};
