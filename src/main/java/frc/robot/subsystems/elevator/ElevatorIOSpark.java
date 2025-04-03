@@ -44,7 +44,7 @@ public class ElevatorIOSpark implements ElevatorIO {
 		// pid = new PIDController(kP, kI, kD);
 		SparkMaxConfig followConfig = new SparkMaxConfig();
 		SparkMaxConfig leadConfig = new SparkMaxConfig();
-		followConfig.follow(leadMotorID).idleMode(IdleMode.kBrake);
+		followConfig.follow(leadMotorID).idleMode(IdleMode.kCoast);
 		leadConfig.idleMode(IdleMode.kBrake);
 
 		followConfig.inverted(true);

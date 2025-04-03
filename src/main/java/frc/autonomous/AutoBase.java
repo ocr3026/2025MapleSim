@@ -294,7 +294,6 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	 */
 	public static final ParallelCommandGroup moveElevatorAndOuttake(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
-		elevator.pos = pos;
 		SmartDashboard.putString("Elevator.pos", elevator.pos.toString());
 		if (pos == ElevatorPos.INTAKE) {
 			return new ParallelCommandGroup(
@@ -317,7 +316,6 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	 */
 	public static final ParallelCommandGroup moveElevatorAndOuttakeHomeRight(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
-		elevator.pos = pos;
 		SmartDashboard.putString("Elevator.pos", elevator.pos.toString());
 
 		return new ParallelCommandGroup(
@@ -333,7 +331,6 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	 */
 	public static final ParallelCommandGroup moveElevatorAndOuttakeHomeLeft(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
-		elevator.pos = pos;
 		SmartDashboard.putString("Elevator.pos", elevator.pos.toString());
 
 		return new ParallelCommandGroup(
@@ -349,7 +346,6 @@ public abstract class AutoBase extends SequentialCommandGroup {
 	 */
 	public static final ParallelRaceGroup moveElevatorAndIntake(
 			WristSubsystem wrist, ElevatorSubsystem elevator, ElevatorPos pos) {
-		elevator.pos = pos;
 		return new ParallelRaceGroup(wristIntake(wrist, elevator), ElevatorCommands.setPos(elevator));
 	}
 
