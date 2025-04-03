@@ -110,7 +110,8 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer {
 	public void periodic() {
 		SmartDashboard.putNumber("Robotx", FlippingUtil.flipFieldPose(getPose()).getX());
 		SmartDashboard.putNumber("Roboty", FlippingUtil.flipFieldPose(getPose()).getY());
-		SmartDashboard.putNumber("Robotr", FlippingUtil.flipFieldPose(getPose()).getRotation().getDegrees());
+		SmartDashboard.putNumber(
+				"Robotr", FlippingUtil.flipFieldPose(getPose()).getRotation().getDegrees());
 		odometryLock.lock();
 		gyroIO.updateInputs(gyroInputs);
 		Logger.processInputs("Drive/Gyro", gyroInputs);
