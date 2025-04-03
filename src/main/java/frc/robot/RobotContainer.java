@@ -6,7 +6,6 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.subsystems.elevator.ElevatorConstants.*;
-import static frc.robot.subsystems.wrist.WristConstants.outtakeVoltage;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -280,7 +279,7 @@ public class RobotContainer {
 		Keybinds.runIntakeTrigger.whileTrue(WristCommands.runOuttake(wristSubsystem, 2, 2));
 		Keybinds.runIntakeTrigger.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
-		Keybinds.runOuttakeTrigger.whileTrue(WristCommands.runOuttake(wristSubsystem, outtakeVoltage, outtakeVoltage));
+		Keybinds.runOuttakeTrigger.whileTrue(WristCommands.runPlace(wristSubsystem, elevatorSubsystem));
 		Keybinds.runOuttakeTrigger.onFalse(WristCommands.runOuttake(wristSubsystem, 0, 0));
 
 		Keybinds.runIntakeAndElevatorTrigger.whileTrue(

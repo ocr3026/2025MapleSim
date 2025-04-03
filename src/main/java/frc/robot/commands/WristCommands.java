@@ -1,10 +1,13 @@
 package frc.robot.commands;
 
+import static frc.robot.subsystems.wrist.WristConstants.*;
 import static frc.robot.subsystems.wrist.WristConstants.slowIntakeVoltage;
 import static frc.robot.subsystems.wrist.WristConstants.slowOuttakeVoltage;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorPos;
 import frc.robot.subsystems.wrist.WristSubsystem;
 
 public class WristCommands {
@@ -19,7 +22,16 @@ public class WristCommands {
 	 * @return Command
 	 */
 	public static Command runOuttake(WristSubsystem subsystem, double leadVoltage, double followVoltage) {
+
 		return Commands.run(() -> subsystem.setVoltage(leadVoltage, followVoltage));
+	}
+
+	public static Command runPlace(WristSubsystem wrist, ElevatorSubsystem elevator) {
+		if (elevator.pos == ElevatorPos.HIGH) {
+			return Commands.run(() -> wrist.setVoltage(outtakeVoltageHigh, outtakeVoltageHigh));
+		} else {
+			return Commands.run(() -> wrist.setVoltage(outtakeVoltage, outtakeVoltage));
+		}
 	}
 
 	public static Command AlgaeOuttake(WristSubsystem subsystem) {
