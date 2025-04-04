@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 6.2247,
-        "y": 3.7658
+        "x": 5.85,
+        "y": 3.8592499999999994
       },
       "prevControl": {
-        "x": 8.28658524590164,
-        "y": 5.036496721311474
+        "x": 7.911885245901638,
+        "y": 5.129946721311473
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 176.749
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "C1 Paths",
