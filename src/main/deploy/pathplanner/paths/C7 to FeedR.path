@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.164754098360655,
-        "y": 4.19
+        "x": 3.1177,
+        "y": 4.1275
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.337602459016393,
-        "y": 2.643586065573772
+        "x": 2.290548360655738,
+        "y": 2.581086065573772
       },
       "isLocked": false,
       "linkedName": "C7"
@@ -48,7 +48,7 @@
   "folder": "C7 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 0.1772
   },
   "useDefaultConstraints": true
 }

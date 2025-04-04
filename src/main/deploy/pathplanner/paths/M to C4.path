@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.03483606557377,
-        "y": 5.229764344262294
+        "x": 5.0011,
+        "y": 5.2519
       },
       "prevControl": {
-        "x": 6.005999999999999,
-        "y": 5.039
+        "x": 5.97226393442623,
+        "y": 5.061135655737706
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -121.66075109663663
+    "rotation": -121.16500000000002
   },
   "reversed": false,
   "folder": "C4 Paths",

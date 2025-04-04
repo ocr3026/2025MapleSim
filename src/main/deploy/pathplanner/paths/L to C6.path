@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.63675,
-        "y": 5.077999999999999
+        "x": 3.6294,
+        "y": 5.1068
       },
       "prevControl": {
-        "x": 4.2840860655737725,
-        "y": 6.276770491803279
+        "x": 4.276736065573772,
+        "y": 6.305570491803279
       },
       "nextControl": null,
       "isLocked": false,
@@ -51,7 +51,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -57.03116716338792
+    "rotation": -56.753
   },
   "reversed": false,
   "folder": "C6 Paths",

@@ -16,11 +16,11 @@
     },
     {
       "anchor": {
-        "x": 5.814036885245901,
+        "x": 5.856,
         "y": 4.186834016393442
       },
       "prevControl": {
-        "x": 6.569262295081967,
+        "x": 6.611225409836066,
         "y": 5.38560450819672
       },
       "nextControl": null,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 178.9579
   },
   "reversed": false,
   "folder": "C2 Paths",

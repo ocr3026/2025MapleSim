@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.164754098360655,
-        "y": 4.19
+        "x": 3.1177,
+        "y": 4.1275
       },
       "prevControl": {
-        "x": 2.698534832375997,
-        "y": 4.7654142431508655
+        "x": 2.651480734015342,
+        "y": 4.7029142431508655
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 0.1772
   },
   "reversed": false,
   "folder": "C7 Paths",

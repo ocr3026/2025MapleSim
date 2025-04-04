@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.164754098360655,
-        "y": 3.86
+        "x": 3.1633,
+        "y": 3.8603
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.3205942622950824,
-        "y": 3.476393442622951
+        "x": 3.3191401639344273,
+        "y": 3.476693442622951
       },
       "isLocked": false,
       "linkedName": "C8"
@@ -48,7 +48,7 @@
   "folder": "C8 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 2.733
   },
   "useDefaultConstraints": true
 }

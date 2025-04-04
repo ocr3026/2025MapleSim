@@ -9,7 +9,7 @@
       "prevControl": null,
       "nextControl": {
         "x": 7.8,
-        "y": 1.567999999999997
+        "y": 1.5679999999999965
       },
       "isLocked": false,
       "linkedName": "Middle Start"
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 2.733
   },
   "reversed": false,
   "folder": "C8 Paths",

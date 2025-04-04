@@ -43,9 +43,9 @@ public class DriveCommands {
 	private static final AngularVelocity WHEEL_RADIUS_MAX_VELOCITY = RadiansPerSecond.of(0.25);
 	private static final AngularAcceleration WHEEL_RADIUS_RAMP_RATE = RadiansPerSecondPerSecond.of(0.05);
 
-	private static final PIDController xPid = new PIDController(5, 0, 0),
-			yPid = new PIDController(5, 0, 0),
-			omegaPid = new PIDController(5, 0, 0);
+	private static final PIDController xPid = new PIDController(4, 0, 0),
+			yPid = new PIDController(4, 0, 0),
+			omegaPid = new PIDController(6, 0, 0);
 
 	private DriveCommands() {}
 

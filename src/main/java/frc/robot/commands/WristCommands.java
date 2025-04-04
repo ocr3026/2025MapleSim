@@ -27,11 +27,13 @@ public class WristCommands {
 	}
 
 	public static Command runPlace(WristSubsystem wrist, ElevatorSubsystem elevator) {
-		if (elevator.pos == ElevatorPos.HIGH) {
-			return Commands.run(() -> wrist.setVoltage(outtakeVoltageHigh, outtakeVoltageHigh));
-		} else {
-			return Commands.run(() -> wrist.setVoltage(outtakeVoltage, outtakeVoltage));
-		}
+		return Commands.run(() -> {
+			if (elevator.pos == ElevatorPos.HIGH) {
+				wrist.setVoltage(outtakeVoltageHigh, outtakeVoltageHigh);
+			} else {
+				wrist.setVoltage(outtakeVoltage, outtakeVoltage);
+			}
+		});
 	}
 
 	public static Command AlgaeOuttake(WristSubsystem subsystem) {

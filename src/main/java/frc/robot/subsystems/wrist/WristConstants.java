@@ -11,7 +11,7 @@ public class WristConstants {
 
 	public static final double intakeVoltage = -3;
 	public static final double intakeFollowVoltage = -3;
-	public static final double outtakeVoltage = -1.0; // TODO:
+	public static final double outtakeVoltage = -4.0; // TODO:
 	public static final double outtakeVoltageHigh = -5.0;
 	public static final double slowOuttakeVoltage = -2;
 	public static final double slowIntakeVoltage = 1;

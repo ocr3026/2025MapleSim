@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.63675,
-        "y": 5.077999999999999
+        "x": 3.6294,
+        "y": 5.1068
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.713696721311475,
-        "y": 5.785274590163934
+        "x": 2.706346721311475,
+        "y": 5.814074590163934
       },
       "isLocked": false,
       "linkedName": "C6"
@@ -48,7 +48,7 @@
   "folder": "C6 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -57.03116716338792
+    "rotation": -56.753
   },
   "useDefaultConstraints": true
 }
