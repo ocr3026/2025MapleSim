@@ -37,7 +37,7 @@ public final class ElevatorConstants {
 			midAlgaePosConst = Meters.of(0.374),
 			midPosConst = Meters.of(0.3607),
 			lowAlgaePosConst = Meters.of(0.154),
-			lowPosConst = Meters.of(0.145),
+			lowPosConst = Meters.of(0.160),
 			homePosConst = Meters.of(0.0),
 			intakePosConst = Meters.of(0.01);
 
