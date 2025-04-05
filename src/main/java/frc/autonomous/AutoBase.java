@@ -227,11 +227,11 @@ public abstract class AutoBase extends SequentialCommandGroup {
 						timer.start();
 
 						if (seenCoral && timer.hasElapsed(0.5)) {
-							if (WristSubsystem.getCoralInputBool && !coralInWrist) {
+							if (WristSubsystem.getCoralInputBool.get() && !coralInWrist) {
 								wrist.setVoltage(WristConstants.slowOuttakeVoltage, WristConstants.slowOuttakeVoltage);
 							} else {
 								coralInWrist = true;
-								if (WristSubsystem.getCoralInputBool) {
+								if (WristSubsystem.getCoralInputBool.get()) {
 									wrist.setVoltage(0, 0);
 									coralInPosition = true;
 								} else {
@@ -240,7 +240,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 								}
 							}
 						} else {
-							if (WristSubsystem.getCoralInputBool) {
+							if (WristSubsystem.getCoralInputBool.get()) {
 								seenCoral = true;
 							}
 							wrist.setVoltage(WristConstants.intakeVoltage, WristConstants.intakeVoltage);
@@ -287,11 +287,11 @@ public abstract class AutoBase extends SequentialCommandGroup {
 						timer.start();
 
 						if (seenCoral) {
-							if (WristSubsystem.getCoralInputBool && !coralInWrist) {
+							if (WristSubsystem.getCoralInputBool.get() && !coralInWrist) {
 								wrist.setVoltage(WristConstants.slowOuttakeVoltage, WristConstants.slowOuttakeVoltage);
 							} else {
 								coralInWrist = true;
-								if (WristSubsystem.getCoralInputBool) {
+								if (WristSubsystem.getCoralInputBool.get()) {
 									wrist.setVoltage(0, 0);
 									coralInPosition = true;
 								} else {
@@ -300,7 +300,7 @@ public abstract class AutoBase extends SequentialCommandGroup {
 								}
 							}
 						} else {
-							if (WristSubsystem.getCoralInputBool) {
+							if (WristSubsystem.getCoralInputBool.get()) {
 								seenCoral = true;
 							}
 							wrist.setVoltage(WristConstants.intakeVoltage, WristConstants.intakeVoltage);

@@ -1,13 +1,14 @@
 package frc.robot.subsystems.climber;
 
 import static edu.wpi.first.units.Units.Degrees;
+import static frc.robot.subsystems.climber.ClimberConstants.openTrapdoorVoltage;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
 public class ClimberSubsystem extends SubsystemBase {
-	public static double currentVoltage = 0.0;
+	// public static double currentVoltage = 0.0;
 
 	private final ClimberIO io;
 	private final ClimberIOInputsAutoLogged inputs = new ClimberIOInputsAutoLogged();
@@ -23,7 +24,7 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void runTrapdoor() {
-		io.runTrapdoor(currentVoltage);
+		io.runTrapdoor(openTrapdoorVoltage);
 	}
 
 	public void stopTrapdoor() {
@@ -34,9 +35,9 @@ public class ClimberSubsystem extends SubsystemBase {
 	public void periodic() {
 		io.updateInputs(inputs);
 		Logger.processInputs("Climber", inputs);
-		if (currentVoltage != SmartDashboard.getNumber("TrapdoorVoltage", currentVoltage)) {
-			currentVoltage = SmartDashboard.getNumber("TrapdoorVoltage", currentVoltage);
-		}
+		// if (currentVoltage != SmartDashboard.getNumber("TrapdoorVoltage", currentVoltage)) {
+		// 	currentVoltage = SmartDashboard.getNumber("TrapdoorVoltage", currentVoltage);
+		// }
 
 		SmartDashboard.putNumber("Climber position", inputs.winchPosition.in(Degrees));
 	}

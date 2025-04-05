@@ -59,11 +59,11 @@ public class WristCommands {
 					}
 
 					if (seenCoral) {
-						if (WristSubsystem.getCoralInputBool && !coralInWrist) {
+						if (WristSubsystem.getCoralInputBool.get() && !coralInWrist) {
 							subsystem.setVoltage(slowOuttakeVoltage, slowOuttakeVoltage);
 						} else {
 							coralInWrist = true;
-							if (WristSubsystem.getCoralInputBool) {
+							if (WristSubsystem.getCoralInputBool.get()) {
 								subsystem.setVoltage(0, 0);
 								coralInPosition = true;
 							} else {
@@ -71,7 +71,7 @@ public class WristCommands {
 							}
 						}
 					} else {
-						if (WristSubsystem.getCoralInputBool) {
+						if (WristSubsystem.getCoralInputBool.get()) {
 							seenCoral = true;
 						}
 						subsystem.setVoltage(leadVoltage, followVoltage);
