@@ -151,10 +151,7 @@ public class ElevatorIOSpark implements ElevatorIO {
 		}
 	}
 
-	
-	/** 
-	 * @param speed
-	 */
+	/** @param speed */
 	@Override
 	public void setSpeed(double speed) {
 		if (Meters.of(leadEncoder.getPosition()).in(Inches) <= softwareLimit.in(Inches)) {

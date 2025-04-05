@@ -98,8 +98,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 		io.zeroElevator();
 	}
 
-	
-	/** 
+	/**
 	 * @param givenPos
 	 * @return Distance
 	 */

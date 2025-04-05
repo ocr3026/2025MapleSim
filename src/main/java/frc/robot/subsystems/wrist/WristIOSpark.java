@@ -94,10 +94,7 @@ public class WristIOSpark implements WristIO {
 		return coralInput.get();
 	}
 
-	
-	/** 
-	 * @return double
-	 */
+	/** @return double */
 	public double getRotations() {
 		return leadEncoder.getPosition();
 	}
