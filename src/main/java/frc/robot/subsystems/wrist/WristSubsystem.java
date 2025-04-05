@@ -33,6 +33,10 @@ public class WristSubsystem extends SubsystemBase {
 		io.setVoltage(leadVoltage, followVoltage);
 	}
 
+	
+	/** 
+	 * @param rotations
+	 */
 	public void turnRotations(double rotations) {
 
 		double goalRotations = io.getRotations() + rotations;

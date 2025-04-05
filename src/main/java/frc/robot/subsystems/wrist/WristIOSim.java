@@ -47,6 +47,10 @@ public class WristIOSim implements WristIO {
 		return true;
 	}
 
+	
+	/** 
+	 * @return double
+	 */
 	@Override
 	public double getRotations() {
 		return leadPosition
