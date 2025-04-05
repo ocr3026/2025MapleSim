@@ -7,12 +7,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
 public class ClimberSubsystem extends SubsystemBase {
+	public static double currentVoltage = 0.0;
 
 	private final ClimberIO io;
 	private final ClimberIOInputsAutoLogged inputs = new ClimberIOInputsAutoLogged();
 
 	public ClimberSubsystem(ClimberIO climberIO) {
 		this.io = climberIO;
+		SmartDashboard.putNumber("TrapdoorVoltage", 0);
 	}
 
 	public void setSpeed(double speed) {
@@ -21,7 +23,7 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void runTrapdoor() {
-		io.runTrapdoor();
+		io.runTrapdoor(currentVoltage);
 	}
 
 	public void stopTrapdoor() {
@@ -32,6 +34,10 @@ public class ClimberSubsystem extends SubsystemBase {
 	public void periodic() {
 		io.updateInputs(inputs);
 		Logger.processInputs("Climber", inputs);
+		if (currentVoltage != SmartDashboard.getNumber("TrapdoorVoltage", currentVoltage)) {
+			currentVoltage = SmartDashboard.getNumber("TrapdoorVoltage", currentVoltage);
+		}
+
 		SmartDashboard.putNumber("Climber position", inputs.winchPosition.in(Degrees));
 	}
 }

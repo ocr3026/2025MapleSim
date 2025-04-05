@@ -1,5 +1,6 @@
 package frc.robot.subsystems.wrist;
 
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
@@ -9,7 +10,7 @@ public class WristSubsystem extends SubsystemBase {
 	private final WristIO io;
 	private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
 	public static boolean getCoralInputBool = false;
-	// private static Debouncer ultrasonicDebouncer = new Debouncer(0.1);
+	private static Debouncer ultrasonicDebouncer = new Debouncer(0.03);
 
 	public static LoggedMechanismLigament2d wristLigament;
 
@@ -44,7 +45,7 @@ public class WristSubsystem extends SubsystemBase {
 	public void periodic() {
 		io.updateInputs(inputs);
 		Logger.processInputs("Wrist", inputs);
-		getCoralInputBool = (getCoralInput());
+		getCoralInputBool = ultrasonicDebouncer.calculate(getCoralInput());
 		SmartDashboard.putBoolean("has coral or summ", getCoralInputBool);
 	}
 }

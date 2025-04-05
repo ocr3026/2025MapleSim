@@ -25,7 +25,7 @@ public interface ClimberIO {
 
 	public default void setAngularSpeed(double speed) {}
 
-	public default void runTrapdoor() {}
+	public default void runTrapdoor(double voltage) {}
 
 	public default void stopTrapdoor() {}
 }

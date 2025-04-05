@@ -18,6 +18,7 @@ import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.autonomous.AutoBase.Paths;
@@ -339,6 +340,11 @@ public class DriveCommands {
 									drive.getPose().getRotation().getRadians()));
 					speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, drive.getRotation());
 					drive.runVelocity(speeds);
+					if (xPid.atSetpoint() && yPid.atSetpoint()) {
+						SmartDashboard.putBoolean("LinedUp", true);
+					} else {
+						SmartDashboard.putBoolean("LinedUp", false);
+					}
 				},
 				() -> {
 					drive.runVelocity(new ChassisSpeeds());
@@ -359,6 +365,11 @@ public class DriveCommands {
 									drive.getPose().getRotation().getRadians()));
 					speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, drive.getRotation());
 					drive.runVelocity(speeds);
+					if (xPid.atSetpoint() && yPid.atSetpoint()) {
+						SmartDashboard.putBoolean("LinedUp", true);
+					} else {
+						SmartDashboard.putBoolean("LinedUp", false);
+					}
 				},
 				() -> {
 					drive.runVelocity(new ChassisSpeeds());
