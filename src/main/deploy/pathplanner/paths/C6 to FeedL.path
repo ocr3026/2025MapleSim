@@ -48,7 +48,7 @@
   "folder": "C6 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -56.753
+    "rotation": -59.99999999999999
   },
   "useDefaultConstraints": true
 }

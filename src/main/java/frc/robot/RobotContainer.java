@@ -74,6 +74,10 @@ public class RobotContainer {
 	public final LoggedDashboardChooser<Command> autoChooser;
 	public static Command currentSelectedCommand = null;
 
+	// public static Command DriveForward(Drive subsystem) {
+	// 	return subsystem.runVelocity(new ChassisSpeeds());
+	// }
+
 	public RobotContainer() {
 		switch (Constants.currentMode) {
 			case SIM:
@@ -195,6 +199,7 @@ public class RobotContainer {
 		// Test02Auto test02Auto = new Test02Auto();
 		// Test03Auto test03Auto = new Test03Auto();
 		autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+		// autoChooser.addOption("DriveForawrdNoPath", );
 		// autoChooser.addOption("Far Left to C3 2 Coral", new FL_C3_2C(elevatorSubsystem, wristSubsystem));
 
 		Paths.initPaths();

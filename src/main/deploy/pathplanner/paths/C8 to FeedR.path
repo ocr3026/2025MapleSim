@@ -48,7 +48,7 @@
   "folder": "C8 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 2.733
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

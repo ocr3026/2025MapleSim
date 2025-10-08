@@ -24,4 +24,6 @@ public final class Constants {
 	 *
 	 *
 	 */
+
+	// 2.7 degree offset for coral poses in pathfinder
 }
